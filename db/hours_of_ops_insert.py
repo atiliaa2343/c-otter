@@ -13,5 +13,5 @@ hours_of_ops_df = pd.read_excel("hours_of_operation.xlsx")
 print(hours_of_ops_df)
 
 engine = db.create_engine(database_url) # create a db engine to make a connection
-hours_of_ops_df.to_sql("hours_of_operation", engine, if_exists='replace') # replace the data if it already exist
+hours_of_ops_df.to_sql("hours_of_operation", engine, if_exists='replace', index=False) # replace the data if it already exist
 print("Database inserts complete!")
