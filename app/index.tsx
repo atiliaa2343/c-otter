@@ -3,9 +3,17 @@ import { Text, View, FlatList } from "react-native";
 import "../global.css";
 import { supabase } from "@/db/supabase";
 import React, { useState, useEffect } from "react";
+import { Timestamp } from "react-native-reanimated/lib/typescript/commonTypes";
+
+interface location_data { //FIX: this needs to be the same type of the types we are going to pull from the database
+  location_id: NonNullable<number>;
+  created_at : NonNullable<Timestamp>;
+  open_time : NonNullable<Timestamp>;
+}
+
 
 export default function Index() {
-  const [locations, setlocations] = useState([]);
+  const [locations, setlocations] = useState<location_data[]>([]);
   const [loading, setLoading] = useState(true);
 
   async function getlocations() {
@@ -21,7 +29,7 @@ export default function Index() {
     }
   }
 
-  useEffect(() => { // TODO: Don't use useEffect use something else
+  useEffect(() => { // TODO: Try to use something other than useEffect here
     getlocations();
   }, []);
 
@@ -44,8 +52,9 @@ export default function Index() {
           data={locations}
           keyExtractor={(item) => item.location_id.toString()}
           renderItem={({ item }) => (
+
             <Text className="text-gray-800" key={item.location_id}>
-              {item.created_at}
+              {item.created_at} , { item.open_time}
             </Text>
           )}
         />
