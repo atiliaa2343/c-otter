@@ -9,7 +9,7 @@ load_dotenv()
 # Access environment variables
 database_url = os.getenv("DATABASE_URL")
 
-hours_of_ops_df = pd.read_excel("hours_of_operation.xlsx")
+hours_of_ops_df = pd.read_excel("data/hours_of_operation.xlsx")
 print(hours_of_ops_df)
 
 engine = db.create_engine(database_url) # create a db engine to make a connection
