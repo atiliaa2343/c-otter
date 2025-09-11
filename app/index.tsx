@@ -20,7 +20,7 @@ export default function Index() {
     try {
       const { data } = await supabase.from("hours_of_operation").select("*");
       if (data) {
-        setlocations(data);
+        setlocations(data); // TODO: fix the red underlines
       }
     } catch (err) {
       console.error("Error fetching data:", err);
