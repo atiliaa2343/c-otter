@@ -1,26 +1,24 @@
+import React, { useState, useEffect } from "react";
+import "../global.css";
 import { UserForm } from "@/components/UserForm";
 import { Text, View, FlatList } from "react-native";
-import "../global.css";
+
+// define supabase database types
 import { supabase } from "@/db/supabase";
-import React, { useState, useEffect } from "react";
-import { Timestamp } from "react-native-reanimated/lib/typescript/commonTypes";
+import { Tables } from "@/db/database.types";
 
-interface location_data { //FIX: this needs to be the same type of the types we are going to pull from the database
-  location_id: NonNullable<number>;
-  created_at : NonNullable<Timestamp>;
-  open_time : NonNullable<Timestamp>;
-}
-
+// define database tables types
+type hours_of_operation = Tables<"hours_of_operation">
+type locations = Tables<"locations">
 
 export default function Index() {
-  const [locations, setlocations] = useState<location_data[]>([]);
+  const [locations, setlocations] = useState<hours_of_operation[]>();
   const [loading, setLoading] = useState(true);
-
   async function getlocations() {
     try {
       const { data } = await supabase.from("hours_of_operation").select("*");
       if (data) {
-        setlocations(data); // TODO: fix the red underlines
+        setlocations(data); 
       }
     } catch (err) {
       console.error("Error fetching data:", err);
