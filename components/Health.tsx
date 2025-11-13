@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, Dimensions, Image } from "react-native";
+import { useRouter } from 'expo-router';
 
 interface TopicCard {
   id: string;
@@ -11,6 +12,7 @@ interface TopicCard {
 }
 
 export function HealthForm() {
+  // no selected UI state desired — clicking navigates only
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
   const topics: TopicCard[] = [
@@ -22,10 +24,19 @@ export function HealthForm() {
     { id: '6', title: 'Occupational & Financial Health', color: '#4A5568', image: require('../assets/images/money.png'), size: 'small' },
   ];
 
+  const router = useRouter();
+
+  const slugify = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
   const handleTopicPress = (topicId: string, topicTitle: string) => {
-    setSelectedTopic(topicId);
-    console.log(`Selected topic: ${topicTitle}`);
-    // TODO: Navigate to specific topic content or update state
+    // navigate to dynamic domain route (no selected UI)
+    const slug = slugify(topicTitle);
+    router.push(`/health/${slug}`);
   };
 
   const renderTopicCard = (topic: TopicCard, index: number) => {
@@ -101,14 +112,7 @@ export function HealthForm() {
         {/* Topic Cards Grid */}
         {renderStaggeredGrid()}
 
-        {/* Selected Topic Display */}
-        {selectedTopic && (
-          <View className="mt-6 p-4 bg-blue-100 rounded-lg">
-            <Text className="text-blue-900 font-medium">
-              Selected: {topics.find(t => t.id === selectedTopic)?.title}
-            </Text>
-          </View>
-        )}
+        {/* no selected topic UI by design */}
       </View>
     </ScrollView>
   );

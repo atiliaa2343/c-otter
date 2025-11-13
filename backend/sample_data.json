@@ -1,0 +1,74 @@
+[
+  {
+    "_id": "m-1",
+    "domain": "mental-health",
+    "type": "news",
+    "title": "State of Mental Health in America 2025: New Findings",
+    "summary": "A national overview of mental health access and outcomes in 2025.",
+    "url": "https://example.org/mental-health-2025",
+    "source": "Example News",
+    "published_at": "2025-10-15T08:00:00Z",
+    "tags": ["report", "policy"],
+    "ingested_at": "2025-11-01T12:00:00Z"
+  },
+  {
+    "_id": "m-2",
+    "domain": "fitness",
+    "type": "app",
+    "title": "Fitbod launches new AI plans",
+    "summary": "Fitbod introduced an AI personalization engine for workouts.",
+    "url": "https://example.org/fitbod-ai",
+    "source": "FitnessBlog",
+    "published_at": "2025-11-01T09:00:00Z",
+    "tags": ["app", "ai"],
+    "ingested_at": "2025-11-01T12:00:00Z"
+  },
+  {
+    "_id": "m-3",
+    "domain": "addiction-recovery",
+    "type": "news",
+    "title": "SAMHSA Recovery Month Toolkit 2025 Released",
+    "summary": "Resources and toolkit for recovery month 2025.",
+    "url": "https://example.org/samhsa-2025",
+    "source": "SAMHSA",
+    "published_at": "2025-09-01T10:00:00Z",
+    "tags": ["recovery"],
+    "ingested_at": "2025-11-01T12:00:00Z"
+  },
+  {
+    "_id": "m-4",
+    "domain": "nutrition",
+    "type": "news",
+    "title": "USDA Dietary Guidelines 2025 Draft",
+    "summary": "The USDA published draft updates to national dietary guidelines.",
+    "url": "https://example.org/usda-2025",
+    "source": "USDA",
+    "published_at": "2025-10-01T07:00:00Z",
+    "tags": ["guidelines", "usda"],
+    "ingested_at": "2025-11-01T12:00:00Z"
+  },
+  {
+    "_id": "m-5",
+    "domain": "emotional-social-spiritual-health",
+    "type": "app",
+    "title": "New meditation research shows benefits",
+    "summary": "Study finds consistent meditation yields measurable benefits.",
+    "url": "https://example.org/meditation-2025",
+    "source": "CMU Study",
+    "published_at": "2025-08-21T11:00:00Z",
+    "tags": ["meditation"],
+    "ingested_at": "2025-11-01T12:00:00Z"
+  },
+  {
+    "_id": "m-6",
+    "domain": "occupational-financial-health",
+    "type": "news",
+    "title": "Employee financial stress survey results published",
+    "summary": "A major bank published survey results on employee financial stress.",
+    "url": "https://example.org/financial-wellbeing-2025",
+    "source": "FinNews",
+    "published_at": "2025-10-05T14:00:00Z",
+    "tags": ["survey", "workplace"],
+    "ingested_at": "2025-11-01T12:00:00Z"
+  }
+]

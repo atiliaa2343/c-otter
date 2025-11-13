@@ -5,6 +5,8 @@ import { Text, View, FlatList, Image, TouchableOpacity, ScrollView } from "react
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { HealthForm } from "@/components/Health";
 import { FacultyForm } from "@/components/Faculty";
+import Research from "@/components/Research";
+import Pictures from "@/components/Pictures";
 
 // define supabase database types
 import { supabase } from "@/db/supabase";
@@ -76,7 +78,7 @@ export default function Index() {
       case "home":
         return (
           <View className="flex-1 bg-white items-center px-4 pt-16">
-            <Text className="text-2xl font-bold text-blue-700 mb-6">
+            <Text className="text-2xl font-bold text-blue-700 mb-6 text-center">
               Healthcare Location Finder
             </Text>
             <Text className="text-base text-gray-600 mb-4">
@@ -99,12 +101,7 @@ export default function Index() {
           </View>
         );
       case "research":
-        return (
-          <View className="flex-1 items-center justify-center">
-            <Text className="text-2xl font-bold text-gray-800">Research</Text>
-            <Text className="text-gray-600 mt-2">Research content coming soon</Text>
-          </View>
-        );
+        return <Research />;
       case "community":
         return (
           <View className="flex-1 items-center justify-center">
@@ -118,10 +115,12 @@ export default function Index() {
         return <FacultyForm />;
       case "pictures":
         return (
-          <View className="flex-1 items-center justify-center">
-            <Text className="text-2xl font-bold text-gray-800">Pictures</Text>
-            <Text className="text-gray-600 mt-2">Picture gallery coming soon</Text>
-          </View>
+          // lazy-load the Pictures component to keep bundle size smaller
+          <React.Suspense fallback={<View className="items-center justify-center py-8"><Text>Loading pictures...</Text></View>}>
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-ignore */}
+            <Pictures />
+          </React.Suspense>
         );
       default:
         return null;
@@ -134,7 +133,7 @@ export default function Index() {
       <View className="flex-1 bg-white items-center justify-center">
         <Image
           source={require("@/assets/images/C-Otter.jpg")}
-          style={{ width: 300, height: 300 }}
+          style={{ width: 500, height: 500 }}
           resizeMode="contain"
         />
       </View>
@@ -143,42 +142,37 @@ export default function Index() {
 
   return (
     <View className="flex-1 bg-white">
-      {/* Page Content */}
-      <ScrollView className="flex-1">
+      {/* Page Content (don't wrap children in a plain ScrollView to avoid nested VirtualizedLists) */}
+      <View className="flex-1">
         {renderPageContent()}
-      </ScrollView>
+      </View>
 
       {/* Bottom Navigation Bar */}
-      <View className="bg-blue-700 pb-2 pt-2 px-2 border-t border-blue-600">
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 8 }}
-        >
-          {navigationItems.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              onPress={() => setCurrentPage(item.id)}
-              className={`items-center justify-center mx-2 px-3 py-2 rounded-lg ${
-                currentPage === item.id ? "bg-blue-500" : "bg-transparent"
+      <View className="bg-blue-700 pb-2 pt-2 px-1 border-t border-blue-600 flex-row justify-around items-center">
+        {navigationItems.map((item) => (
+          <TouchableOpacity
+            key={item.id}
+            onPress={() => setCurrentPage(item.id)}
+            className={`items-center justify-center px-1 py-1 rounded-lg flex-1 ${
+              currentPage === item.id ? "bg-blue-500" : "bg-transparent"
+            }`}
+            activeOpacity={0.7}
+          >
+            {renderIcon(
+              item.iconSet,
+              item.icon,
+              currentPage === item.id ? "#FFFFFF" : "#E0E7FF"
+            )}
+            <Text
+              className={`text-[10px] mt-0.5 ${
+                currentPage === item.id ? "text-white font-semibold" : "text-blue-100"
               }`}
-              activeOpacity={0.7}
+              numberOfLines={1}
             >
-              {renderIcon(
-                item.iconSet,
-                item.icon,
-                currentPage === item.id ? "#FFFFFF" : "#E0E7FF"
-              )}
-              <Text
-                className={`text-xs mt-1 ${
-                  currentPage === item.id ? "text-white font-semibold" : "text-blue-100"
-                }`}
-              >
-                {item.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+              {item.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );
