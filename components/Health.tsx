@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, Dimensions, Image } from "react-native";
 import { useRouter } from 'expo-router';
 
+// Backend base URL for phone access
+const BACKEND_URL = 'http://10.0.0.71:4000';
+
 interface TopicCard {
   id: string;
   title: string;
   color: string;
   icon?: string;
-  image?: any;
+  imageFilename?: string;
   size: 'small' | 'large';
 }
 
@@ -16,12 +19,12 @@ export function HealthForm() {
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
   const topics: TopicCard[] = [
-    { id: '1', title: 'Mental Health', color: '#8B7FE8', image: require('../assets/images/mental.png'), size: 'small' },
-    { id: '2', title: 'Fitness', color: '#FF6B6B', image: require('../assets/images/fitness.png') , size: 'small' },
-    { id: '3', title: 'Addiction & Recovery', color: '#FFB088', image: require('../assets/images/drugs.png'), size: 'small' },
-    { id: '4', title: 'Nutrition', color: '#FFC857', image: require('../assets/images/food.png'), size: 'small' },
-    { id: '5', title: 'Emotional, Social, & Spiritual Health', color: '#6BCF7F', image: require('../assets/images/social.png'), size: 'small' },
-    { id: '6', title: 'Occupational & Financial Health', color: '#4A5568', image: require('../assets/images/money.png'), size: 'small' },
+    { id: '1', title: 'Mental Health', color: '#8B7FE8', imageFilename: 'mental', size: 'small' },
+    { id: '2', title: 'Fitness', color: '#FF6B6B', imageFilename: 'fitness', size: 'small' },
+    { id: '3', title: 'Addiction & Recovery', color: '#FFB088', imageFilename: 'drugs', size: 'small' },
+    { id: '4', title: 'Nutrition', color: '#FFC857', imageFilename: 'food', size: 'small' },
+    { id: '5', title: 'Emotional, Social, & Spiritual Health', color: '#6BCF7F', imageFilename: 'social', size: 'small' },
+    { id: '6', title: 'Occupational & Financial Health', color: '#4A5568', imageFilename: 'money', size: 'small' },
   ];
 
   const router = useRouter();
@@ -42,7 +45,7 @@ export function HealthForm() {
   const renderTopicCard = (topic: TopicCard, index: number) => {
     const isSelected = selectedTopic === topic.id;
     const cardHeight = topic.size === 'large' ? 180 : 180;
-    
+    const imageUrl = topic.imageFilename ? `${BACKEND_URL}/images/${encodeURIComponent(topic.imageFilename)}` : undefined;
     return (
       <TouchableOpacity
         key={topic.id}
@@ -55,9 +58,9 @@ export function HealthForm() {
         }}
         activeOpacity={0.7}
       >
-        {topic.image ? (
+        {imageUrl ? (
           <Image 
-            source={topic.image} 
+            source={{ uri: imageUrl }}
             style={{ width: 80, height: 80, marginBottom: 12 }}
             resizeMode="contain"
           />
@@ -101,7 +104,7 @@ export function HealthForm() {
       <View className="w-full px-5 py-10">
         {/* Header */}
         <View className="mb-6 items-center">
-          <Text className="text-2xl font-bold text-gray-900 mb-1 text-center">
+          <Text style={{ marginTop: 40 }} className="text-2xl font-bold text-gray-900 mb-1 text-center">
             Health Education
           </Text>
           <Text className="text-sm text-gray-500 mt-1 text-center">

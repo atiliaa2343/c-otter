@@ -1,13 +1,29 @@
 import React from "react";
+// Backend base URL for phone access
+const BACKEND_URL = 'http://10.0.0.71:4000';
 import { View, Text, Image, ScrollView } from "react-native";
 
 export function FacultyForm() {
+  // Map faculty to MongoDB image filenames
+  const facultyImages = {
+    'Larry Keen II, Ph.D': 'Larry.jpeg',
+    'Kimberly Lawrence, Ph.D.': 'Kimberly.jpeg',
+    'Arlener D. Turner, Ph.D': 'Arlener.png',
+    'Alexis Morris, M.S.': 'Alexis.jpeg',
+    'Diamond Adams': 'Diamond.jpeg',
+    'Corrina Stevenson': 'Corrina.jpeg',
+    'Ayanna Reid': 'Ayanna.jpeg',
+    'Manuelene Deigh': 'Manuelene.jpeg',
+    'Davian Clifton': 'Davian.jpeg',
+  };
+  type FacultyName = keyof typeof facultyImages;
+  const getImageUrl = (name: FacultyName) => `${BACKEND_URL}/images/${encodeURIComponent(facultyImages[name])}`;
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="w-full px-5 py-10">
         {/* Header */}
         <View className="mb-6 items-center">
-          <Text className="text-2xl font-bold text-gray-900 mb-1">
+          <Text style={{ marginTop: 40 }} className="text-2xl font-bold text-gray-900 mb-1">
             Faculty
           </Text>
           <Text className="text-sm text-gray-500 mt-1">
@@ -20,7 +36,7 @@ export function FacultyForm() {
           {/* Profile Image */}
           <View className="mr-4">
             <Image
-              source={require("../assets/images/Larry.jpeg")}
+              source={{ uri: getImageUrl('Larry Keen II, Ph.D') }}
               style={{ width: 120, height: 150, borderRadius: 10 }}
               resizeMode="cover"
             />
@@ -55,7 +71,7 @@ export function FacultyForm() {
           {/* Profile Image */}
           <View className="mr-4">
             <Image
-              source={require("../assets/images/Kimberly.jpeg")}
+              source={{ uri: getImageUrl('Kimberly Lawrence, Ph.D.') }}
               style={{ width: 120, height: 150, borderRadius: 10 }}
               resizeMode="cover"
             />

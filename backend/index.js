@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const { runAll } = require('./ingest/runAll');
+const { MongoClient, GridFSBucket } = require('mongodb');
 
 const PORT = process.env.CONTENT_API_PORT || 4000;
 const API_KEY = process.env.CONTENT_API_KEY || 'dev-content-key';
@@ -89,9 +90,69 @@ app.post('/api/ingest/run', async (req, res) => {
   }
 });
 
-const server = app.listen(PORT, () => {
-  console.log(`Mock content server listening on port ${PORT}`);
-  console.log(`API key: ${API_KEY} (set CONTENT_API_KEY to override)`);
-});
+// If MONGODB_URI is provided, connect and expose image routes.
+const MONGODB_URI = process.env.MONGODB_URI;
+let mongoClient = null;
+let gridFsBucket = null;
+
+async function startServer() {
+  if (MONGODB_URI) {
+    try {
+      mongoClient = new MongoClient(MONGODB_URI);
+      await mongoClient.connect();
+      const db = mongoClient.db();
+      gridFsBucket = new GridFSBucket(db, { bucketName: 'images' });
+      console.log('Connected to MongoDB for GridFS image serving');
+    } catch (err) {
+      console.error('Failed to connect to MongoDB:', err.message || err);
+    }
+
+    // List image filenames
+    app.get('/api/images', async (req, res) => {
+      if (!mongoClient) return res.status(500).json({ error: 'mongo not connected' });
+      try {
+        const files = await mongoClient.db().collection('images.files').find({}, { projection: { filename: 1, uploadDate: 1 } }).toArray();
+        const filenames = files.map((f) => f.filename);
+        res.json({ data: filenames });
+      } catch (err) {
+        console.error('Error listing images', err);
+        res.status(500).json({ error: 'failed' });
+      }
+    });
+
+    // Stream image by filename
+    app.get('/images/:filename', async (req, res) => {
+      const { filename } = req.params;
+      if (!gridFsBucket) return res.status(500).send('mongo not connected');
+      try {
+        // set content-type based on extension (basic)
+        const ext = path.extname(filename).toLowerCase();
+        const mime = ext === '.png' ? 'image/png' : ext === '.webp' ? 'image/webp' : 'image/jpeg';
+        res.setHeader('Content-Type', mime);
+        const downloadStream = gridFsBucket.openDownloadStreamByName(filename);
+        downloadStream.on('error', (err) => {
+          console.error('GridFS download error', err);
+          res.status(404).end();
+        });
+        downloadStream.pipe(res);
+      } catch (err) {
+        console.error('Error streaming image', err);
+        res.status(500).end();
+      }
+    });
+  }
+
+  const server = app.listen(PORT, () => {
+    console.log(`Mock content server listening on port ${PORT}`);
+    console.log(`API key: ${API_KEY} (set CONTENT_API_KEY to override)`);
+  });
+
+  process.on('SIGINT', async () => {
+    server.close(() => process.exit(0));
+    if (mongoClient) await mongoClient.close();
+  });
+}
+
+startServer();
 
 process.on('SIGINT', () => server.close(() => process.exit(0)));

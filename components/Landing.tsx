@@ -15,24 +15,22 @@ export function LandingForm() {
   };
 
   const AVATAR_SIZE = 400;
+  const BACKEND_URL = 'http://10.0.0.71:4000';
+  const avatarUrl = `${BACKEND_URL}/images/C-Otter.jpg`;
   return ( 
-
     <View className="w-full px-4 space-y-4"> 
       <View className="items-center"> 
         <View style={{ height: 30 }} />
         <Text className="text-3xl font-bold text-blue-1000 mb-2">C Otter</Text> 
-
         <View style={{ height: 70 }} />
         <Image 
           style={{width: AVATAR_SIZE, height: AVATAR_SIZE, borderRadius: AVATAR_SIZE / 2, marginBottom:12}}
-          source={require('../assets/images/C-Otter.jpg')}
+          source={{ uri: avatarUrl }}
           className="w-14 h-4 rounded-lg mb-4"
           accessibilityLabel="C-Otter"
           resizeMode="cover"
         />
       </View>
-
-      
     </View>
   );
 }

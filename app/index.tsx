@@ -6,7 +6,6 @@ import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-ic
 import { HealthForm } from "@/components/Health";
 import { FacultyForm } from "@/components/Faculty";
 import Research from "@/components/Research";
-import Pictures from "@/components/Pictures";
 
 // define supabase database types
 import { supabase } from "@/db/supabase";
@@ -16,7 +15,7 @@ import { Tables } from "@/db/database.types";
 type hours_of_operation = Tables<"hours_of_operation">
 type locations = Tables<"locations">
 
-type NavigationItem = "home" | "research" | "community" | "health" | "faculty" | "pictures";
+type NavigationItem = "home" | "research" | "community" | "health" | "faculty";
 
 export default function Index() {
   const [showSplash, setShowSplash] = useState(true);
@@ -56,7 +55,6 @@ export default function Index() {
     { id: "community" as NavigationItem, label: "Community", icon: "people", iconSet: "Ionicons" },
     { id: "health" as NavigationItem, label: "Health", icon: "medical", iconSet: "Ionicons" },
     { id: "faculty" as NavigationItem, label: "Faculty", icon: "school", iconSet: "Ionicons" },
-    { id: "pictures" as NavigationItem, label: "Pictures", icon: "images", iconSet: "Ionicons" },
   ];
 
   // Render navigation icon based on icon set
@@ -113,15 +111,7 @@ export default function Index() {
         return <HealthForm />;
       case "faculty":
         return <FacultyForm />;
-      case "pictures":
-        return (
-          // lazy-load the Pictures component to keep bundle size smaller
-          <React.Suspense fallback={<View className="items-center justify-center py-8"><Text>Loading pictures...</Text></View>}>
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-ignore */}
-            <Pictures />
-          </React.Suspense>
-        );
+      // Pictures tab removed
       default:
         return null;
     }
