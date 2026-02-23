@@ -24,7 +24,7 @@ export function LandingForm() {
         <Text className="text-3xl font-bold text-blue-1000 mb-2">C Otter</Text> 
         <View style={{ height: 70 }} />
         <Image 
-          style={{width: AVATAR_SIZE, height: AVATAR_SIZE, borderRadius: AVATAR_SIZE / 2, marginBottom:12}}
+             style={{width: 128, height: 128, borderRadius: 64, marginBottom:12}}
           source={{ uri: avatarUrl }}
           className="w-14 h-4 rounded-lg mb-4"
           accessibilityLabel="C-Otter"

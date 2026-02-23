@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../global.css";
-import { UserForm } from "@/components/UserForm";
+import { HomePage } from "@/components/HomePage";
 import { Text, View, FlatList, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { HealthForm } from "@/components/Health";
@@ -74,30 +74,7 @@ export default function Index() {
   const renderPageContent = () => {
     switch (currentPage) {
       case "home":
-        return (
-          <View className="flex-1 bg-white items-center px-4 pt-16">
-            <Text className="text-2xl font-bold text-blue-700 mb-6 text-center">
-              Healthcare Location Finder
-            </Text>
-            <Text className="text-base text-gray-600 mb-4">
-              Find healthcare services near you
-            </Text>
-            <UserForm />
-            {loading ? (
-              <Text>Loading...</Text>
-            ) : (
-              <FlatList
-                data={locations}
-                keyExtractor={(item) => item.location_id?.toString() ?? item.id?.toString() ?? ''}
-                renderItem={({ item }) => (
-                  <Text className="text-gray-800" key={item.location_id ?? item.id}>
-                    {item.created_at} , {item.open_time}
-                  </Text>
-                )}
-              />
-            )}
-          </View>
-        );
+        return <HomePage />;
       case "research":
         return <Research />;
       case "community":
@@ -137,15 +114,13 @@ export default function Index() {
         {renderPageContent()}
       </View>
 
-      {/* Bottom Navigation Bar */}
-      <View className="bg-blue-700 pb-2 pt-2 px-1 border-t border-blue-600 flex-row justify-around items-center">
+      {/* Bottom Navigation Bar - raised higher */}
+      <View style={{ backgroundColor: '#2563eb', paddingBottom: 18, paddingTop: 10, paddingHorizontal: 4, borderTopWidth: 1, borderTopColor: '#1e40af', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
         {navigationItems.map((item) => (
           <TouchableOpacity
             key={item.id}
             onPress={() => setCurrentPage(item.id)}
-            className={`items-center justify-center px-1 py-1 rounded-lg flex-1 ${
-              currentPage === item.id ? "bg-blue-500" : "bg-transparent"
-            }`}
+            style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4, paddingVertical: 6, borderRadius: 8, flex: 1, backgroundColor: currentPage === item.id ? '#3b82f6' : 'transparent' }}
             activeOpacity={0.7}
           >
             {renderIcon(
@@ -154,9 +129,7 @@ export default function Index() {
               currentPage === item.id ? "#FFFFFF" : "#E0E7FF"
             )}
             <Text
-              className={`text-[10px] mt-0.5 ${
-                currentPage === item.id ? "text-white font-semibold" : "text-blue-100"
-              }`}
+              style={{ fontSize: 11, marginTop: 2, color: currentPage === item.id ? '#fff' : '#dbeafe', fontWeight: currentPage === item.id ? '600' : '400' }}
               numberOfLines={1}
             >
               {item.label}
