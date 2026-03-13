@@ -16,16 +16,28 @@ async function uploadImages() {
     const db = client.db();
     const bucket = new GridFSBucket(db, { bucketName: 'images' });
 
+
+    // Recursively find all image files in the images directory and subdirectories
     const imagesDir = path.join(__dirname, '..', 'assets', 'images');
-    const files = await fs.promises.readdir(imagesDir);
+    async function getAllImageFiles(dir) {
+      let results = [];
+      const list = await fs.promises.readdir(dir);
+      for (const file of list) {
+        const filePath = path.join(dir, file);
+        const stat = await fs.promises.stat(filePath);
+        if (stat && stat.isDirectory()) {
+          results = results.concat(await getAllImageFiles(filePath));
+        } else if (file.match(/\.(jpe?g|png)$/i)) {
+          results.push(filePath);
+        }
+      }
+      return results;
+    }
 
-    for (const fileName of files) {
-      const filePath = path.join(imagesDir, fileName);
-      const stat = await fs.promises.stat(filePath);
-      if (!stat.isFile()) continue;
-      // Only upload image files (common extensions)
-      if (!fileName.match(/\.(jpe?g|png)$/i)) continue;
+    const imageFiles = await getAllImageFiles(imagesDir);
 
+    for (const filePath of imageFiles) {
+      const fileName = path.basename(filePath);
       // Upload with original filename
       const existing = await db.collection('images.files').findOne({ filename: fileName });
       if (!existing) {

@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const { runAll } = require('./ingest/runAll');
-const { MongoClient, GridFSBucket } = require('mongodb');
+const { MongoClient } = require('mongodb');
 
 const PORT = process.env.CONTENT_API_PORT || 4000;
 const API_KEY = process.env.CONTENT_API_KEY || 'dev-content-key';
@@ -138,6 +138,28 @@ async function startServer() {
       } catch (err) {
         console.error('Error streaming image', err);
         res.status(500).end();
+      }
+    });
+
+    // Hours of operation API
+    app.get('/api/hours', async (req, res) => {
+      try {
+        const hours = await mongoClient.db().collection('hours_of_operation').find({}).toArray();
+        res.json({ data: hours });
+      } catch (err) {
+        console.error('Error fetching hours', err);
+        res.status(500).json({ error: 'failed' });
+      }
+    });
+
+    // Locations API
+    app.get('/api/locations', async (req, res) => {
+      try {
+        const locations = await mongoClient.db().collection('locations').find({}).toArray();
+        res.json({ data: locations });
+      } catch (err) {
+        console.error('Error fetching locations', err);
+        res.status(500).json({ error: 'failed' });
       }
     });
   }

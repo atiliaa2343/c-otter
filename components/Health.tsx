@@ -1,55 +1,70 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Dimensions, Image } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from "react-native";
 import { useRouter } from 'expo-router';
-
-// Backend base URL for phone access
-const BACKEND_URL = 'http://10.0.0.71:4000';
+import { Ionicons } from "@expo/vector-icons";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { getImageUrl } from "@/constants/BackendConfig";
 
 interface TopicCard {
   id: string;
   title: string;
   color: string;
   icon?: string;
-  imageFilename?: string;
-  size: 'small' | 'large';
+  imageFilename: string;
+  description: string;
 }
 
 export function HealthForm() {
-  // no selected UI state desired — clicking navigates only
-  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
-
-  // Use available images for health topics (fallbacks if needed)
-  const topics: TopicCard[] = [
-    { id: '1', title: 'Mental Health', color: '#8B7FE8', imageFilename: 'mental.png', size: 'small' },
-    { id: '2', title: 'Fitness', color: '#FF6B6B', imageFilename: 'fitness.png', size: 'small' },
-    { id: '3', title: 'Addiction & Recovery', color: '#FFB088', imageFilename: 'drugs.png', size: 'small' },
-    { id: '4', title: 'Nutrition', color: '#FFC857', imageFilename: 'food.png', size: 'small' },
-    { id: '5', title: 'Emotional, Social, & Spiritual Health', color: '#6BCF7F', imageFilename: 'social.png', size: 'small' },
-    { id: '6', title: 'Occupational & Financial Health', color: '#4A5568', imageFilename: 'money.png', size: 'small' },
-  ];
-
-  // Use require for health images
-  // Use require for health images except fitness, which uses backend
-  const getHealthImageSource = (filename: string) => {
-    switch (filename) {
-      case 'mental.png':
-        return require('../assets/images/mental.png');
-      case 'fitness.png':
-        return require('../assets/images/fitness.png');
-      case 'drugs.png':
-        return require('../assets/images/drugs.png');
-      case 'food.png':
-        return require('../assets/images/food.png');
-      case 'social.png':
-        return require('../assets/images/social.png');
-      case 'money.png':
-        return require('../assets/images/money.png');
-      default:
-        return undefined;
-    }
-  };
-
   const router = useRouter();
+  
+  const backgroundColor = useThemeColor({}, 'background');
+  const textColor = useThemeColor({}, 'text');
+  const textSecondary = useThemeColor({}, 'textSecondary');
+
+  const topics: TopicCard[] = [
+    { 
+      id: '1', 
+      title: 'Mental Health', 
+      color: '#8B7FE8', 
+      imageFilename: 'mental.png', 
+      description: 'Mind, mood & psychological wellness',
+    },
+    { 
+      id: '2', 
+      title: 'Fitness', 
+      color: '#FF6B6B', 
+      imageFilename: 'fitness.png', 
+      description: 'Physical activity & exercise',
+    },
+    { 
+      id: '3', 
+      title: 'Addiction & Recovery', 
+      color: '#FFB088', 
+      imageFilename: 'drugs.png', 
+      description: 'Support for substance use',
+    },
+    { 
+      id: '4', 
+      title: 'Nutrition', 
+      color: '#FFC857', 
+      imageFilename: 'food.png', 
+      description: 'Healthy eating & diet',
+    },
+    { 
+      id: '5', 
+      title: 'Emotional & Social', 
+      color: '#6BCF7F', 
+      imageFilename: 'social.png', 
+      description: 'Relationships & community',
+    },
+    { 
+      id: '6', 
+      title: 'Financial Health', 
+      color: '#4A5568', 
+      imageFilename: 'money.png', 
+      description: 'Money management & career',
+    },
+  ];
 
   const slugify = (s: string) =>
     s
@@ -59,40 +74,30 @@ export function HealthForm() {
       .replace(/(^-|-$)/g, '');
 
   const handleTopicPress = (topicId: string, topicTitle: string) => {
-    // navigate to dynamic domain route (no selected UI)
     const slug = slugify(topicTitle);
     router.push(`/health/${slug}`);
   };
 
   const renderTopicCard = (topic: TopicCard, index: number) => {
-    const isSelected = selectedTopic === topic.id;
-    const cardHeight = topic.size === 'large' ? 180 : 180;
-    // Use local require for health images
-    const imageSource = topic.imageFilename ? getHealthImageSource(topic.imageFilename) : undefined;
     return (
       <TouchableOpacity
         key={topic.id}
         onPress={() => handleTopicPress(topic.id, topic.title)}
-        className={`rounded-2xl p-6 justify-end mb-3 ${isSelected ? 'opacity-80' : ''}`}
-        style={{
-          backgroundColor: topic.color,
-          height: cardHeight,
-          width: '100%',
-        }}
-        activeOpacity={0.7}
+        style={[styles.topicCard, { backgroundColor: topic.color }]}
+        activeOpacity={0.8}
       >
-        {imageSource ? (
+        <View style={styles.cardContent}>
           <Image 
-            source={imageSource}
-            style={{ width: 80, height: 80, marginBottom: 12 }}
+            source={{ uri: getImageUrl(topic.imageFilename) }}
+            style={styles.topicImage}
             resizeMode="contain"
           />
-        ) : (
-          <Text className="text-4xl mb-3">{topic.icon}</Text>
-        )}
-        <Text className="text-white font-semibold text-base">
-          {topic.title}
-        </Text>
+          <View style={styles.topicTextContainer}>
+            <Text style={styles.topicTitle}>{topic.title}</Text>
+            <Text style={styles.topicDescription}>{topic.description}</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={24} color="rgba(255,255,255,0.8)" />
+        </View>
       </TouchableOpacity>
     );
   };
@@ -111,11 +116,11 @@ export function HealthForm() {
     });
 
     return (
-      <View className="flex-row justify-between">
-        <View style={{ width: '48%' }}>
+      <View style={styles.gridContainer}>
+        <View style={styles.column}>
           {leftColumn.map((topic, index) => renderTopicCard(topic, index * 2))}
         </View>
-        <View style={{ width: '48%' }}>
+        <View style={styles.column}>
           {rightColumn.map((topic, index) => renderTopicCard(topic, index * 2 + 1))}
         </View>
       </View>
@@ -123,23 +128,76 @@ export function HealthForm() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-white">
-      <View className="w-full px-5 py-10">
-        {/* Header */}
-        <View className="mb-6 items-center">
-          <Text style={{ marginTop: 40 }} className="text-2xl font-bold text-gray-900 mb-1 text-center">
-            Health Education
-          </Text>
-          <Text className="text-sm text-gray-500 mt-1 text-center">
-            Choose a topic to learn more about resources
-          </Text>
-        </View>
-
-        {/* Topic Cards Grid */}
-        {renderStaggeredGrid()}
-
-        {/* no selected topic UI by design */}
+    <ScrollView style={[styles.container, { backgroundColor }]} contentContainerStyle={styles.contentContainer}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={[styles.title, { color: textColor }]}>Health Education</Text>
+        <Text style={[styles.subtitle, { color: textSecondary }]}>
+          Explore topics to learn about resources and support
+        </Text>
       </View>
+
+      {/* Topic Cards Grid */}
+      {renderStaggeredGrid()}
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    padding: 20,
+    paddingTop: 60,
+  },
+  header: {
+    marginBottom: 24,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  column: {
+    width: '48%',
+  },
+  topicCard: {
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    minHeight: 140,
+    justifyContent: 'center',
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  topicImage: {
+    width: 50,
+    height: 50,
+    marginRight: 8,
+  },
+  topicTextContainer: {
+    flex: 1,
+  },
+  topicTitle: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  topicDescription: {
+    color: 'rgba(255,255,255,0.85)',
+    fontSize: 12,
+    lineHeight: 16,
+  },
+});

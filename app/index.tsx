@@ -1,32 +1,79 @@
 import React, { useState, useEffect } from "react";
-import "../global.css";
+import { 
+  View, 
+  Text, 
+  Image, 
+  TouchableOpacity, 
+  ScrollView, 
+  StatusBar,
+  SafeAreaView,
+  StyleSheet
+} from "react-native";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { useAppTheme } from "@/hooks/ThemeContext";
 import { HomePage } from "@/components/HomePage";
-import { Text, View, FlatList, Image, TouchableOpacity, ScrollView } from "react-native";
-import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { HealthForm } from "@/components/Health";
 import { FacultyForm } from "@/components/Faculty";
 import Research from "@/components/Research";
+import { ContactSection } from "@/components/Contact";
+import { getImageUrl } from "@/constants/BackendConfig";
 
-// define supabase database types
-import { supabase } from "@/db/supabase";
-import { Tables } from "@/db/database.types";
+// Local logo as fallback
+const LOCAL_LOGO = require("@/assets/images/Ce Otter.png");
 
-// define database tables types
-type hours_of_operation = Tables<"hours_of_operation">
-type locations = Tables<"locations">
+// MongoDB API endpoint
+const API_BASE_URL = 'http://10.0.0.92:4000';
 
-type NavigationItem = "home" | "research" | "community" | "health" | "faculty" | "resources";
+// Types for MongoDB data
+interface HourOfOperation {
+  _id?: any;
+  location_id: number;
+  day: string;
+  open_time: string;
+  close_time: string;
+  is_open: boolean;
+}
+
+interface LocationData {
+  _id?: any;
+  name: string;
+  address: string;
+  phone: string;
+  domain: string;
+  description?: string;
+}
+
+type NavigationItem = "home" | "research" | "community" | "health" | "faculty" | "contact";
 
 export default function Index() {
+  const { theme, toggleTheme } = useAppTheme();
+  const isDarkMode = theme === 'dark';
   const [showSplash, setShowSplash] = useState(true);
   const [currentPage, setCurrentPage] = useState<NavigationItem>("home");
-  const [locations, setlocations] = useState<hours_of_operation[]>();
+  const [locations, setlocations] = useState<HourOfOperation[]>();
   const [loading, setLoading] = useState(true);
+  
+  // Try MongoDB first, fallback to local asset for header logo
+  const [headerLogoError, setHeaderLogoError] = useState(false);
+  const headerLogoSource = headerLogoError ? LOCAL_LOGO : { uri: getImageUrl('Ce Otter.png') };
+
+  // Theme colors
+  const backgroundColor = useThemeColor({}, 'background');
+  const primaryColor = useThemeColor({}, 'primary');
+  const textColor = useThemeColor({}, 'text');
+  const textSecondary = useThemeColor({}, 'textSecondary');
+  const tabBarBg = useThemeColor({}, 'tabBarBackground');
+  const tabBarBorder = useThemeColor({}, 'tabBarBorder');
+  const tabBarActive = useThemeColor({}, 'tabBarActive');
+  const tabBarInactive = useThemeColor({}, 'tabBarInactive');
+
   async function getlocations() {
     try {
-      const { data } = await supabase.from("hours_of_operation").select("*");
-      if (data) {
-        setlocations(data); 
+      const response = await fetch(`${API_BASE_URL}/api/hours`);
+      const result = await response.json();
+      if (result.data) {
+        setlocations(result.data); 
       }
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -44,29 +91,29 @@ export default function Index() {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => { // TODO: Try to use something other than useEffect here
+  useEffect(() => {
     getlocations();
   }, []);
 
-  // Navigation items configuration
+  // Navigation items configuration - replacing Resources with Contact
   const navigationItems = [
     { id: "home" as NavigationItem, label: "Home", icon: "home", iconSet: "Ionicons" },
     { id: "research" as NavigationItem, label: "Research", icon: "flask", iconSet: "Ionicons" },
     { id: "community" as NavigationItem, label: "Community", icon: "people", iconSet: "Ionicons" },
     { id: "health" as NavigationItem, label: "Health", icon: "medical", iconSet: "Ionicons" },
     { id: "faculty" as NavigationItem, label: "Faculty", icon: "school", iconSet: "Ionicons" },
-    { id: "resources" as NavigationItem, label: "Resources", icon: "lightbulb-outline", iconSet: "MaterialIcons" },
+    { id: "contact" as NavigationItem, label: "Contact", icon: "call", iconSet: "Ionicons" },
   ];
 
   // Render navigation icon based on icon set
-  const renderIcon = (iconSet: string, iconName: string, color: string) => {
-    const size = 24;
+  const renderIcon = (iconSet: string, iconName: string, isActive: boolean) => {
+    const size = 22;
+    const color = isActive ? tabBarActive : tabBarInactive;
+    
     if (iconSet === "Ionicons") {
       return <Ionicons name={iconName as any} size={size} color={color} />;
     } else if (iconSet === "MaterialIcons") {
       return <MaterialIcons name={iconName as any} size={size} color={color} />;
-    } else if (iconSet === "MaterialCommunityIcons") {
-      return <MaterialCommunityIcons name={iconName as any} size={size} color={color} />;
     }
     return null;
   };
@@ -80,70 +127,205 @@ export default function Index() {
         return <Research />;
       case "community":
         return (
-          <View className="flex-1 items-center justify-center">
-            <Text className="text-2xl font-bold text-gray-800">Community Service</Text>
-            <Text className="text-gray-600 mt-2">Community service content coming soon</Text>
-          </View>
+          <ScrollView style={{ flex: 1, backgroundColor }} contentContainerStyle={{ padding: 20, paddingTop: 100 }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <View style={[styles.emptyStateIcon, { backgroundColor: `${primaryColor}15` }]}>
+                <Ionicons name="people" size={48} color={primaryColor} />
+              </View>
+              <Text style={[styles.emptyStateTitle, { color: textColor }]}>Community</Text>
+              <Text style={[styles.emptyStateSubtitle, { color: textSecondary }]}>
+                Connect with others and build meaningful relationships
+              </Text>
+              <TouchableOpacity 
+                style={[styles.comingSoonButton, { backgroundColor: primaryColor }]}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.comingSoonButtonText}>Coming Soon</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         );
       case "health":
         return <HealthForm />;
       case "faculty":
         return <FacultyForm />;
-      case "resources":
-        return (
-          <View className="flex-1 items-center justify-center">
-            <Text className="text-2xl font-bold text-gray-800">Resources</Text>
-            <Text className="text-gray-600 mt-2">Resource content coming soon</Text>
-          </View>
-        );
+      case "contact":
+        return <ContactSection />;
       default:
         return null;
     }
   };
 
+  // Toggle dark mode
+  const handleToggleTheme = () => {
+    toggleTheme();
+  };
+
   // Show splash screen
   if (showSplash) {
     return (
-      <View className="flex-1 bg-white items-center justify-center">
+      <View style={{ flex: 1, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center' }}>
         <Image
-          source={require("@/assets/images/C-Otter.jpg")}
-          style={{ width: 500, height: 500 }}
+          source={require("@/assets/images/Ce Otter.png")}
+          style={{ width: 300, height: 300, borderRadius: 150, backgroundColor: 'transparent' }}
           resizeMode="contain"
         />
+        <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold', marginTop: 24 }}>CE - OTTER</Text>
+        <Text style={{ color: '#bfdbfe', fontSize: 14, marginTop: 8 }}>Connecting Campus Community</Text>
       </View>
     );
   }
 
   return (
-    <View className="flex-1 bg-white">
-      {/* Page Content (don't wrap children in a plain ScrollView to avoid nested VirtualizedLists) */}
-      <View className="flex-1">
+    <View style={{ flex: 1, backgroundColor }}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      
+      {/* Modern Header */}
+      <SafeAreaView style={{ backgroundColor: tabBarBg }}>
+        <View style={[styles.header, { backgroundColor: tabBarBg, borderBottomColor: tabBarBorder }]}>
+          <View style={styles.headerLeft}>
+            <Image
+              source={headerLogoSource}
+              style={{ width: 36, height: 36, borderRadius: 18 }}
+              onError={() => setHeaderLogoError(true)}
+            />
+            <Text style={[styles.headerTitle, { color: textColor }]}>CE - OTTER</Text>
+          </View>
+          
+          <View style={styles.headerRight}>
+            {/* Dark Mode Toggle */}
+            <TouchableOpacity 
+              onPress={handleToggleTheme}
+              style={[styles.themeToggle, { backgroundColor: isDarkMode ? '#374151' : '#f3f4f6' }]}
+              activeOpacity={0.7}
+            >
+              <Ionicons 
+                name={isDarkMode ? "moon" : "sunny"} 
+                size={20} 
+                color={isDarkMode ? '#fbbf24' : '#f59e0b'} 
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+
+      {/* Page Content */}
+      <View style={{ flex: 1 }}>
         {renderPageContent()}
       </View>
 
-      {/* Bottom Navigation Bar - raised higher */}
-      <View style={{ backgroundColor: '#2563eb', paddingBottom: 18, paddingTop: 10, paddingHorizontal: 4, borderTopWidth: 1, borderTopColor: '#1e40af', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-        {navigationItems.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            onPress={() => setCurrentPage(item.id)}
-            style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4, paddingVertical: 6, borderRadius: 8, flex: 1, backgroundColor: currentPage === item.id ? '#3b82f6' : 'transparent' }}
-            activeOpacity={0.7}
-          >
-            {renderIcon(
-              item.iconSet,
-              item.icon,
-              currentPage === item.id ? "#FFFFFF" : "#E0E7FF"
-            )}
-            <Text
-              style={{ fontSize: 11, marginTop: 2, color: currentPage === item.id ? '#fff' : '#dbeafe', fontWeight: currentPage === item.id ? '600' : '400' }}
-              numberOfLines={1}
-            >
-              {item.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      {/* Modern Bottom Navigation Bar */}
+      <SafeAreaView style={{ backgroundColor: tabBarBg }}>
+        <View style={[styles.tabBar, { backgroundColor: tabBarBg, borderTopColor: tabBarBorder }]}>
+          {navigationItems.map((item) => {
+            const isActive = currentPage === item.id;
+            return (
+              <TouchableOpacity
+                key={item.id}
+                onPress={() => setCurrentPage(item.id)}
+                style={[styles.tabItem, isActive && styles.tabItemActive]}
+                activeOpacity={0.7}
+              >
+                {renderIcon(item.iconSet, item.icon, isActive)}
+                <Text
+                  style={[
+                    styles.tabLabel,
+                    { color: isActive ? tabBarActive : tabBarInactive },
+                    isActive && styles.tabLabelActive
+                  ]}
+                  numberOfLines={1}
+                >
+                  {item.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </SafeAreaView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center' as const,
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center' as const,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginLeft: 10,
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center' as const,
+  },
+  themeToggle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+  },
+  tabBar: {
+    flexDirection: 'row',
+    paddingVertical: 8,
+    paddingHorizontal: 4,
+    borderTopWidth: 1,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    paddingVertical: 4,
+  },
+  tabItemActive: {
+    backgroundColor: 'transparent',
+  },
+  tabLabel: {
+    fontSize: 11,
+    marginTop: 4,
+    fontWeight: '400' as const,
+  },
+  tabLabelActive: {
+    fontWeight: '600' as const,
+  },
+  // Empty state styles
+  emptyStateIcon: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+    marginBottom: 20,
+  },
+  emptyStateTitle: {
+    fontSize: 24,
+    fontWeight: '700' as const,
+    marginBottom: 8,
+  },
+  emptyStateSubtitle: {
+    fontSize: 16,
+    textAlign: 'center' as const,
+    marginBottom: 24,
+    paddingHorizontal: 32,
+  },
+  comingSoonButton: {
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 24,
+  },
+  comingSoonButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600' as const,
+  },
+});
