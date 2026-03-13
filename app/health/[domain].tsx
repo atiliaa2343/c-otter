@@ -1,62 +1,94 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, RefreshControl, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, RefreshControl, Modal, ActivityIndicator, Image } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { useLatestContent } from '@/hooks/useLatestContent';
-import { ContentCard } from '@/components/ContentCard';
-import { WebView } from 'react-native-webview';
+
+const BACKEND_URL = process.env.EXPO_PUBLIC_CONTENT_API || '';
+const fitnessApps = [
+  {
+    title: 'Nike Training Club',
+    image: require('../../assets/images/fitness/nike-training-club.png'),
+  },
+  {
+    title: 'Strong Workout Tracker Gym Log',
+    image: require('../../assets/images/fitness/strong-workout-tracker.png'),
+  },
+  {
+    title: 'Gymshark Training and Fitness',
+    image: require('../../assets/images/fitness/gymshark.png'),
+  },
+  {
+    title: 'FitOn',
+    image: require('../../assets/images/fitness/Fiton.png'),
+  },
+  {
+    title: 'Burn.Fit',
+    image: require('../../assets/images/fitness/BurnFit.png'),
+  },
+  {
+    title: 'Jefit',
+    image: require('../../assets/images/fitness/jefit.png'),
+  },
+  {
+    title: 'Workout for Women',
+    image: require('../../assets/images/fitness/workoutforwomen.png'),
+  },
+  {
+    title: 'Fitness Buddy Home Gym Workout',
+    image: require('../../assets/images/fitness/fitness-buddy-home-gym.png'),
+  },
+  {
+    title: '30 Day Fitness at Home',
+    image: require('../../assets/images/fitness/30-day-fitness.png'),
+  },
+  {
+    title: 'Freeletics: HIIT Fitness Coach',
+    image: require('../../assets/images/fitness/freeletics.jpg'),
+  },
+];
 
 export default function DomainPage() {
   const params = useLocalSearchParams() as { domain?: string };
   const domain = params.domain ?? 'general';
-  const { data, loading, error, refresh } = useLatestContent(domain);
-  const [selected, setSelected] = useState<any | null>(null);
-
-  const apps = (data || []).filter((d: any) => String(d.type).toLowerCase() === 'app');
-  const articles = (data || []).filter((d: any) => String(d.type).toLowerCase() !== 'app');
+  const showFitnessApps = domain === 'fitness';
 
   return (
     <>
       <Stack.Screen options={{ title: '', headerBackTitle: 'Categories', headerShown: true }} />
       <View className="flex-1 bg-white p-4">
 
-      {error ? <Text className="text-red-600 text-center">{error}</Text> : null}
-
       <Text className="text-lg font-semibold mt-2 mb-1 text-center">Latest apps</Text>
       <FlatList
-        data={apps}
-        keyExtractor={(item) => item._id ?? item.url ?? item.title}
+        data={fitnessApps}
+        keyExtractor={(item) => item.title}
         renderItem={({ item }) => (
-          <ContentCard item={item} onPress={(it) => setSelected(it)} />
-        )}
-        ListEmptyComponent={() => (
-          <View className="items-center mt-2">
-            {loading ? <ActivityIndicator /> : <Text className="text-gray-500">No apps found</Text>}
+          <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#f8fafc', borderRadius: 12, padding: 12, marginBottom: 12 }}>
+            <Image
+              source={item.image}
+              style={{ width: 48, height: 48, marginRight: 16, borderRadius: 8, backgroundColor: '#fff' }}
+              resizeMode="contain"
+            />
+            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.title}</Text>
           </View>
+        )}
+        ListFooterComponent={() => (
+          <>
+            <Text className="text-lg font-semibold mt-4 mb-1 text-center">Latest Articles</Text>
+            <FlatList
+              data={[] as { title: string }[]} // Replace with your articles array
+              keyExtractor={(item, idx) => item.title || String(idx)}
+              renderItem={({ item }) => (
+                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#f8fafc', borderRadius: 12, padding: 12, marginBottom: 12 }}>
+                  {/* If you have article images, add <Image ... /> here */}
+                  <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.title}</Text>
+                </View>
+              )}
+              ListEmptyComponent={() => (
+                <Text style={{ textAlign: 'center', color: '#888', marginVertical: 8 }}>No articles found</Text>
+              )}
+            />
+          </>
         )}
       />
-
-  <Text className="text-lg font-semibold mt-4 mb-1 text-center">Articles</Text>
-      <FlatList
-        data={articles}
-        keyExtractor={(item) => item._id ?? item.url ?? item.title}
-        renderItem={({ item }) => (
-          <ContentCard item={item} onPress={(it) => setSelected(it)} />
-        )}
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={() => refresh(true)} />}
-        ListEmptyComponent={() => (
-          <View className="items-center mt-2">
-            {loading ? <ActivityIndicator /> : <Text className="text-gray-500">No articles found</Text>}
-          </View>
-        )}
-      />
-
-      <Modal visible={!!selected} onRequestClose={() => setSelected(null)}>
-        {selected ? (
-          <View className="flex-1">
-            <WebView source={{ uri: selected.url }} startInLoadingState />
-          </View>
-        ) : null}
-      </Modal>
     </View>
     </>
   );

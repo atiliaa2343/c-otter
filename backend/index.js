@@ -140,6 +140,28 @@ async function startServer() {
         res.status(500).end();
       }
     });
+
+    // Hours of operation API
+    app.get('/api/hours', async (req, res) => {
+      try {
+        const hours = await mongoClient.db().collection('hours_of_operation').find({}).toArray();
+        res.json({ data: hours });
+      } catch (err) {
+        console.error('Error fetching hours', err);
+        res.status(500).json({ error: 'failed' });
+      }
+    });
+
+    // Locations API
+    app.get('/api/locations', async (req, res) => {
+      try {
+        const locations = await mongoClient.db().collection('locations').find({}).toArray();
+        res.json({ data: locations });
+      } catch (err) {
+        console.error('Error fetching locations', err);
+        res.status(500).json({ error: 'failed' });
+      }
+    });
   }
 
   const server = app.listen(PORT, () => {
