@@ -5,6 +5,7 @@ import { View, Text, Image, ScrollView } from "react-native";
 
 export function FacultyForm() {
   // Map faculty to MongoDB image filenames
+  // Use available images for all faculty (fallbacks if needed)
   const facultyImages = {
     'Larry Keen II, Ph.D': 'Larry.jpeg',
     'Kimberly Lawrence, Ph.D.': 'Kimberly.jpeg',
@@ -15,9 +16,21 @@ export function FacultyForm() {
     'Ayanna Reid': 'Ayanna.jpeg',
     'Manuelene Deigh': 'Manuelene.jpeg',
     'Davian Clifton': 'Davian.jpeg',
+    // Fallbacks for any missing: use Tony.jpeg or C-Otter.jpg
+    'Default': 'Tony.jpeg',
   };
   type FacultyName = keyof typeof facultyImages;
-  const getImageUrl = (name: FacultyName) => `${BACKEND_URL}/images/${encodeURIComponent(facultyImages[name])}`;
+  // Use require for Larry and Kimberly, backend for others
+  const getImageSource = (name: FacultyName) => {
+    if (name === 'Larry Keen II, Ph.D') {
+      return require('../assets/images/Larry.jpeg');
+    }
+    if (name === 'Kimberly Lawrence, Ph.D.') {
+      return require('../assets/images/Kimberly.jpeg');
+    }
+    // fallback to backend for others
+    return { uri: `${BACKEND_URL}/images/${encodeURIComponent(facultyImages[name] || facultyImages['Default'])}` };
+  };
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="w-full px-5 py-10">
@@ -36,7 +49,7 @@ export function FacultyForm() {
           {/* Profile Image */}
           <View className="mr-4">
             <Image
-              source={{ uri: getImageUrl('Larry Keen II, Ph.D') }}
+              source={getImageSource('Larry Keen II, Ph.D')}
               style={{ width: 120, height: 150, borderRadius: 10 }}
               resizeMode="cover"
             />
@@ -71,7 +84,7 @@ export function FacultyForm() {
           {/* Profile Image */}
           <View className="mr-4">
             <Image
-              source={{ uri: getImageUrl('Kimberly Lawrence, Ph.D.') }}
+              source={getImageSource('Kimberly Lawrence, Ph.D.')}
               style={{ width: 120, height: 150, borderRadius: 10 }}
               resizeMode="cover"
             />

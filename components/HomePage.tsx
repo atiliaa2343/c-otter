@@ -40,27 +40,25 @@ export function HomePage() {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ backgroundColor: "#fff" }}>
       {/* AI Search bubble stays at the top */}
       <View style={{ position: "absolute", top: 64, right: 24, flexDirection: "row", alignItems: "center", zIndex: 10 }}>
-        <Ionicons name="search" size={32} color="#2563eb" style={{ marginRight: 14 }} />
+        <Ionicons name="search" size={22} color="#2563eb" style={{ marginRight: 8 }} />
         <TouchableOpacity
-          style={[styles.aiBubble, { paddingVertical: 12, paddingHorizontal: 22 }]}
+          style={[styles.aiBubble, { paddingVertical: 7, paddingHorizontal: 14 }]}
           onPress={() => router.push("/aisearch")}
           activeOpacity={0.8}
         >
-          <Text style={[styles.aiText, { fontSize: 20 }]}>AI search</Text>
+          <Text style={[styles.aiText, { fontSize: 14 }]}>AI search</Text>
         </TouchableOpacity>
       </View>
 
       {/* All other content shifted further down */}
       <View style={{ marginTop: 180 }}>
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginBottom: 40 }}>
-          <Image source={{ uri: logoUrl }} style={styles.logoSmall} resizeMode="cover" />
           <View style={{ alignItems: "center", flex: 1 }}>
             <Text style={styles.title}>C-Otter</Text>
             <Text style={styles.subtitle}>
               (Connection, Outreach, Transformation, Teaching, Empowerment & Resources)
             </Text>
           </View>
-          <Image source={{ uri: logoUrl }} style={styles.logoSmall} resizeMode="cover" />
         </View>
 
         {/* Mission Section */}

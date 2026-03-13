@@ -18,14 +18,36 @@ export function HealthForm() {
   // no selected UI state desired — clicking navigates only
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
+  // Use available images for health topics (fallbacks if needed)
   const topics: TopicCard[] = [
-    { id: '1', title: 'Mental Health', color: '#8B7FE8', imageFilename: 'mental', size: 'small' },
-    { id: '2', title: 'Fitness', color: '#FF6B6B', imageFilename: 'fitness', size: 'small' },
-    { id: '3', title: 'Addiction & Recovery', color: '#FFB088', imageFilename: 'drugs', size: 'small' },
-    { id: '4', title: 'Nutrition', color: '#FFC857', imageFilename: 'food', size: 'small' },
-    { id: '5', title: 'Emotional, Social, & Spiritual Health', color: '#6BCF7F', imageFilename: 'social', size: 'small' },
-    { id: '6', title: 'Occupational & Financial Health', color: '#4A5568', imageFilename: 'money', size: 'small' },
+    { id: '1', title: 'Mental Health', color: '#8B7FE8', imageFilename: 'mental.png', size: 'small' },
+    { id: '2', title: 'Fitness', color: '#FF6B6B', imageFilename: 'fitness.png', size: 'small' },
+    { id: '3', title: 'Addiction & Recovery', color: '#FFB088', imageFilename: 'drugs.png', size: 'small' },
+    { id: '4', title: 'Nutrition', color: '#FFC857', imageFilename: 'food.png', size: 'small' },
+    { id: '5', title: 'Emotional, Social, & Spiritual Health', color: '#6BCF7F', imageFilename: 'social.png', size: 'small' },
+    { id: '6', title: 'Occupational & Financial Health', color: '#4A5568', imageFilename: 'money.png', size: 'small' },
   ];
+
+  // Use require for health images
+  // Use require for health images except fitness, which uses backend
+  const getHealthImageSource = (filename: string) => {
+    switch (filename) {
+      case 'mental.png':
+        return require('../assets/images/mental.png');
+      case 'fitness.png':
+        return require('../assets/images/fitness.png');
+      case 'drugs.png':
+        return require('../assets/images/drugs.png');
+      case 'food.png':
+        return require('../assets/images/food.png');
+      case 'social.png':
+        return require('../assets/images/social.png');
+      case 'money.png':
+        return require('../assets/images/money.png');
+      default:
+        return undefined;
+    }
+  };
 
   const router = useRouter();
 
@@ -45,7 +67,8 @@ export function HealthForm() {
   const renderTopicCard = (topic: TopicCard, index: number) => {
     const isSelected = selectedTopic === topic.id;
     const cardHeight = topic.size === 'large' ? 180 : 180;
-    const imageUrl = topic.imageFilename ? `${BACKEND_URL}/images/${encodeURIComponent(topic.imageFilename)}` : undefined;
+    // Use local require for health images
+    const imageSource = topic.imageFilename ? getHealthImageSource(topic.imageFilename) : undefined;
     return (
       <TouchableOpacity
         key={topic.id}
@@ -58,9 +81,9 @@ export function HealthForm() {
         }}
         activeOpacity={0.7}
       >
-        {imageUrl ? (
+        {imageSource ? (
           <Image 
-            source={{ uri: imageUrl }}
+            source={imageSource}
             style={{ width: 80, height: 80, marginBottom: 12 }}
             resizeMode="contain"
           />

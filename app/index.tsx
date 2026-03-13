@@ -15,7 +15,7 @@ import { Tables } from "@/db/database.types";
 type hours_of_operation = Tables<"hours_of_operation">
 type locations = Tables<"locations">
 
-type NavigationItem = "home" | "research" | "community" | "health" | "faculty";
+type NavigationItem = "home" | "research" | "community" | "health" | "faculty" | "resources";
 
 export default function Index() {
   const [showSplash, setShowSplash] = useState(true);
@@ -55,6 +55,7 @@ export default function Index() {
     { id: "community" as NavigationItem, label: "Community", icon: "people", iconSet: "Ionicons" },
     { id: "health" as NavigationItem, label: "Health", icon: "medical", iconSet: "Ionicons" },
     { id: "faculty" as NavigationItem, label: "Faculty", icon: "school", iconSet: "Ionicons" },
+    { id: "resources" as NavigationItem, label: "Resources", icon: "lightbulb-outline", iconSet: "MaterialIcons" },
   ];
 
   // Render navigation icon based on icon set
@@ -88,7 +89,13 @@ export default function Index() {
         return <HealthForm />;
       case "faculty":
         return <FacultyForm />;
-      // Pictures tab removed
+      case "resources":
+        return (
+          <View className="flex-1 items-center justify-center">
+            <Text className="text-2xl font-bold text-gray-800">Resources</Text>
+            <Text className="text-gray-600 mt-2">Resource content coming soon</Text>
+          </View>
+        );
       default:
         return null;
     }
