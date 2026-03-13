@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const { runAll } = require('./ingest/runAll');
-const { MongoClient } = require('mongodb');
+const { MongoClient, GridFSBucket } = require('mongodb');
 
 const PORT = process.env.CONTENT_API_PORT || 4000;
 const API_KEY = process.env.CONTENT_API_KEY || 'dev-content-key';
