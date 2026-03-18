@@ -17,6 +17,7 @@ import { HealthForm } from "@/components/Health";
 import { FacultyForm } from "@/components/Faculty";
 import Research from "@/components/Research";
 import { ContactSection } from "@/components/Contact";
+import { CommunityPage } from "@/components/Community";
 import { getImageUrl } from "@/constants/BackendConfig";
 
 // Local logo as fallback
@@ -127,23 +128,7 @@ export default function Index() {
         return <Research />;
       case "community":
         return (
-          <ScrollView style={{ flex: 1, backgroundColor }} contentContainerStyle={{ padding: 20, paddingTop: 100 }}>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <View style={[styles.emptyStateIcon, { backgroundColor: `${primaryColor}15` }]}>
-                <Ionicons name="people" size={48} color={primaryColor} />
-              </View>
-              <Text style={[styles.emptyStateTitle, { color: textColor }]}>Community</Text>
-              <Text style={[styles.emptyStateSubtitle, { color: textSecondary }]}>
-                Connect with others and build meaningful relationships
-              </Text>
-              <TouchableOpacity 
-                style={[styles.comingSoonButton, { backgroundColor: primaryColor }]}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.comingSoonButtonText}>Coming Soon</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+          <CommunityPage />
         );
       case "health":
         return <HealthForm />;
