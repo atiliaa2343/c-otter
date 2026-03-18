@@ -5,14 +5,24 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const { runAll } = require('./ingest/runAll');
-const { MongoClient, GridFSBucket } = require('mongodb');
+const { MongoClient, GridFSBucket, ObjectId } = require('mongodb');
 
 const PORT = process.env.CONTENT_API_PORT || 4000;
 const API_KEY = process.env.CONTENT_API_KEY || 'dev-content-key';
+const ADMIN_API_KEY = process.env.ADMIN_API_KEY || 'admin-secret-key';
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+// Middleware for admin authentication
+function requireAdminAuth(req, res, next) {
+  const key = req.header('x-admin-key') || (req.header('authorization') || '').replace(/^Bearer\s+/i, '');
+  if (!key || key !== ADMIN_API_KEY) {
+    return res.status(401).json({ error: 'unauthorized' });
+  }
+  next();
+}
 
 const SAMPLE_PATH = path.join(__dirname, 'sample_data.json');
 
@@ -159,6 +169,90 @@ async function startServer() {
         res.json({ data: locations });
       } catch (err) {
         console.error('Error fetching locations', err);
+        res.status(500).json({ error: 'failed' });
+      }
+    });
+
+    // ============ ADMIN CRUD ENDPOINTS ============
+
+    // Helper function to get collection name from content type
+    function getCollectionName(type) {
+      const collections = {
+        'events': 'events',
+        'publications': 'publications',
+        'community': 'community_partners',
+        'financial': 'financial_assistance',
+        'tutoring': 'tutoring',
+        'campus': 'campus_services',
+        'health': 'health_resources',
+        'faculty': 'faculty',
+        'contact': 'contact_info',
+        'homepage': 'homepage_content',
+        'research': 'research'
+      };
+      return collections[type] || 'generic_content';
+    }
+
+    // GET - List all items of a type
+    app.get('/api/admin/:type', async (req, res) => {
+      try {
+        const { type } = req.params;
+        const collectionName = getCollectionName(type);
+        const items = await mongoClient.db().collection(collectionName).find({}).toArray();
+        res.json({ data: items });
+      } catch (err) {
+        console.error('Error fetching items', err);
+        res.status(500).json({ error: 'failed' });
+      }
+    });
+
+    // POST - Create new item
+    app.post('/api/admin/:type', async (req, res) => {
+      try {
+        const { type } = req.params;
+        const collectionName = getCollectionName(type);
+        const item = req.body;
+        item.created_at = new Date().toISOString();
+        item.updated_at = new Date().toISOString();
+        
+        const result = await mongoClient.db().collection(collectionName).insertOne(item);
+        res.json({ success: true, id: result.insertedId, data: item });
+      } catch (err) {
+        console.error('Error creating item', err);
+        res.status(500).json({ error: 'failed' });
+      }
+    });
+
+    // PUT - Update existing item
+    app.put('/api/admin/:type/:id', async (req, res) => {
+      try {
+        const { type, id } = req.params;
+        const collectionName = getCollectionName(type);
+        const updates = req.body;
+        updates.updated_at = new Date().toISOString();
+        
+        const result = await mongoClient.db().collection(collectionName).findOneAndUpdate(
+          { _id: new ObjectId(id) },
+          { $set: updates },
+          { returnDocument: 'after' }
+        );
+        res.json({ success: true, data: result });
+      } catch (err) {
+        console.error('Error updating item', err);
+        res.status(500).json({ error: 'failed' });
+      }
+    });
+
+    // DELETE - Remove item
+    app.delete('/api/admin/:type/:id', async (req, res) => {
+      try {
+        const { type, id } = req.params;
+        const collectionName = getCollectionName(type);
+        
+        await mongoClient.db().collection(collectionName).deleteOne({ _id: new ObjectId(id) });
+        res.json({ success: true });
+      } catch (err) {
+        console.error('Error deleting item', err);
         res.status(500).json({ error: 'failed' });
       }
     });

@@ -19,6 +19,9 @@ import Research from "@/components/Research";
 import { ContactSection } from "@/components/Contact";
 import { CommunityPage } from "@/components/Community";
 import { getImageUrl } from "@/constants/BackendConfig";
+import { useAdminAuth } from "@/app/admin/context/AdminAuthContext";
+import AdminDashboard from "@/app/admin/dashboard";
+import AdminLogin from "@/app/admin/login";
 
 // Local logo as fallback
 const LOCAL_LOGO = require("@/assets/images/Ce Otter.png");
@@ -54,6 +57,8 @@ export default function Index() {
   const [currentPage, setCurrentPage] = useState<NavigationItem>("home");
   const [locations, setlocations] = useState<HourOfOperation[]>();
   const [loading, setLoading] = useState(true);
+  const { isAdminAuthenticated } = useAdminAuth();
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
   
   // Try MongoDB first, fallback to local asset for header logo
   const [headerLogoError, setHeaderLogoError] = useState(false);
@@ -146,6 +151,24 @@ export default function Index() {
     toggleTheme();
   };
 
+  // Handle admin button press
+  const handleAdminPress = () => {
+    if (isAdminAuthenticated) {
+      setShowAdminPanel(true);
+    } else {
+      // Navigate to admin login
+      setShowAdminPanel(true);
+    }
+  };
+
+  // Render admin panel or regular app content
+  const renderContent = () => {
+    if (showAdminPanel) {
+      return null; // Will render AdminDashboard
+    }
+    return renderPageContent();
+  };
+
   // Show splash screen
   if (showSplash) {
     return (
@@ -174,11 +197,44 @@ export default function Index() {
               style={{ width: 36, height: 36, borderRadius: 18 }}
               onError={() => setHeaderLogoError(true)}
             />
-            <Text style={[styles.headerTitle, { color: textColor }]}>CE - OTTER</Text>
+            <Text style={[styles.headerTitle, { color: textColor }]}>
+              {showAdminPanel ? 'Admin Panel' : 'CE - OTTER'}
+            </Text>
           </View>
           
           <View style={styles.headerRight}>
+            {/* Close Admin Panel Button */}
+            {showAdminPanel && (
+              <TouchableOpacity 
+                onPress={() => setShowAdminPanel(false)}
+                style={[styles.adminButton, { backgroundColor: '#ef4444' }]}
+                activeOpacity={0.7}
+              >
+                <Ionicons 
+                  name="close" 
+                  size={20} 
+                  color="#fff" 
+                />
+              </TouchableOpacity>
+            )}
+
+            {/* Admin Button */}
+            {!showAdminPanel && (
+            <TouchableOpacity 
+              onPress={handleAdminPress}
+              style={[styles.adminButton, { backgroundColor: isAdminAuthenticated ? '#10b981' : isDarkMode ? '#374151' : '#f3f4f6' }]}
+              activeOpacity={0.7}
+            >
+              <Ionicons 
+                name={isAdminAuthenticated ? "shield-checkmark" : "shield-outline"} 
+                size={20} 
+                color={isAdminAuthenticated ? '#fff' : isDarkMode ? '#fbbf24' : '#f59e0b'} 
+              />
+            </TouchableOpacity>
+            )}
+
             {/* Dark Mode Toggle */}
+            {!showAdminPanel && (
             <TouchableOpacity 
               onPress={handleToggleTheme}
               style={[styles.themeToggle, { backgroundColor: isDarkMode ? '#374151' : '#f3f4f6' }]}
@@ -190,16 +246,31 @@ export default function Index() {
                 color={isDarkMode ? '#fbbf24' : '#f59e0b'} 
               />
             </TouchableOpacity>
+            )}
           </View>
         </View>
       </SafeAreaView>
 
       {/* Page Content */}
       <View style={{ flex: 1 }}>
-        {renderPageContent()}
+        {showAdminPanel ? (
+          isAdminAuthenticated ? (
+            <AdminDashboard />
+          ) : (
+            <AdminLogin 
+              onBack={() => setShowAdminPanel(false)}
+              onLoginSuccess={() => {
+                // Stay on admin panel after login - dashboard will show
+              }}
+            />
+          )
+        ) : (
+          renderPageContent()
+        )}
       </View>
 
       {/* Modern Bottom Navigation Bar */}
+      {!showAdminPanel && (
       <SafeAreaView style={{ backgroundColor: tabBarBg }}>
         <View style={[styles.tabBar, { backgroundColor: tabBarBg, borderTopColor: tabBarBorder }]}>
           {navigationItems.map((item) => {
@@ -227,6 +298,7 @@ export default function Index() {
           })}
         </View>
       </SafeAreaView>
+      )}
     </View>
   );
 }
@@ -254,6 +326,14 @@ const styles = StyleSheet.create({
     alignItems: 'center' as const,
   },
   themeToggle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+    marginLeft: 8,
+  },
+  adminButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
