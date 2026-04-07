@@ -13,9 +13,10 @@
     "body-parser": "^2.2.0",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
-    "dotenv": "^16.1.4",
+    "dotenv": "^16.6.1",
     "express": "^5.1.0",
-    "rss-parser": "^3.12.0",
-    "mongodb": "^5.7.0"
+    "mongodb": "^5.9.2",
+    "openai": "^6.33.0",
+    "rss-parser": "^3.12.0"
   }
 }
