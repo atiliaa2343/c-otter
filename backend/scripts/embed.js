@@ -8,7 +8,7 @@ dotenv.config();
 const client = new MongoClient(process.env.MONGODB_URI);
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const data = JSON.parse(fs.readFileSync("./sample_data.json", "utf-8"));
+const data = JSON.parse(fs.readFileSync("./real_data.json", "utf-8"));
 
 async function run() {
   try {
@@ -19,20 +19,20 @@ async function run() {
     const collection = db.collection("practices");
 
     for (const practice of data) {
-      console.log("Embedding:", practice.title);
+  console.log("Embedding:", practice.name);
 
-      const response = await openai.embeddings.create({
-        model: "text-embedding-3-small",
-        input: `${practice.title} ${practice.summary}`,
-      });
+  const response = await openai.embeddings.create({
+    model: "text-embedding-3-small",
+    input: `${practice.name} ${practice.description || ""}`,
+  });
 
-      const embedding = response.data[0].embedding;
+  const embedding = response.data[0].embedding;
 
-      await collection.insertOne({
-        ...practice,
-        embedding,
-      });
-    }
+  await collection.insertOne({
+    ...practice,
+    embedding,
+  });
+}
 
     console.log("DONE");
     process.exit();

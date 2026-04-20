@@ -38,15 +38,19 @@ router.get("/search", async (req, res) => {
 
     const practices = await collection.find().toArray();
 
-    const results = practices.map((p) => ({
-  title: p.title,
-  summary: p.summary,
-  score: cosineSimilarity(queryEmbedding, p.embedding),
-}));
+    const results = practices
+  .map((p) => ({
+    name: p.name,
+    description: p.description,
+    address: p.address,
+    phone: p.phone,
+    score: cosineSimilarity(queryEmbedding, p.embedding),
+  }))
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 5);
 
-    results.sort((a, b) => b.score - a.score);
 
-    res.json(results.slice(0, 3));
+    res.json(results);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
