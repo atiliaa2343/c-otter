@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const searchRoutes = require("./routes/search.js");
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
@@ -56,6 +57,8 @@ app.get('/api/content/search', (req, res) => {
   items = items.slice(0, 100);
   res.json({ data: items });
 });
+
+app.use("/api", searchRoutes);
 
 // Protected manual ingest run - basic API key check
 app.post('/api/ingest/run', async (req, res) => {
