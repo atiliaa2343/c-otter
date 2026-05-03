@@ -2,14 +2,13 @@ import React from "react";
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { getImageUrl } from "@/constants/BackendConfig";
 
 interface FacultyMember {
   name: string;
   title: string;
   email: string;
   phone: string;
-  imageFilename: string;
+  imageSource: any;
   isDirector?: boolean;
 }
 
@@ -27,7 +26,7 @@ export function FacultyForm() {
       title: 'Associate Professor in Psychology;\nPNIRD Lab Director',
       email: 'LKeen@vsu.edu',
       phone: '(804) 524-5523',
-      imageFilename: 'Larry.jpeg',
+      imageSource: require('@/assets/images/Larry.jpeg'),
       isDirector: true,
     },
     {
@@ -35,56 +34,56 @@ export function FacultyForm() {
       title: 'Associate Professor in Psychology',
       email: 'KLawrence@vsu.edu',
       phone: '(804) 524-5447',
-      imageFilename: 'Kimberly.jpeg',
+      imageSource: require('@/assets/images/Kimberly.jpeg'),
     },
     {
       name: 'Arlener D. Turner, Ph.D',
       title: 'Associate Professor\nDepartment of Psychiatry and Behavioral Sciences\nUniversity of Miami',
       email: 'adanielleturner@gmail.com',
       phone: '(773) 339-1797',
-      imageFilename: 'Arlener.png',
+      imageSource: require('@/assets/images/Arlener.png'),
     },
     {
       name: 'Alexis Morris, M.S.',
       title: 'Graduate Research Assistant',
       email: '',
       phone: '',
-      imageFilename: 'Alexis.jpeg',
+      imageSource: require('@/assets/images/Alexis.jpeg'),
     },
     {
       name: 'Diamond Adams',
       title: 'Graduate Research Assistant',
       email: '',
       phone: '',
-      imageFilename: 'Diamond.jpeg',
+      imageSource: require('@/assets/images/Diamond.jpeg'),
     },
     {
       name: 'Corrina Stevenson',
       title: 'Graduate Research Assistant',
       email: '',
       phone: '',
-      imageFilename: 'Corrina.jpeg',
+      imageSource: require('@/assets/images/Corrina.jpeg'),
     },
     {
       name: 'Ayanna Reid',
       title: 'Graduate Research Assistant',
       email: '',
       phone: '',
-      imageFilename: 'Ayanna.jpeg',
+      imageSource: require('@/assets/images/Ayanna.jpeg'),
     },
     {
       name: 'Manuelene Deigh',
       title: 'Graduate Research Assistant',
       email: '',
       phone: '',
-      imageFilename: 'Manuelene.jpeg',
+      imageSource: require('@/assets/images/Manuelene.jpeg'),
     },
     {
       name: 'Davian Clifton',
       title: 'Research Assistant',
       email: '',
       phone: '',
-      imageFilename: 'Davian.jpeg',
+      imageSource: require('@/assets/images/Davian.jpeg'),
     },
   ];
 
@@ -111,7 +110,7 @@ export function FacultyForm() {
     >
       <View style={styles.cardHeader}>
         <Image
-          source={{ uri: getImageUrl(member.imageFilename) }}
+          source={member.imageSource}
           style={member.isDirector ? styles.directorImage : styles.facultyImage}
           resizeMode="cover"
         />

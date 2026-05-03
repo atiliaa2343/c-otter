@@ -17,13 +17,15 @@ import { HealthForm } from "@/components/Health";
 import { FacultyForm } from "@/components/Faculty";
 import Research from "@/components/Research";
 import { ContactSection } from "@/components/Contact";
-import { getImageUrl } from "@/constants/BackendConfig";
+import { AdminPanel } from "@/components/AdminPanel";
+import CommunityForm from "@/components/Community";
+import { BACKEND_URL } from "@/constants/BackendConfig";
 
-// Local logo as fallback
+// Use local logo
 const LOCAL_LOGO = require("@/assets/images/Ce Otter.png");
 
 // MongoDB API endpoint
-const API_BASE_URL = 'http://10.0.0.92:4000';
+const API_BASE_URL = BACKEND_URL;
 
 // Types for MongoDB data
 interface HourOfOperation {
@@ -53,10 +55,10 @@ export default function Index() {
   const [currentPage, setCurrentPage] = useState<NavigationItem>("home");
   const [locations, setlocations] = useState<HourOfOperation[]>();
   const [loading, setLoading] = useState(true);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
   
-  // Try MongoDB first, fallback to local asset for header logo
-  const [headerLogoError, setHeaderLogoError] = useState(false);
-  const headerLogoSource = headerLogoError ? LOCAL_LOGO : { uri: getImageUrl('Ce Otter.png') };
+  // Use local logo
+  const headerLogoSource = LOCAL_LOGO;
 
   // Theme colors
   const backgroundColor = useThemeColor({}, 'background');
@@ -126,25 +128,7 @@ export default function Index() {
       case "research":
         return <Research />;
       case "community":
-        return (
-          <ScrollView style={{ flex: 1, backgroundColor }} contentContainerStyle={{ padding: 20, paddingTop: 100 }}>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <View style={[styles.emptyStateIcon, { backgroundColor: `${primaryColor}15` }]}>
-                <Ionicons name="people" size={48} color={primaryColor} />
-              </View>
-              <Text style={[styles.emptyStateTitle, { color: textColor }]}>Community</Text>
-              <Text style={[styles.emptyStateSubtitle, { color: textSecondary }]}>
-                Connect with others and build meaningful relationships
-              </Text>
-              <TouchableOpacity 
-                style={[styles.comingSoonButton, { backgroundColor: primaryColor }]}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.comingSoonButtonText}>Coming Soon</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        );
+        return <CommunityForm />;
       case "health":
         return <HealthForm />;
       case "faculty":
@@ -166,7 +150,7 @@ export default function Index() {
     return (
       <View style={{ flex: 1, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center' }}>
         <Image
-          source={require("@/assets/images/Ce Otter.png")}
+          source={require("@/assets/images/C.png")}
           style={{ width: 300, height: 300, borderRadius: 150, backgroundColor: 'transparent' }}
           resizeMode="contain"
         />
@@ -187,16 +171,28 @@ export default function Index() {
             <Image
               source={headerLogoSource}
               style={{ width: 36, height: 36, borderRadius: 18 }}
-              onError={() => setHeaderLogoError(true)}
             />
             <Text style={[styles.headerTitle, { color: textColor }]}>CE - OTTER</Text>
           </View>
           
           <View style={styles.headerRight}>
+            {/* Admin Icon */}
+            <TouchableOpacity 
+              onPress={() => setShowAdminPanel(true)}
+              style={[styles.iconButton, { backgroundColor: isDarkMode ? '#374151' : '#f3f4f6', marginRight: 8 }]}
+              activeOpacity={0.7}
+            >
+              <Ionicons 
+                name="shield-checkmark" 
+                size={20} 
+                color={primaryColor} 
+              />
+            </TouchableOpacity>
+            
             {/* Dark Mode Toggle */}
             <TouchableOpacity 
               onPress={handleToggleTheme}
-              style={[styles.themeToggle, { backgroundColor: isDarkMode ? '#374151' : '#f3f4f6' }]}
+              style={[styles.iconButton, { backgroundColor: isDarkMode ? '#374151' : '#f3f4f6' }]}
               activeOpacity={0.7}
             >
               <Ionicons 
@@ -213,6 +209,9 @@ export default function Index() {
       <View style={{ flex: 1 }}>
         {renderPageContent()}
       </View>
+
+      {/* Admin Panel Modal */}
+      <AdminPanel visible={showAdminPanel} onClose={() => setShowAdminPanel(false)} />
 
       {/* Modern Bottom Navigation Bar */}
       <SafeAreaView style={{ backgroundColor: tabBarBg }}>
@@ -266,6 +265,13 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     flexDirection: 'row',
+    alignItems: 'center' as const,
+  },
+  iconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center' as const,
     alignItems: 'center' as const,
   },
   themeToggle: {

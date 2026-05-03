@@ -95,6 +95,11 @@ const MONGODB_URI = process.env.MONGODB_URI;
 let mongoClient = null;
 let gridFsBucket = null;
 
+// Admin credentials (in production, use proper user management with hashed passwords)
+const ADMIN_CREDENTIALS = [
+  { id: '1', email: 'admin@example.com', username: 'admin', password: 'admin123' }
+];
+
 async function startServer() {
   if (MONGODB_URI) {
     try {
@@ -160,6 +165,102 @@ async function startServer() {
       } catch (err) {
         console.error('Error fetching locations', err);
         res.status(500).json({ error: 'failed' });
+      }
+    });
+
+    // Admin registration endpoint
+    app.post('/api/admin/register', async (req, res) => {
+      try {
+        const { email, username, password } = req.body;
+        
+        // Validate input
+        if (!email || !username || !password) {
+          return res.status(400).json({ error: 'Email, username, and password are required' });
+        }
+        
+        if (password.length < 6) {
+          return res.status(400).json({ error: 'Password must be at least 6 characters' });
+        }
+        
+        // Check if admin already exists
+        const existingAdmin = ADMIN_CREDENTIALS.find(admin => admin.email === email || admin.username === username);
+        if (existingAdmin) {
+          return res.status(409).json({ error: 'Admin with this email or username already exists' });
+        }
+        
+        // Create new admin (in production, hash the password)
+        const newAdmin = {
+          id: (ADMIN_CREDENTIALS.length + 1).toString(),
+          email,
+          username,
+          password // In production: use bcrypt.hash(password, saltRounds)
+        };
+        
+        ADMIN_CREDENTIALS.push(newAdmin);
+        
+        // Generate a simple token (in production, use JWT)
+        const token = `admin-token-${newAdmin.id}-${Date.now()}`;
+        
+        res.json({ 
+          token,
+          user: {
+            id: newAdmin.id,
+            email: newAdmin.email,
+            username: newAdmin.username
+          }
+        });
+      } catch (err) {
+        console.error('Admin registration error:', err);
+        res.status(500).json({ error: 'Registration failed' });
+      }
+    });
+
+    // Admin login endpoint
+    app.post('/api/admin/login', async (req, res) => {
+      try {
+        const { email, password } = req.body;
+        
+        // Validate input
+        if (!email || !password) {
+          return res.status(400).json({ error: 'Email and password are required' });
+        }
+        
+        // Find admin
+        const admin = ADMIN_CREDENTIALS.find(admin => admin.email === email && admin.password === password);
+        if (!admin) {
+          return res.status(401).json({ error: 'Invalid email or password' });
+        }
+        
+        // Generate a simple token (in production, use JWT)
+        const token = `admin-token-${admin.id}-${Date.now()}`;
+        
+        res.json({ 
+          token,
+          user: {
+            id: admin.id,
+            email: admin.email,
+            username: admin.username
+          }
+        });
+      } catch (err) {
+        console.error('Admin login error:', err);
+        res.status(500).json({ error: 'Login failed' });
+      }
+    });
+
+    // Admin stats endpoint
+    app.get('/api/admin/stats', async (req, res) => {
+      try {
+        // In a real app, we would validate the token and fetch real stats
+        // For now, return mock data
+        res.json({ 
+          contentItems: 42,
+          users: 158,
+          admins: ADMIN_CREDENTIALS.length
+        });
+      } catch (err) {
+        console.error('Admin stats error:', err);
+        res.status(500).json({ error: 'Failed to fetch stats' });
       }
     });
   }

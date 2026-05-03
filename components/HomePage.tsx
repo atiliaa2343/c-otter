@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, ImageBackground } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { getImageUrl } from "@/constants/BackendConfig";
 
 const LOCAL_LOGO = require("../assets/images/Ce Otter.png");
+const BACKGROUND_IMAGE = require("../assets/images/Ce Otter.png");
 
 const eventCards = [
   {
@@ -38,9 +38,8 @@ const eventCards = [
 export function HomePage() {
   const router = useRouter();
   
-  // Try MongoDB first, fallback to local asset
-  const [logoError, setLogoError] = useState(false);
-  const logoSource = logoError ? LOCAL_LOGO : { uri: getImageUrl('Ce Otter.png') };
+  // Use local logo
+  const logoSource = LOCAL_LOGO;
   
   // Theme colors
   const backgroundColor = useThemeColor({}, 'background');
@@ -52,12 +51,17 @@ export function HomePage() {
   const cardBorder = useThemeColor({}, 'cardBorder');
 
   return (
-    <ScrollView 
-      contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} 
-      style={{ backgroundColor }}
+    <ImageBackground 
+      source={BACKGROUND_IMAGE} 
+      style={styles.backgroundImage}
+      imageStyle={styles.backgroundImageStyle}
     >
-      {/* AI Search bubble stays at the top */}
-      <View style={styles.aiSearchContainer}>
+      <ScrollView 
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} 
+        style={{ backgroundColor: 'transparent' }}
+      >
+        {/* AI Search bubble stays at the top */}
+        <View style={styles.aiSearchContainer}>
         <TouchableOpacity
           style={[styles.aiBubble, { backgroundColor: cardBg, borderColor: cardBorder }]}
           onPress={() => router.push("/aisearch")}
@@ -76,7 +80,6 @@ export function HomePage() {
             source={logoSource}
             style={styles.logoImage}
             resizeMode="cover"
-            onError={() => setLogoError(true)}
           />
           <Text style={[styles.title, { color: primaryColor }]}>CE - OTTER</Text>
           <Text style={[styles.subtitle, { color: textSecondary }]}>
@@ -176,11 +179,21 @@ export function HomePage() {
           <Ionicons name="chevron-forward" size={20} color="#dc2626" />
         </TouchableOpacity>
       </View>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  backgroundImageStyle: {
+    opacity: 0.1,
+    resizeMode: 'cover',
+  },
   aiSearchContainer: {
     position: 'absolute',
     top: 50,
