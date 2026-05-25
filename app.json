@@ -4,7 +4,7 @@
     "slug": "Ce-Otter",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/Ce Otter.png",
     "scheme": "ceotter",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -22,14 +22,14 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/Ce Otter.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/C.png",
+          "image": "./assets/images/Ce Otter.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
