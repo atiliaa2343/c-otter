@@ -57,34 +57,6 @@ export function FacultyForm() {
       phone: '',
       imageSource: require('@/assets/images/Diamond.jpeg'),
     },
-    {
-      name: 'Corrina Stevenson',
-      title: 'Graduate Research Assistant',
-      email: '',
-      phone: '',
-      imageSource: require('@/assets/images/Corrina.jpeg'),
-    },
-    {
-      name: 'Ayanna Reid',
-      title: 'Graduate Research Assistant',
-      email: '',
-      phone: '',
-      imageSource: require('@/assets/images/Ayanna.jpeg'),
-    },
-    {
-      name: 'Manuelene Deigh',
-      title: 'Graduate Research Assistant',
-      email: '',
-      phone: '',
-      imageSource: require('@/assets/images/Manuelene.jpeg'),
-    },
-    {
-      name: 'Davian Clifton',
-      title: 'Research Assistant',
-      email: '',
-      phone: '',
-      imageSource: require('@/assets/images/Davian.jpeg'),
-    },
   ];
 
   const handleEmailPress = (email: string) => {
@@ -155,7 +127,7 @@ export function FacultyForm() {
     <ScrollView style={[styles.container, { backgroundColor }]} contentContainerStyle={styles.contentContainer}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.title, { color: textColor }]}>Faculty</Text>
+        <Text style={[styles.title, { color: textColor }]}>Team</Text>
         <Text style={[styles.subtitle, { color: textSecondary }]}>
           Meet our dedicated research team
         </Text>

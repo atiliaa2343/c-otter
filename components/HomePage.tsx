@@ -70,6 +70,15 @@ export function HomePage() {
           <Ionicons name="search" size={18} color={primaryColor} style={{ marginRight: 8 }} />
           <Text style={[styles.aiText, { color: primaryColor }]}>AI search</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.colorBubble, { backgroundColor: cardBg, borderColor: cardBorder }]}
+          onPress={() => router.push("/coloring")}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="color-palette" size={18} color={primaryColor} style={{ marginRight: 8 }} />
+          <Text style={[styles.aiText, { color: primaryColor }]}>Color</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Main Content */}
@@ -350,5 +359,8 @@ const styles = StyleSheet.create({
   crisisText: {
     fontSize: 14,
     marginTop: 2,
+  },
+  colorBubble: {
+    marginLeft: 8,
   },
 });

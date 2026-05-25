@@ -1,0 +1,4990 @@
+[
+  {
+    "type": "resource",
+    "name": "ILLUME Family Recovery, Inc.",
+    "description": "Provides recovery/addiction services",
+    "address": "11448 Robious Rd, Richmond, VA 23235",
+    "phone": "804.445.9600",
+    "website": "https://www.illumefamilyrecovery.org/",
+    "tags": [
+      "Recovery/ Addiction"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "White House of the Confederacy",
+    "description": "Confederate Executive Mansion during the war turned into a museum",
+    "address": "1201 East Clay StreetRichmond, VA  23219",
+    "phone": "804-649-1861",
+    "website": "www.acwm.org/white-house-of-the-confederacy",
+    "tags": [
+      "Recreation, Museum"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "12th District Court Service Unit",
+    "description": "Provides domestic and delinquent intake services, juvenile probation, and parole services to the County of Chesterfield and the City of Colonial Heights",
+    "address": "550 BoulevardColonial Heights, VA  23834",
+    "phone": "804-520-9355",
+    "website": "www.colonialheightsva.gov",
+    "tags": [
+      "Court"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "40 & 8 Voiture No. 1530",
+    "description": "Provides a performance & Event Venue",
+    "address": "15930 Happy Hill RoadColonial Heights, VA  23834",
+    "phone": "804-526-9644",
+    "website": "www.grandduvirginia.org",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "A Place Of Miracles Cafe",
+    "description": "Provides meals and assistance for the homeless and motel families in the Route 1 Corridor",
+    "address": "8820 Metro Ct, Richmond, VA 23237",
+    "phone": "(804) 236-6887",
+    "website": "https://www.apomcafe.com/",
+    "tags": [
+      "Food"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "AARP, Chapter 1041",
+    "description": "Opportunity to connect with AARP members",
+    "address": "902 Azalea LaneColonial Heights, VA  23834",
+    "phone": "804-520-2082",
+    "website": "nan",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "ACCA Temple Shrine Center",
+    "description": "Establish brotherhood and making a difference in the world",
+    "address": "1712 Bellevue Ave.Richmond, VA 23227",
+    "phone": "804-264-0509",
+    "website": "accashriners.com",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "ACCENT Group and Family Services LLC",
+    "description": "Provides support for individuals' behavioral and mental state",
+    "address": "4222 Bonniebank Road Suite 201 North Chesterfield, VA 23234",
+    "phone": "804-780-0072",
+    "website": "https://accentgroupfamilyservices.com",
+    "tags": [
+      "Counseling; Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "ACTS \u2013 Associates in Counseling & Therapeutic Services",
+    "description": "Offers mental health services, focuses on in-home therapy for children, adolescents, and families",
+    "address": "205 Chesterfield AvenueColonial Heights, VA  23834",
+    "phone": "804-526-7854",
+    "website": "nan",
+    "tags": [
+      "Counseling, Therapy, Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Adolescent Health Center",
+    "description": "Psychological services, educational assessments",
+    "address": "13821 Village Mill DriveMidlothian, VA  23114",
+    "phone": "804-794-8900",
+    "website": "www.brightadolescent.com",
+    "tags": [
+      "Counseling,Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Adolescent Health Services, MCV",
+    "description": "Specialized medical care for adolescents",
+    "address": "1001 East Marshall Street, 3rd Floor Richmond, VA  23219",
+    "phone": "804-828-9449",
+    "website": "chrichmond.org/services/primary-care/adolescent-medicine/",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Al-Anon & Al-A-Teen",
+    "description": "Provides a space for those in need of recovery, 365 days/24 hours availability",
+    "address": "nan",
+    "phone": "804-861-2620, 1-888-4AL-ANON (1-888-425-2666)",
+    "website": "www.va-al-anon.org",
+    "tags": [
+      "Recovery/Addiction"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Alcohol Hotline Support & Information",
+    "description": "National Hotline available for individuals and families",
+    "address": "nan",
+    "phone": "1-800-331-2900",
+    "website": "nan",
+    "tags": [
+      "Recovery/Addiction"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Alzheimers Association",
+    "description": "Provides resources, education, and support services for individuals with Alzheimer's and their families",
+    "address": "201 Temple Avenue, Suite EColonial Heights, VA  23834",
+    "phone": "804-967-2580",
+    "website": "http:www.alz.org/grva/index.asp",
+    "tags": [
+      "Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Alzheimer\u2019s Association- Hotline",
+    "description": "Provides information and resources",
+    "address": "nan",
+    "phone": "1-800-272-3900",
+    "website": "nan",
+    "tags": [
+      "Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Cancer Society",
+    "description": "Provides information, guidance & referral services",
+    "address": "4240 Park Place CourtGlen Allen, VA  23060",
+    "phone": "804-527-3700",
+    "website": "www.cancer.org",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Cancer Society- Hotline",
+    "description": "Provides information and resources",
+    "address": "nan",
+    "phone": "804-527-3700 \u2013 Local line,  1-800-227-2345",
+    "website": "www.cancer.org",
+    "tags": [
+      "Health Services, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Council for the Blind- Hotline",
+    "description": "Provides information and resources for individuals who are blind",
+    "address": "1703 North Beauregard St, Ste 420Alexandria VA 22314",
+    "phone": "1-800-424-8666",
+    "website": "www.acb.org",
+    "tags": [
+      "Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Diabetes Association - Hotline",
+    "description": "Provides information and resources",
+    "address": "nan",
+    "phone": "1-800-DIABETES (342-2383)",
+    "website": "www.diabetes.org",
+    "tags": [
+      "Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Diabetes Association \u2013 Richmond Chapter",
+    "description": "Provides information and resources",
+    "address": "4335 Cox RoadGlen Allen, VA  23060",
+    "phone": "804-225-8038",
+    "website": "www.diabetes.org",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Family Fitness",
+    "description": "Gym featuring a sauna and indoor pool, plus group classes",
+    "address": "501 East Roslyn RoadColonial Heights, VA  23834",
+    "phone": "804-520-7000",
+    "website": "www.amfamfit.com",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Heart Association \u2013 Greater Richmond Area",
+    "description": "Provides information and resources",
+    "address": "4217 Park Place CourtGlen Allen, VA  23060",
+    "phone": "804-747-8334",
+    "website": "www.americanheart.org",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Legion,Post 284",
+    "description": "Veteran support and services",
+    "address": "505 Springdale Avenue, P O Box 57Colonial Heights, VA  23834",
+    "phone": "804-526-4167 \u2013 building phone",
+    "website": "https://alpost284va.org",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Legion,Post 284 Auxiliary",
+    "description": "Veteran support and services",
+    "address": "505 Springdale Avenue, P O Box 57Colonial Heights, VA  23834",
+    "phone": "804-526-4167 \u2013 building phone",
+    "website": "https://alpost284va.org",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Lung Association of Virginia",
+    "description": "Provides information and resources",
+    "address": "9221 Forest Hill AvenueRichmond, VA  23235",
+    "phone": "804-267-1900",
+    "website": "www.lungusa.org/virginia",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "American Red Cross, Southside Chapter",
+    "description": "Provides safety education",
+    "address": "22 West East Washington StreetPetersburg, VA 23805",
+    "phone": "804-733-5711",
+    "website": "www.southsidearea.redcross.org",
+    "tags": [
+      "Volunteer"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Anderson Orthodontics",
+    "description": "Provides orthodontic care and services",
+    "address": "556 Southpark BLVD, Colonial Heights VA 23834",
+    "phone": "8045262702",
+    "website": "http://www.aplusaortho.com/",
+    "tags": [
+      "Dental Care"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Anger Management Support Group",
+    "description": "Provides support for anger",
+    "address": "nan",
+    "phone": "804-452-3282",
+    "website": "nan",
+    "tags": [
+      "Health Services, Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Anthem Medicaid Transportation",
+    "description": "Provides transportation services",
+    "address": "nan",
+    "phone": "855-325-7581",
+    "website": "nan",
+    "tags": [
+      "Transportation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Anthony Mangiafico, CNS",
+    "description": "Provides mental health care and services",
+    "address": "2552 Aldridge Ave South Chesterfield, VA 23834",
+    "phone": "804-735-9595",
+    "website": "tonymangiaficophdcns.com",
+    "tags": [
+      "Counseling; Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Appomattox Area Health & Wellness",
+    "description": "Provides care to people with limited access to health services",
+    "address": "321C Poplar DrivePetersburg Virginia 23805",
+    "phone": "804-733-5591",
+    "website": "https://cvhsinc.org",
+    "tags": [
+      "Medical"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Appomattox Regional Governor's School",
+    "description": "Public regional magnet high school",
+    "address": "512 West Washington Street Petersburg, VA 23803",
+    "phone": "804-722-0200",
+    "website": "https://args.us/",
+    "tags": [
+      "Education/Schools"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Appomattox Regional Library",
+    "description": "Provides library system and services to Hopewell, Prince George, and Dinwiddie",
+    "address": "245 East Cawson StreetHopewell, VA  23660",
+    "phone": "804-458-6329",
+    "website": "https://www.arls.org/",
+    "tags": [
+      "Library"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Army Community Service",
+    "description": "Assists Commanders in maintaining readiness of individuals, families, and communities with America's Army",
+    "address": "1231 Lee Ave., Bldg 9023Fort Lee, VA 23801",
+    "phone": "804-734-6388",
+    "website": "lee.armymwr.com/programs/army-community-service",
+    "tags": [
+      "Military/Veteran's and Family Resources"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Arthritis Foundation \u2013 Virginia Chapter",
+    "description": "Provides information and resources",
+    "address": "2201 West Broad Street, Suite 100Richmond, VA  23230",
+    "phone": "804-359-1700",
+    "website": "www.arthritis.org",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "ASK-Childhood Cancer Foundation",
+    "description": "Provides assistance and support for children with cancer and their families",
+    "address": "5211 W. Broad St., Ste. 100Richmond, VA 23230",
+    "phone": "804-658-5910",
+    "website": "www.askccf.org",
+    "tags": [
+      "Health Services, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Assurance Wireless",
+    "description": "Cell Phone",
+    "address": "nan",
+    "phone": "888-898-4888",
+    "website": "www.assurancewireless.com",
+    "tags": [
+      "Free Cell Phones"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Autism Society of America \u2013 Central Virginia Chapter",
+    "description": "Provides support and resources for those who with austim",
+    "address": "8730 Stony Point Pkwy, Ste. 150Richmond, VA 23235",
+    "phone": "804-259-3188",
+    "website": "www.asacv.org",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Balanced Behavioral Health",
+    "description": "Provides services in the form of therapy",
+    "address": "6504 Woodlake Village Circle Midlothian, VA 23122",
+    "phone": "804-823-5475",
+    "website": "http://balancebehavioral.com",
+    "tags": [
+      "Counseling; Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Barbara M. Morgan, LPC, Ph.D.",
+    "description": "Provides counseling for people 18 and older; individual, couples and families",
+    "address": "320C Charles Dimmock ParkwayColonial Heights, VA 23834",
+    "phone": "804-520-4166",
+    "website": "nan",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Battlefield Park Healthcare Center",
+    "description": "Provides long-term care options",
+    "address": "250 Flank RoadPetersburg, VA  23805",
+    "phone": "804-861-2223",
+    "website": "www.communicarehealth.com",
+    "tags": [
+      "Residential Facilities"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Believe -N-U Academic Development Center",
+    "description": "Provides private day school, community and residential services",
+    "address": "3071 County Drive Petersburg, VA 23803",
+    "phone": "804-458-5812",
+    "website": "http://believe-n-u.com",
+    "tags": [
+      "Education/Schools"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Belmont United Methodist Church",
+    "description": "Provides worship services, food pantry, and clothing closet",
+    "address": "3510 Broad Rock Blvd. Richmond, VA 23234",
+    "phone": "804-275-6336",
+    "website": "https://www.belmontumcrichmond.org",
+    "tags": [
+      "Church, Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Bermuda Medical Center",
+    "description": "Provides medical assistance for those with insurance, without insurance, and with economic hardships",
+    "address": "2740 Bensley Commons Blvd North Chesterfield, VA 23237",
+    "phone": "804-780-0840",
+    "website": "https://cahealthnet.org/bermuda-medical-center/",
+    "tags": [
+      "Medical, Mental Health, Dental"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Better Business Bureau",
+    "description": "Provides assistance to consumers in making informed decisions and to encourage businesses to operate with integrity",
+    "address": "4800 Cox Rd.Glen Allen, VA 23060",
+    "phone": "804-648-0016",
+    "website": "www.bbb.org",
+    "tags": [
+      "Legal Service"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Bi-Polar Support Group (John Randolph Medical Center)",
+    "description": "Provides support for individuals and families dealing with bi-polar disorder.",
+    "address": "411 W Randolph Rd. Hopewell, VA 23860",
+    "phone": "804-452-3277, 804-541-7747",
+    "website": "www.wellspan.org",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Big Brothers/Big Sisters",
+    "description": "Provides mentoring for children and youth",
+    "address": "1707 Summit Avenue, Ste 200Richmond, VA 23230",
+    "phone": "804-261-4940",
+    "website": "www.bbbs.org",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Bon Air Baptist",
+    "description": "Provides worship services, Drive-thru Food Pantry on Wednesday's 3-5pm",
+    "address": "2531 Buford Road, Richmond, VA 23235",
+    "phone": "804-272-1475",
+    "website": "https://bonairbaptist.org/",
+    "tags": [
+      "Church, Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Bon Secours Care-A-Van",
+    "description": "Provides medical care for uninsured individuals and families",
+    "address": "2301 Everett St.Richmond, VA 23224",
+    "phone": "804-545-1920",
+    "website": "www.bonsecours.com/locations/community-services/richmond/bon-secours-care-a-van",
+    "tags": [
+      "Healthcare"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Bon Secours Hospitals",
+    "description": "Provides uninsured patients who do not qualify for government-sponsored benefits",
+    "address": "nan",
+    "phone": "877-342-1500",
+    "website": "https://www.bonsecours.com/patient-resources/financial-assistance",
+    "tags": [
+      "Financial Assistance"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Bon Secours Tour of Petersburg Center for Healthy Living",
+    "description": "Provides free comprehensive primary care services, immunizations, and other services",
+    "address": "3335 S. Crater Rd., Ste. 100Petersburg, VA 23803",
+    "phone": "804-722-8841",
+    "website": "www.bshsi.org",
+    "tags": []
+  },
+  {
+    "type": "resource",
+    "name": "Boy Scouts of America Troop 160",
+    "description": "Provides scouting services",
+    "address": "304\u00bd Temple Avenue (Scout Hut)Colonial Heights, VA  23834",
+    "phone": "nan",
+    "website": "nan",
+    "tags": [
+      "Boy Scouts, Scouts"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Boy Scouts of America \u2013 Heart of America Council",
+    "description": "Provides all scouting information and resources",
+    "address": "4015 Fitzhugh AvenueRichmond, VA  23230",
+    "phone": "804-355-4306",
+    "website": "www.hovc.org",
+    "tags": [
+      "Recreation, Scouts"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Boy Scouts of America-Cub Scout Pack 150",
+    "description": "Provides scouting services every Thursday at 7p",
+    "address": "Wesley United Methodist Church3701 Conduit RoadColonial Heights, VA  23834",
+    "phone": "804-400-6476",
+    "website": "www.beascout.scouting.org/list/?zip=23834&program%5B0%5D=pack",
+    "tags": [
+      "Civic Organization, Boy Scouts, Scouts"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Boy Scouts of America-Troop 184",
+    "description": "Provides scouting services every Thursday at 6:30p",
+    "address": "Wesley United Methodist Church3701 Conduit RoadColonial Heights, VA 23834",
+    "phone": "804-564-8076",
+    "website": "https://m.facebook.com/61572363842006/",
+    "tags": [
+      "Civic Organization, Boy Scouts"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Boys Town National Hotline",
+    "description": "Provides support and resources",
+    "address": "nan",
+    "phone": "1-800-448-3000",
+    "website": "www.boystown.org",
+    "tags": [
+      "Substance Abuse, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Brain Injury Association of Virginia",
+    "description": "Provides information and resources for those impacted by brain injury",
+    "address": "5516 Falmouth St, Ste 301Richmond, VA  23230",
+    "phone": "1-800-44-6443, 804-355-5748",
+    "website": "www.biav.net",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Brightpoint Community College (John Tyler Community College) \u2013 Chester Campus",
+    "description": "Provides workforce development, career training, and various studies",
+    "address": "13101 Route 1Chester, VA  23831",
+    "phone": "804-796-4000",
+    "website": "www.brightpoint.edu",
+    "tags": [
+      "College"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Broadway Christian School",
+    "description": "Provides private schooling for grades K5-12",
+    "address": "301 North 15th AvenueHopewell, VA  23860",
+    "phone": "804-458-5370",
+    "website": "www.broadwaychrisitianschool.com",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "C.A.R.E.S.",
+    "description": "Provides emergency shelter for women and children, food pantry and clothes closet",
+    "address": "118 East Washington StreetPetersburg VA 23803",
+    "phone": "Resource Center:804-861-0865  Food Pantry: 804-861-6191",
+    "website": "https://cares-va.org",
+    "tags": [
+      "Food Pantry, Thrift"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Calvary Baptist Church",
+    "description": "Provides worship services",
+    "address": "17001 Jefferson Davis HighwayColonial Heights, VA  23834",
+    "phone": "804-526-0981",
+    "website": "http://www.burdensarelifted.com",
+    "tags": [
+      "Church, Baptist"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Cameron K. Gallagher Mental Resource Center",
+    "description": "Provides mental health and resources",
+    "address": "1308 Sherwood Ave, Richmond, VA 23220",
+    "phone": "804-828-9897",
+    "website": "https://www.ckgfoundation.org/",
+    "tags": [
+      "Mental health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Camp Baker Summer Camp",
+    "description": "Provides summer residential program for intellectually challenged adults/children.",
+    "address": "7600 Beach RoadChesterfield, VA  23838",
+    "phone": "804-748-4789",
+    "website": "http://soar365.org",
+    "tags": [
+      "Disability Services, Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Cancer Information Service",
+    "description": "Provides information and resources",
+    "address": "nan",
+    "phone": "1-800-4-CANCER",
+    "website": "nan",
+    "tags": [
+      "Health Services, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Cancer Support Group (John Randolph Medical Center)",
+    "description": "Provides support for individuals and families experiencing cancer related issues",
+    "address": "411 W Randolph Rd.Hopewell, VA 23860",
+    "phone": "804-452-3340",
+    "website": "www.wellspan.org",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Caring Clothes Closet",
+    "description": "Provides high-quality clothing to those who need it at no cost",
+    "address": "3900 W Broad St Cottage 7, Richmond, VA 23230",
+    "phone": "(804) 533-2657 / 804-360-7779 /  info@gmail.com for shopping appointment",
+    "website": "https://www.caring-closet.org/",
+    "tags": [
+      "Clothing; Crisis"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "CASA (Court Appointed Special Advocates)",
+    "description": "Provides support and promotes court-appointed volunteer advocacy for children",
+    "address": "nan",
+    "phone": "1-800-628-3233",
+    "website": "www.nationalcasa.org",
+    "tags": [
+      "Hotline, Domestic Violence, Legal Service"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Catholic Charities Baby Clothes Closet",
+    "description": "Provides diapers and clothing",
+    "address": "1601 Rolling Hills Drive Richmond VA 23229",
+    "phone": "804-285-5900",
+    "website": "https://www.cccofva.org/diapers",
+    "tags": [
+      "Baby; Newborn; Clothes"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Catholic Charities of Richmond Inc",
+    "description": "Provides a variety of resources for individuals and families",
+    "address": "1601 Rolling Hills DriveRichmond, VA 23229",
+    "phone": "804-285-5900",
+    "website": "www.cccofva.org",
+    "tags": [
+      "Adoption, Foster Care, Pregnancy Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "CDC Information",
+    "description": "Provides information for the American public",
+    "address": "400 7th St SW, Flr 5WWashington, DC 20024",
+    "phone": "1-800-232-4636",
+    "website": "www.cdc.gov",
+    "tags": [
+      "Hotline, Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Celebration Church- Love of Jesus Thrift Store",
+    "description": "Provides clothing items",
+    "address": "5503 Midlothian TpkeRichmond, VA 23225",
+    "phone": "804-230-4144 / 804-737-9493",
+    "website": "wwww.liberationrva.org",
+    "tags": [
+      "Clothing Closets"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Center for Counseling Services",
+    "description": "Provides mental health services and resources",
+    "address": "320 Charles H. Dimmock Parkway, Ste CColonial Heights, VA  23834",
+    "phone": "804-520-5485",
+    "website": "nan",
+    "tags": [
+      "Counseling, Therapy"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Central State Hospital",
+    "description": "Provides psychiatric assistance",
+    "address": "26317 W Washington St.Petersburg, VA  23803",
+    "phone": "804-524-7000",
+    "website": "www.dbhds.virginia.gov/facilities/csh/",
+    "tags": [
+      "Hospital"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Central Virginia Legal Aid Society",
+    "description": "Provides legal assistance and resources to low income indviduals",
+    "address": "229 North Sycomore StreetPetersburg, VA  23805",
+    "phone": "804-862-1100",
+    "website": "www.cvlas.org",
+    "tags": [
+      "Legal Service"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chester Child Development & Day Care Center",
+    "description": "Provides preschool, education, and daycare services",
+    "address": "13600 Happy Hill RoadChester, VA  23831",
+    "phone": "804-719-2998",
+    "website": "www.chestercdc.com",
+    "tags": [
+      "Daycare"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chester Skateland",
+    "description": "Provides a skating ring for all ages, lessons, space rental, and snack bar",
+    "address": "2300 Southland DriveChester, VA  23831",
+    "phone": "804-748-0379",
+    "website": "www.chesterskateland.com",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield County Challenge Course",
+    "description": "Provides a variety of outdoor adventure and nature programs",
+    "address": "7600 Beach RoadChesterfield, VA  23836",
+    "phone": "804-748-1623",
+    "website": "www.chesterfield.gov/1000/outoor-adventures",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield County Mobility Services",
+    "description": "Provides transportation options",
+    "address": "9800 Government Center ParkwayChesterfield, VA 23832",
+    "phone": "804-706-2796",
+    "website": "https://www.chesterfield.gov/mobilityservices",
+    "tags": [
+      "Transportation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield County Museum",
+    "description": "Provides a replica of the Chesterfield County Courthouse of 149 and more",
+    "address": "6813 Mimms LoopChesterfield, VA  23832",
+    "phone": "804-748-1026",
+    "website": "www.chesterfieldhistoricalsociety.com",
+    "tags": [
+      "Recreation, Museum"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield Domestic Violence Resource Center",
+    "description": "Provides resources and assistance to those of domestic and sexual violence",
+    "address": "7000 Lucy Corr Blvd, 2nd Flr, Rm 2008Chesterfield, VA 23832",
+    "phone": "804-318-8264",
+    "website": "www.chestefield.gov/222/Domestic-and-Sexual-Violence-Center",
+    "tags": [
+      "Domestic Violence"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield Mental Health Support Services",
+    "description": "Provides mental health and resources",
+    "address": "6801 Lucy Corr BlvdChesterfield, VA  23832",
+    "phone": "804-748-1227",
+    "website": "nan",
+    "tags": [
+      "Recovery/Addiction"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield Prevention Services",
+    "description": "Provides mental health and resources",
+    "address": "6801 Lucy Corr BoulevardChesterfield, VA 23832",
+    "phone": "O: 804-748-1227, 24/7: 804-748-6356, Lifeline: 988",
+    "website": "https://www.chesterfield.gov/931/Prevention-Services",
+    "tags": [
+      "Parenting; Mental Health;"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield/Colonial Heights Alliance for Social Ministry (CCHASM)",
+    "description": "Provides emergency financial and food assistance \u2013 must meet requirements. Women\u2019s Career Clothes Closet",
+    "address": "4317 School StreetChester, VA  23831",
+    "phone": "804-796-2749",
+    "website": "https://www.cchasm.org",
+    "tags": [
+      "Social Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield/Colonial Heights Christmas Mother",
+    "description": "Provides assistance in the form of new toys, books, clothing and food gift cares",
+    "address": "PO Box 2500Chesterfield, VA  23832",
+    "phone": "804-748-1183",
+    "website": "www.cchchristmasmother.com",
+    "tags": [
+      "Social Services, Christmas, Gifts"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield/Colonial Heights Comprehensive Services & Community Policy",
+    "description": "Provides counseling for families involved with Juvenile & Domestic Relations Court",
+    "address": "P O Box 40Chesterfield, VA  23832",
+    "phone": "804-751-4797",
+    "website": "nan",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield/Colonial Heights Court Services/Family Counselor",
+    "description": "Provides mental health and substance abuse counseling. Intellectual disability services",
+    "address": "9500 Courthouse RoadChesterfield, VA  23832",
+    "phone": "804-748-1372",
+    "website": "www.chesterfield.gov",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield/Colonial Heights Department of Social Services",
+    "description": "Provides adoption and foster care services and resources",
+    "address": "9501 Lucy Corr CircleChesterfield, VA  23832",
+    "phone": "804-748-1100",
+    "website": "www.chesterfield.gov",
+    "tags": [
+      "Adoption, Foster Care, Child Protection, Adult Protection, Abuse, Social Services, Financial Assistance"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chesterfield/Colonial Heights Juvenile Detention Center",
+    "description": "Provides a safe, secure, and supportive environment for court-involved youth",
+    "address": "9700 Krause RoadChesterfield, VA 23832",
+    "phone": "804-748-1460",
+    "website": "www.chestefield.gov",
+    "tags": [
+      "Legal Service"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Child Find of America Hotline",
+    "description": "Provides assistance in locating missing children",
+    "address": "nan",
+    "phone": "1-800-I-AM-LOST (426-5678)",
+    "website": "www.childfindofamerica.org",
+    "tags": [
+      "Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "ChildHelp USA National Child Abuse Hotline",
+    "description": "Provides crisis intervention and counseling on child abuse",
+    "address": "nan",
+    "phone": "1-800-422-4453",
+    "website": "https://childhelphotline.org/",
+    "tags": [
+      "Abuse, Child Protection,Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Children\u2019s Home of Virginia Baptists, Inc.",
+    "description": "Provides residential care for orphans",
+    "address": "6900 Hickory RoadPetersburg, VA  23803",
+    "phone": "804-590-2080",
+    "website": "http://chvb.org",
+    "tags": [
+      "Residential Facilities"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Children\u2019s Home Society of Virginia",
+    "description": "Provides adoption services and resources",
+    "address": "4200 Fitzhugh AvenueRichmond, VA  23230",
+    "phone": "804-353-0191",
+    "website": "www.chsva.org",
+    "tags": [
+      "Adoption, Foster Care, Pregnancy Counseling, Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Children\u2019s Hospital",
+    "description": "Provides pediatric care and services",
+    "address": "1000 E Broad StRichmond, VA 23219",
+    "phone": "804-8282467",
+    "website": "www.chrichmond.org",
+    "tags": [
+      "Health Services, Hospital"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Children\u2019s Museum of Richmond",
+    "description": "Provides a place to play and community",
+    "address": "2626 West Broad StreetRichmond, VA  23220",
+    "phone": "804-474-7000",
+    "website": "www.childrensmuseumofrichmond.org",
+    "tags": [
+      "Recreation, Museum"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "ChildSavers of Richmond",
+    "description": "Provides mental health, trauma and resources",
+    "address": "200 North 22nd StreetRichmond, VA  23223",
+    "phone": "O: 804-644-9590, 24/7: 804-305-2420",
+    "website": "www.childsavers.org",
+    "tags": [
+      "Counseling, Trauma"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chippenham Tucker Pavilion",
+    "description": "Provides mental health and resources",
+    "address": "7101 Jahnke RoadRichmond, VA  23225",
+    "phone": "804-483-0050",
+    "website": "www.hca.com/locations/tucker-pavillion",
+    "tags": [
+      "Health Services, Hospital"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Chippokes Plantation State Park",
+    "description": "Provides natural history, outdoor activities, and more",
+    "address": "695 Chippokes Park RdSurry, VA 23883",
+    "phone": "757-294-3728",
+    "website": "www.chippokes.com",
+    "tags": [
+      "Recreation, Park"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "CHKD Thrift Stores",
+    "description": "Provides clothing and other items at a discounted rate",
+    "address": "3237 S. Crater Road Petersburg, VA",
+    "phone": "(804) 733-5437",
+    "website": "https://www.chkd.org/",
+    "tags": [
+      "Thrift Stores"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Church of Christ",
+    "description": "Provides worship service and food pantry",
+    "address": "601 Cameron AvenueColonial Heights, VA  23834",
+    "phone": "804-526-5286",
+    "website": "https://www.cameronavenuechurch.net/",
+    "tags": [
+      "Church, Baptist, Food Pantry,"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Church of Jesus Christ of Latter Day Saints",
+    "description": "Provides worship service and resources",
+    "address": "501 Compton Road Colonial Heights, VA 23834",
+    "phone": "804-526-3091",
+    "website": "https://local.churchofjesuschrist.org",
+    "tags": [
+      "Church"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Church of the Nazarene",
+    "description": "Provides worship service",
+    "address": "601 East Ellerslie AvenueColonial Heights, VA  23834",
+    "phone": "804-526-6920",
+    "website": "nan",
+    "tags": [
+      "Church"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "City of Colonial Heights Public Schools",
+    "description": "Provides education and resources for students pre K-12",
+    "address": "512 BoulevardColonial Heights, VA  23834",
+    "phone": "804-524-3400",
+    "website": "https://www.colonialhts.net/",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "CleanSlate Centers",
+    "description": "Provides outpatient addiction services",
+    "address": "1510 North 28th StreetSuite 101Richmond VA 23223",
+    "phone": "866-798-4669 / 804-521-0050",
+    "website": "www.cleanslatecenters.com",
+    "tags": [
+      "Recovery/Addiction"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Clinica Latina de Salud Mental",
+    "description": "Provides mental health and resources",
+    "address": "nan",
+    "phone": "804-828-8069",
+    "website": "nan",
+    "tags": [
+      "Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Christian Church",
+    "description": "Provides worship service",
+    "address": "295 Dunlop Farms BoulevardColonial Heights, VA  23834",
+    "phone": "804-520-4988",
+    "website": "http://www.colonialchristianchurch.com",
+    "tags": [
+      "Church, Christian"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Driving School",
+    "description": "Provides driving lessons",
+    "address": "103 Highland AvenueColonial Heights, VA  23834",
+    "phone": "804-886-3337",
+    "website": "www.colonialdrivingschool.com",
+    "tags": [
+      "Driving School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Baptist Church",
+    "description": "Provides worship service",
+    "address": "17201 Route 1Colonial Heights, VA  23834",
+    "phone": "804-526-0424",
+    "website": "https://thb.church/",
+    "tags": [
+      "Church, Baptist"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Chamber of Commerce",
+    "description": "Provides the enhancement, promotion, and serve the business and educational community",
+    "address": "201 Temple Avenue, Suite EColonial Heights, VA  23834",
+    "phone": "804-526-5872",
+    "website": "www.sovachamber.com",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Dental Care",
+    "description": "Provides dental and preventive care",
+    "address": "2018 Boulevard Colonial Heights VA 23834",
+    "phone": "804-704-8394",
+    "website": "www.colonialheightsdentaloffice.com",
+    "tags": [
+      "Dental Care"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Department of Recreation & Parks",
+    "description": "Provides recreational activities and public space",
+    "address": "901 Meridian AvenueColonial Heights, VA 2 3834",
+    "phone": "804-520-9390",
+    "website": "www.colonialheightsva.gov/1017/Recreation-Parks",
+    "tags": [
+      "Recreation, Park"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Food Pantry",
+    "description": "Provides food those in need and accepts food donations",
+    "address": "530 Southpark BoulevardColonial Heights, VA  23834",
+    "phone": "804-520-7117",
+    "website": "www.chfoodpantry.org",
+    "tags": [
+      "Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Garden Club",
+    "description": "Provides garden education, tours, and community",
+    "address": "1176 Cumberland DriveColonial Heights, VA  23834",
+    "phone": "804-526-2736",
+    "website": "nan",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Health Department",
+    "description": "Provides health services, community needs, and resources",
+    "address": "9501 Lucy Corr CircleChesterfield, VA 23832",
+    "phone": "804-748-1691",
+    "website": "www.colonialheightsva.gov/1006/Health-Department",
+    "tags": [
+      "Pregnancy Counseling, Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights High School",
+    "description": "Provides education to 9-12 grade",
+    "address": "3600 Conduit RoadColonial Heights, VA  23834",
+    "phone": "804-524-3405",
+    "website": "https://chhs.colonialhts.net/",
+    "tags": [
+      "School, High School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights High School Distributive Education Clubs of America (DECA)",
+    "description": "Provides on-the-job training, counseling, student interest",
+    "address": "3451 Conduit RoadColonial Heights, VA 23834",
+    "phone": "804-524-3405",
+    "website": "www.chhs.colonialhts.net/o/chhs/page/student-clubs-and-activities",
+    "tags": [
+      "Counseling, Employment"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights High School-Technical Center",
+    "description": "Provides varies vocational education programs for students grades 9-12.",
+    "address": "3451 Conduit RdColonial Heights, VA 23834",
+    "phone": "804-524-3405",
+    "website": "https://chhs.conolinhts.net",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Historical Society",
+    "description": "Provides the preserving and promotion of the history and culture of the city",
+    "address": "1000 Hope Ridge CourtColonial Heights, VA  23834",
+    "phone": "804-526-9616",
+    "website": "www.facebook.com/p/Colonial-Heights-Historical-Society-61575817997703/",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Middle School",
+    "description": "Provides education to students 6-8 grades",
+    "address": "500 Conduit RoadColonial Heights, VA  23834",
+    "phone": "804-524-3420",
+    "website": "https://chms.colonialhts.net/",
+    "tags": [
+      "School, Middle School, Junior High"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Moose, #1783",
+    "description": "Provides fraternity, space and amenities",
+    "address": "PO Box 253170 Moose AvenueColonial Heights, VA  23834",
+    "phone": "804-921-2734",
+    "website": "www.lodge1783.moosepages.org",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Office on Youth & Human Services",
+    "description": "Identifies the needs of youth and their families and is a referral agency to appropriate services.",
+    "address": "201 James AvenueColonial Heights, VA  23834",
+    "phone": "804-520-9286",
+    "website": "www.colonialheightsva.gov/267/Youth-Human-Services",
+    "tags": [
+      "Local government, Referral, Human Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Optimist Club",
+    "description": "Participants in community programs dedicated to the youth, event space.",
+    "address": "P O Box 155, 916 Meridian AvenueColonial Heights, VA  23834",
+    "phone": "804-526-0689",
+    "website": "Facebook",
+    "tags": [
+      "Civic Organization, Club"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Presbyterian Church",
+    "description": "Provides worship service, Food Pantry and use CCHASM   https://cchasm.org/",
+    "address": "211 Lynchburg AvenueColonial Heights, VA  23834",
+    "phone": "804-526-0929",
+    "website": "http://www.colonialheightspres.org",
+    "tags": [
+      "Church, Presbyterian"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Public Library",
+    "description": "Provides books, media, meeting rooms, tutoring, and other services",
+    "address": "1000 Yacht Basin DriveColonial Heights, VA  23834",
+    "phone": "804-520-9384",
+    "website": "www.colonialheightsva.gov/211/Library",
+    "tags": [
+      "Library"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Rotary Club",
+    "description": "Provides goodwill and better friendship within the community, event space",
+    "address": "P O Box 242Colonial Heights, VA  23834",
+    "phone": "nan",
+    "website": "Facebook",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Senior Center",
+    "description": "Provides space for adults 55+ for exercise and activities, event space",
+    "address": "P O Box 3401, 157 Roanoke AvenueColonial Heights, VA 23834",
+    "phone": "804-520-9220",
+    "website": "www.colonialheightsva.gov/261/Senior-Center",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Soccer Association",
+    "description": "Provides soccer teams for boys and girls of all ages.",
+    "address": "PO Box 311Colonial Heights, VA 23834",
+    "phone": "nan",
+    "website": "www.colonialheightssoccer.com/chsa",
+    "tags": [
+      "Recreation, Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Swim & Yacht Club",
+    "description": "Provides a member owned pool, sand volleyball, basketball, event space, and other amenities.",
+    "address": "1225 Duke of Gloucester StreetColonial Heights, VA  23834",
+    "phone": "804-526-3578",
+    "website": "www.chsyc.com",
+    "tags": [
+      "Club, Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights YAC Shoe Fund",
+    "description": "Provides shoe vouchers for children in need of new shoes. Administered by Office on Youth through community donations",
+    "address": "Office on Youth & Human Services201 James AvenueColonial Heights, VA   23834",
+    "phone": "804-520-9286",
+    "website": "www.colonialheightsva.gov/267/Youth-Human-Services",
+    "tags": [
+      "Social Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Youth Advisory Council (YAC)",
+    "description": "Provides recreational activities, education, youth fellowship, leadership development",
+    "address": "P O Box 3401Colonial Heights, VA  23834",
+    "phone": "804-520-9289",
+    "website": "www.colonialheightsva.gov/349/Youth-Advisory-Council",
+    "tags": [
+      "Recreation, Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Colonial Heights Youth Services Commission",
+    "description": "Advisory board appointed by City Council. Youth development (assisted by Office on Youth). Needs assessment. Advocates for youth\u2019s needs.",
+    "address": "201 James AvenueColonial Heights, VA  23834",
+    "phone": "804-520-9286",
+    "website": "www.colonialheightsva.gov/348/Youth-Services-Commission",
+    "tags": [
+      "Social Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Comfort Zone Camp",
+    "description": "Provides free grief camps and support for kids who've lost a parent or sibling.",
+    "address": "6606 W Broad St., Ste 401Richmond, VA 23230",
+    "phone": "804-840-6454",
+    "website": "www.comfortzonecamp.org",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Common Help",
+    "description": "Provides guidance for assistance such as child care, energy, SNAP, and more.",
+    "address": "nan",
+    "phone": "855-635-4370",
+    "website": "https://commonhelp.virginia.gov",
+    "tags": [
+      "Social Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Commonwealth Catholic Charities",
+    "description": "Provides a variety of assistance for individuals and families",
+    "address": "1601 Rolling Hills Drive Richmond, VA 23229",
+    "phone": "804-285-5900",
+    "website": "https://www.cccofva.org",
+    "tags": [
+      "Financial Assistance"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Commonwealth Orthodontics",
+    "description": "Provides dental and preventative care, teeth aligning",
+    "address": "456 Charles H. Dimmock Parkway ST F Colonial Heights VA 23834",
+    "phone": "804-520-7292",
+    "website": "www.commonwealth-dentistry.com",
+    "tags": [
+      "Traditional Braces; Clarity Aligners; Dental Care"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Commonwealth Pediatric Dentistry",
+    "description": "Provides dental and preventative care for kids",
+    "address": "456 Charles H Dimmock Parkway Colonial Heights VA 23834",
+    "phone": "804-520-7292",
+    "website": "https://commonwealth-dentistry.com",
+    "tags": [
+      "Dental Care; General Dentistry; Cosmetic Dentistry; Periodontics"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Community Christian Child Care Center",
+    "description": "Provides daycare services",
+    "address": "14611 Woods Edge RoadColonial Heights, VA  23834",
+    "phone": "804-530-1150",
+    "website": "nan",
+    "tags": [
+      "Daycare"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Community Counseling Group",
+    "description": "Provides Mental Health Skill-Building Services (MHSS)",
+    "address": "230 S. Crater RoadPetersburg, VA  23803",
+    "phone": "804-796-2255",
+    "website": "www.ccgcare.com",
+    "tags": [
+      "Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Community Day School",
+    "description": "Provides alternative education for students grades 9-12.",
+    "address": "515 Conduit RoadColonial Heights, VA  23834",
+    "phone": "804-524-3425",
+    "website": "www.colonialhts.net",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Compassionate Friends RVA",
+    "description": "Provides a safe place for those who are bereaved.",
+    "address": "11300 Huguenot RoadRichmond, VA 23202",
+    "phone": "804-254-0588",
+    "website": "www.compassionatefriendsrva.org",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Counsel Connect LLC.",
+    "description": "Provides counseling services",
+    "address": "10003 Courtview Ln suite b, Chesterfield, VA 23832",
+    "phone": "804-464-7185",
+    "website": "https://www.counselconnectllc.com/",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Counseling & Advocacy Associates",
+    "description": "Provides home based, clinical, virtual, and mental health services",
+    "address": "10128 Hull Street Road Midlothian, VA 23112",
+    "phone": "804-744-1114",
+    "website": "https://counselingandadvocacy.com",
+    "tags": [
+      "Counseling; Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Counseling and Forensic Services, Inc",
+    "description": "Provides mental health and resources for adolescents",
+    "address": "224 N Main St., Ste 107Hopewell, VA 23860",
+    "phone": "703-492-2994",
+    "website": "www.cfsvirginia.com",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Covenant Christian Fellowship",
+    "description": "Provides worship and food pantry",
+    "address": "542 Southpark BoulevardColonial Heights, VA  23834",
+    "phone": "804-526-8966",
+    "website": "www.ccfgalway..com",
+    "tags": [
+      "Church, Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Cover Virginia",
+    "description": "Provides information for FAMIS; Medicaid assistance; Health Insurance options",
+    "address": "nan",
+    "phone": "855-242-8282",
+    "website": "https://commonhelp.virginia.gov",
+    "tags": [
+      "Social Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Crater Juvenile Detention Center",
+    "description": "Provides a safe, secure, and supportive environment for court-involved youth",
+    "address": "6102 County Dr.Disputanta, VA 23842",
+    "phone": "804-732-3803",
+    "website": "www.vjda.org/member-facilities/crater-juvenile-dentention-home/",
+    "tags": [
+      "Legal Service"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Crisis Text Line",
+    "description": "Provides support for individuals confidentially who are in crisis.",
+    "address": "nan",
+    "phone": "Text HOME or HOLA to 741741",
+    "website": "http://www.crisistextline.org/",
+    "tags": [
+      "Crisis"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Crossover Health Ministry",
+    "description": "Provides high-quality, compassionate healthcare to uninsured and Medicaid patients.",
+    "address": "Richmond Clinic- 108 Cowardin Avenue Richmond, VA 23224Henrico Clinic-8600 Quioccasin Road Richmond, VA 23229",
+    "phone": "804-655-2794",
+    "website": "www.crossoverministry.org",
+    "tags": [
+      "Health Services, Clinic"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Crossroads of Petersburg (OPT)",
+    "description": "Provides services for those with substance use disorder (SUD).",
+    "address": "10543 South Crater RoadPetersburg, VA 23805",
+    "phone": "1-877-654-6396",
+    "website": "www.crossroadstreatmentcenters.com",
+    "tags": [
+      "Recovery"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "CVHS Health Services",
+    "description": "Provides medical, dental, behavioral health, and pharmacy services to those with limited access to health services.",
+    "address": "25 S. Union StPetersburg, VA 23803",
+    "phone": "804-957-9601",
+    "website": "www.cvhsinc.org/downtown-petersburg",
+    "tags": [
+      "Recovery"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Deaf and Hard of Hearing Community Counseling Services (DHHCCS)",
+    "description": "Provides services to the deaf and hearing impaired Community awareness of needs and abilities of deaf and hearing impaired",
+    "address": "1503 Santa Rose Rd., Ste 211Richmond, VA 23229",
+    "phone": "804-282-1943",
+    "website": "wwww.disabilitynavigator.org",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Department for Aging and Rehabilitative Services (DARS)",
+    "description": "Provides vocational rehabilitation programs and services to those with disabilities.",
+    "address": "2795 South Crater Road, Suite 1Petersburg, VA  23805",
+    "phone": "804-863-1625",
+    "website": "nan",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Department of Medical Assistance Services (DMAS)",
+    "description": "Improve the health and well-being of Virginians through access to high-quality health care coverage.",
+    "address": "600 East Broad StreetRichmond, VA 23219",
+    "phone": "1-833-5CALLVA TDD: 1-888-221-1590",
+    "website": "https://www.dmas.virginia.gov/",
+    "tags": [
+      "Cover VirginiaManaged Care OrganizationsMedicaid EnrollmentHealth Insurance"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Destination Church",
+    "description": "Provides worship services and groups.",
+    "address": "5258 Oaklawn Boulevard Hopewell, VA 23860",
+    "phone": "804-536-9890",
+    "website": "https://destinationchurch.com/",
+    "tags": [
+      "Church"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Disabled American Veterans Chapter 47",
+    "description": "Improves the connection between Veterans and the resources to improve their standard of living.",
+    "address": "32 West Washington StreetPetersburg, VA 23803",
+    "phone": "804-712-6596",
+    "website": "Facebook",
+    "tags": [
+      "Civic, Veteran"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Discovery World Day Care",
+    "description": "Provides daycare and preschool.",
+    "address": "123 West Ellerslie AvenueColonial Heights, VA  23834",
+    "phone": "804-520-1590",
+    "website": "Facebook",
+    "tags": [
+      "Daycare"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "District 19 Crisis Line",
+    "description": "Provides 24-Hour assistance in the need of a crisis.",
+    "address": "20 W Bank St., #6Petersburg, VA 23803",
+    "phone": "804-862-8000",
+    "website": "www.grcsb.org",
+    "tags": [
+      "Crisis"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "District 19, Community Services Board (Same Day Access)",
+    "description": "Provides services for adults and children experiencing mental illness, Intellectual/developmental disabilities, and substance use disorders.",
+    "address": "20 West Bank StreetPetersburg, VA  23803",
+    "phone": "804-862-8002",
+    "website": "www.grcsb.org",
+    "tags": [
+      "Counseling; Crisis"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "District 19-Dinwiddie Counseling Services",
+    "description": "Provides services for adults and children experiencing mental illness, Intellectual/developmental disabilities, and substance use disorders.",
+    "address": "13902 Courthouse RoadDinwiddie, VA  23841",
+    "phone": "804-469-3746",
+    "website": "www.grcsb.org",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Divorce Care \u2013 Colonial Heights Baptist Church",
+    "description": "Provides a support group for those separated, divorced or going through divorce. Meets Wednesdays at 6:50 pm",
+    "address": "17201 Route 1South Chesterfield, VA 23834",
+    "phone": "804-526-0424",
+    "website": "www.thb.church",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Divorce Recovery Workshop",
+    "description": "Provide a support groups for people going through separation/divorce.",
+    "address": "2709 Monument AvenueRichmond, VA  23220",
+    "phone": "804-358-4548, Ext 132",
+    "website": "www.FBCRichmond.org",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Dominion Behavioral Healthcare",
+    "description": "Provides outpatient services, TMS Therapy, and treatment for depression",
+    "address": "2301 North Parham Rd., Ste. 5Richmond, VA 23229",
+    "phone": "804-270-1124",
+    "website": "https://dbhrichmond.com",
+    "tags": [
+      "Counseling, Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Downs Syndrome Association of Greater Richmond",
+    "description": "Provides resources and support for individuals with Down Syndrome and families with those with Down Syndrome.",
+    "address": "1504 Santa Rosa Rd., Ste. 124Richmond, VA  23229",
+    "phone": "800-725-1549, 804-447-4713",
+    "website": "www.dsagr.com",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Eleventh House",
+    "description": "Provides residential treatment facility to disturbed children.",
+    "address": "205 North BoulevardRichmond, VA  23220",
+    "phone": "804-355-8735",
+    "website": "nan",
+    "tags": [
+      "Residential Facilities, Disability, Children"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Elk Hill",
+    "description": "Provides specialized education, community-based services, and residential treatment programs.",
+    "address": "1975 Elk Hill RoadGoochland, VA  23063",
+    "phone": "804-457-4866",
+    "website": "www.elkhill.org",
+    "tags": [
+      "Residential Facilities"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Ellie Mental Health",
+    "description": "Provides therapy individually, couples, online, family, play, grief, and trauma-informed.",
+    "address": "Several locations",
+    "phone": "804-603-1085",
+    "website": "https://elliementalhealth.com",
+    "tags": [
+      "Counseling, Couples, Family, Children, Grief, Trauma"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "EMS of Virginia",
+    "description": "Provides mental health and resources",
+    "address": "707 N. Courthouse RoadNorth Chesterfield, VA 23236",
+    "phone": "804-332-5696",
+    "website": "www.emsofvirginia.com",
+    "tags": [
+      "Community Mental Health; Mental Health Skill Building; Intensive In Home; Community Stabilization; Virtual Substance Abuse Intensive Outpatient Program(IOP)"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "enCircle",
+    "description": "Provides assistance and resources for individuals with intellectual and developmental diabilities",
+    "address": "4901 Dickens Rd, Ste 115Richmond, VA 23230",
+    "phone": "804-288-0122",
+    "website": "https://encircleall.org",
+    "tags": [
+      "Disability"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "EZLETT LLC",
+    "description": "Provides mental health and resources",
+    "address": "8655 Staples Mill RdRichmond, VA 23228",
+    "phone": "804-262-8479",
+    "website": "www.ezettyfs.org",
+    "tags": [
+      "Mental Health, Therapy"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Faith Baptist Church",
+    "description": "Provides worship services",
+    "address": "1226 West Roslyn RoadColonial Heights, VA  23834",
+    "phone": "804-526-8189",
+    "website": "nan",
+    "tags": [
+      "Church, Baptist"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Family Connections Counseling Services",
+    "description": "Provides mental health services",
+    "address": "12801 Iron Bridge Road Suite 400Chester, VA 23831",
+    "phone": "804-786-0295",
+    "website": "www.fccsva.com",
+    "tags": [
+      "Counseling; Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Family Counseling Center for Recovery (FCCR Radford)",
+    "description": "Provides drug rehab and opioid treatment program to those struggling with addiction.",
+    "address": "4906 Radford Ave, Richmond VA, 23230",
+    "phone": "804-354-1196",
+    "website": "www.pinnacletreatment.com",
+    "tags": [
+      "Recovery/Addiction"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Family Focus",
+    "description": "Provides outpatient, psychiatry, and community based services",
+    "address": "2807 Parham Road Suite 300 Henrico, VA 23294",
+    "phone": "804-261-2090",
+    "website": "https://www.familyfocusinc.com/",
+    "tags": [
+      "Counseling; Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Family Guidance Centers",
+    "description": "Provides mental health services",
+    "address": "6603 Irongate Square North Chesterfield, VA 23234",
+    "phone": "804-743-0960",
+    "website": "www.familyguidancecenters.com",
+    "tags": [
+      "Counseling Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Family Lifeline",
+    "description": "Offers support to families in crisis.",
+    "address": "700 South Sycamore StreetPetersburg, VA 23803",
+    "phone": "804-282-4255",
+    "website": "https://www.familylifeline.org/",
+    "tags": [
+      "Family Support"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Family Services Inc",
+    "description": "Provides in-home mental health services",
+    "address": "612 S. Sycamore StreetPetersburg, VA 23803",
+    "phone": "804-898-3524",
+    "website": "https://www.familyservicesincva.com/",
+    "tags": [
+      "Mental Health; Intensive In Home; Residential Group Home; 24 hour Emergency Crisis Support"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Family Support Partners of Virginia",
+    "description": "Provides support via programs for individuals and families",
+    "address": "8005-C Creighton Pkwy, Ste. 246Mechanicsville, VA 23111",
+    "phone": "804-723-1215",
+    "website": "www.fspofva.com",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Fan Free Clinic",
+    "description": "Provides medical treatment, health education, and social services. Monday \u2013 Friday, 10 am to 6 pm.",
+    "address": "1010 North Thompson StreetRichmond, VA  23221",
+    "phone": "804-358-6343",
+    "website": "www.fanfreeclinic.org",
+    "tags": [
+      "Health Services, Clinic"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Federal Substance Information Treatment & Referral Hotline",
+    "description": "Provides confidential and anonymous resources for person seeking treatment for mental and substance use disorders.",
+    "address": "nan",
+    "phone": "1-800-662-4357",
+    "website": "www.findtreatment.gov",
+    "tags": [
+      "Recovery/Addiction"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Feed More",
+    "description": "Provides collection, preparation, and distribution of food",
+    "address": "1415 Rhoadmiller StreetRichmond, VA  23220",
+    "phone": "804-521-2500",
+    "website": "www.feedmore.org",
+    "tags": [
+      "Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Feed More Help Hotline",
+    "description": "Provides assistance for nearby food pantries, helps with applying for SNAP, and links to additional services",
+    "address": "1415 Rhoadmiller St, Richmond, VA 23220",
+    "phone": "804-237-8617",
+    "website": "https://feedmore.org/",
+    "tags": [
+      "Hunger Relief"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "First Choice Community Employment Center",
+    "description": "Provides employment assistance to those 18+ in Chesterfield and Colonial Heights",
+    "address": "nan",
+    "phone": "804-768-7334",
+    "website": "www.chesterfield.gov/4254/Employment-Services",
+    "tags": [
+      "Education; Employment; Training Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Focus on Recovery (Eating Disorders & Substance Abuse Referrals)",
+    "description": "National Hotline",
+    "address": "nan",
+    "phone": "1-800-234-0246",
+    "website": "nan",
+    "tags": [
+      "Recovery/Addiction"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Freedom Support Center",
+    "description": "Veteran Benefits Support",
+    "address": "32 West Washington Street Petersburg, VA 23803",
+    "phone": "804-775-0864",
+    "website": "nan",
+    "tags": [
+      "Veteran"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "FRIENDS Association for Children",
+    "description": "Provides family development, before/after school care",
+    "address": "1004 Saint John StreetRichmond, VA 23220",
+    "phone": "804-644-2357",
+    "website": "https://friendsrva.org/",
+    "tags": [
+      "Childcare"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Gamblers Anonymous",
+    "description": "nan",
+    "address": "nan",
+    "phone": "1-800-522-4700",
+    "website": "www.gamblersanonymous.org",
+    "tags": [
+      "Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "GED Information",
+    "description": "Provides information on obtaining a GED",
+    "address": "nan",
+    "phone": "nan",
+    "website": "www.doe.virginia.gov",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Genia Johnson Dance Company",
+    "description": "Provides dance education",
+    "address": "3301 BoulevardColonial Heights, VA  23834",
+    "phone": "804-524-9391",
+    "website": "www.geniajohnsondanceco.com",
+    "tags": [
+      "Dance"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Girl Scouts of the Commonwealth of Virginia (Headquarters)",
+    "description": "Provides any and all information for Girl Scouts",
+    "address": "3214 Skipwith Rd.Richmond, VA 23294",
+    "phone": "804-746-0590",
+    "website": "www.comgirlscouts.org",
+    "tags": [
+      "Scouts, Girl Scouts"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Goodwill Industries",
+    "description": "Provides used clothes and household items for sale",
+    "address": "1500 BoulevardColonial Heights, VA  23834",
+    "phone": "804-520-7122",
+    "website": "www.goodwill.com",
+    "tags": [
+      "Social Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Grace Health Services",
+    "description": "Provides mental health and resources",
+    "address": "2001 Snead AvenueColonial Heights, VA  23834",
+    "phone": "804-712-0231",
+    "website": "www.gracementalhealthcare.com",
+    "tags": [
+      "Health Services, Therapy"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Grace Home Ministries",
+    "description": "Provides support and services for teens facing unplanned pregnancies.",
+    "address": "PO Box 1023Chesterfield, VA 23832",
+    "phone": "804-479-4172",
+    "website": "www.gracehomeministries.org",
+    "tags": [
+      "Non-Profit, Teens, Teen Pregnancy, & Parenthood"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Grandparent Information Center (AARP)",
+    "description": "Provides information for grandparents raising grandchildren",
+    "address": "601 East Street, NWWashington, DC  20049",
+    "phone": "1-888-OUR-AARP (687-2277)",
+    "website": "nan",
+    "tags": [
+      "Civic Organization, Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Greater Richmond Continuum of Care",
+    "description": "Provides assistance for those individuals experiencing homelessness",
+    "address": "9211 Forest Ave, Ste 110Richmond, VA 23235",
+    "phone": "O: 804-343-2045, Homeless: 804-972-0813",
+    "website": "www.endhomelessnessrva.org",
+    "tags": [
+      "Housing, Homeless"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Greater Richmond Regional Hotline/Safe Harbor",
+    "description": "Domestic Violence; Sexual Assault; 24 Hour Hotline",
+    "address": "nan",
+    "phone": "804-612-6126",
+    "website": "nan",
+    "tags": [
+      "Domestic Violence; Sexual Assault"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Grief & Bereavement",
+    "description": "Meets at John Randolph Medical Center, Hopewell. Designed to help those experiencing a loss (8 week series)",
+    "address": "nan",
+    "phone": "804-452-3282",
+    "website": "nan",
+    "tags": [
+      "Counseling, Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Grief Share \u2013 Colonial Heights Baptist Church",
+    "description": "Meets Wednesdays at CH Baptist Church, 6:50 pm. For anyone who has lost a loved one through death.",
+    "address": "nan",
+    "phone": "804-526-0424",
+    "website": "nan",
+    "tags": [
+      "Counseling, Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Habitat for Humanity",
+    "description": "Provides volunteer services",
+    "address": "829 Commerce Street Petersburg, VA 23803",
+    "phone": "(804) 732-5793",
+    "website": "https://tchfh.org/",
+    "tags": [
+      "Employment/Volunteer Opportunities"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Health Brigade",
+    "description": "Provides health services for all individuals",
+    "address": "1010 North Thompson Street Richmond, VA 23230",
+    "phone": "804-358-6343",
+    "website": "https://www.healthbrigade.org",
+    "tags": [
+      "Health Care"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Heavenly Smiles Dentistry",
+    "description": "Provides dental care for individuals of all ages",
+    "address": "1021 BLVD Colonial Heights VA 23834",
+    "phone": "804-892-1330",
+    "website": "https://heavenlysmilesdentistryva.com/",
+    "tags": [
+      "General Dentistry; Composite filling; Root canal treatment; Dental Crowns & Bridges; Dental Implants; Tooth Bonding; Teeth Whitening; Night Guards; Full Mouth Rehabilitation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Highland Methodist Church",
+    "description": "Provides dinners on Wednesday\u2019s at 5:30 pm, helps with utilities and clothes closet is available.",
+    "address": "125 East Westover AvenueColonial Heights, VA  23834",
+    "phone": "804-526-3870",
+    "website": "http://www.highlandumchurch.net",
+    "tags": [
+      "Church, Methodist"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Hilliard Housing",
+    "description": "Provides assistance for families experiencing homelessness move to permanent homes.",
+    "address": "3900 Nine Mile Road Henrico, VA 23223",
+    "phone": "804-236-5800",
+    "website": "https://housingfamiliesfirst.org",
+    "tags": [
+      "Domestic Violence/ Homeless Shelters"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Historic Petersburg \u2013 Tourist Information Center",
+    "description": "Provides resources and information for the City of Petersburg",
+    "address": "15 West Bank StreetPetersburg, VA  23803",
+    "phone": "804-733-2396",
+    "website": "https://visitpetersburgva.org/",
+    "tags": [
+      "Recreation, Museum"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Homeless Connection Line (Homeward)",
+    "description": "Provides assistance for persons experiencing homelessness",
+    "address": "9211 Forest Hill Ave., Ste. 110Richmond, VA 23235",
+    "phone": "804-972-0813",
+    "website": "nan",
+    "tags": [
+      "Shelters"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Hopetree Family Services",
+    "description": "Provides treatment foster care, residential programs, and counseling.",
+    "address": "1030 Old Bon Air Rd. PO Box 35615North Chesterfield, VA 23235",
+    "phone": "804-201-9006",
+    "website": "http://www.hopetreefs.org",
+    "tags": [
+      "Foster Care"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Hopewell Moose Lodge #1472",
+    "description": "Civic organization for creating bonds, community, and event space.",
+    "address": "4701 Western StreetHopewell VA 23860",
+    "phone": "804-458-1755",
+    "website": "www.hopewellmooselodge.com",
+    "tags": [
+      "Civic Organizations"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "House of Refuge",
+    "description": "Provides shelter for survivors of Domestic Violence and Human Trafficking",
+    "address": "nan",
+    "phone": "804-893-0511",
+    "website": "nan",
+    "tags": [
+      "Domestic Violence; Human Trafficiking"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Housing Opportunities Made Equal (H.O.M.E)",
+    "description": "Provides housing resources and counseling",
+    "address": "1601 Rolling Hills Dr., Ste. 110Richmond, VA 23229",
+    "phone": "804-354-0641",
+    "website": "www.homeofva.org",
+    "tags": [
+      "Housing Subsidy/Low Income"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Human Trafficking National Hotline",
+    "description": "24 Hour Hotline; Human Trafficking",
+    "address": "nan",
+    "phone": "1-888-373-7888",
+    "website": "nan",
+    "tags": [
+      "Human Trafficking"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "HumanKind",
+    "description": "Provides financial coaching, transportation, childcare, foster care, and parenting support",
+    "address": "908 N. Thompson St.Richmond, VA 23230",
+    "phone": "Economic Resources: 804-461-3585, Foster Care: 804-612-7556",
+    "website": "https://www.humankind.org/",
+    "tags": [
+      "Employment assistance/Financial Opportunity Center, Foster Care"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Hunter Holmes McGuire VA Medical Center",
+    "description": "Provides medical, dental, and surgical services for Veterans",
+    "address": "1201 Broad Rock BlvdRichmond, VA 23249",
+    "phone": "804-675-5000",
+    "website": "https://www.va.gov/richmond-health-care",
+    "tags": [
+      "Military/Veteran Resources"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Immanuel Baptist Church",
+    "description": "Provides worship services and bible study",
+    "address": "620 Lafayette AvenueColonial Heights, VA  23834",
+    "phone": "804-526-3276",
+    "website": "http://www.ibc4family.com",
+    "tags": [
+      "Church, Baptist, Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Infant, Children, and Teens Programs\u2013District 19",
+    "description": "Provides community-based prevention and treatment services to children of all ages",
+    "address": "20 West Bank Street, Suite 5Petersburg, VA  23803",
+    "phone": "804-8002 ext . 3178",
+    "website": "www.grcsb.org",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Intensive Community Outreach Services (ICOS)",
+    "description": "Provides skills and strategies for prevention in the community and their homes.",
+    "address": "Two Locations:222 N. Sycamore StreetPetersburg, VA 238038052 Elm Street, Suite FRichmond, VA 23111",
+    "phone": "Petersburg: 804-431-5331, Mechanicsville: 804-789-9054",
+    "website": "https://www.icoservices.org/",
+    "tags": []
+  },
+  {
+    "type": "resource",
+    "name": "Ivey Memorial Methodist Church",
+    "description": "Provides worship services and bible study",
+    "address": "17120 Route 1Colonial Heights, VA  23834",
+    "phone": "804-525-1350",
+    "website": "www.iveymemorial.org",
+    "tags": [
+      "Church, Methodist"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Ivey Memorial United Methodist Church Day Care",
+    "description": "Provides daycare services",
+    "address": "17120 Jefferson Davis HighwayColonial Heights, VA  23834",
+    "phone": "804-526-6544",
+    "website": "www.iveymemorial.com",
+    "tags": [
+      "Daycare"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Ivy Counseling Center LLC",
+    "description": "Provides substance abuse treatment",
+    "address": "325 Brown St., Ste 104Petersburg, VA 23803",
+    "phone": "800-354-4107, 804-835-5933, 804-835-6669",
+    "website": "https://www.ivycounselingcenter.com/",
+    "tags": [
+      "Mental health, Substance Abuse"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Jackson Feild Behavioral Health Services",
+    "description": "Provides services and support for children suffering from severe emotional trauma, mental illness, and/or addiction",
+    "address": "546 Walnut Grove DriveJarratt, VA  23867",
+    "phone": "434-634-3217",
+    "website": "www.jacksonfeild.org",
+    "tags": [
+      "Residential Facilities"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Jewish Family Services",
+    "description": "Provides service in the form of care, counseling, and adoption for individuals and families",
+    "address": "6718 Patterson AvenueRichmond, VA  23226",
+    "phone": "804-282-5644",
+    "website": "http://www.jfsrichmond.org/",
+    "tags": [
+      "Adoption, Pregnancy Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Jim Doran, LCSW",
+    "description": "Provides mental health services",
+    "address": "10106 Krause Road, Suite 100-CChesterfield, VA 23832",
+    "phone": "804-751-0277",
+    "website": "nan",
+    "tags": [
+      "Mental health; counseling services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Job Corps",
+    "description": "Provides a training program for youth ages 16-24",
+    "address": "7400 Beaufont Springs Dr., Ste. 415Richmond, VA  23225",
+    "phone": "434-818-2042",
+    "website": "www.jobcorps.gov",
+    "tags": [
+      "Employment"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Kenner Army Health Clinic",
+    "description": "Provides medical care and services to those serving the in the USA military",
+    "address": "700 24th StreetFort Lee, VA 23801",
+    "phone": "804-734-9512",
+    "website": "https://kenner.tricare.mil/",
+    "tags": [
+      "Primary care; Preventive Care; Mental health; Case management; Dental"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "KEYS Academy",
+    "description": "Provides private day school for those who have special education needs",
+    "address": "455 Old Wagner RoadPetersburg, VA  23805",
+    "phone": "804-733-2180",
+    "website": "www.keysacademy.org",
+    "tags": [
+      "School, Special Education"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Kid To Kid",
+    "description": "Provides a service purchasing 1st and 2nd hand items for customers to purchase and generate revenue",
+    "address": "4537 Commonwealth Centre Pkwy, Midlothian, VA 23112",
+    "phone": "(804) 763-0708",
+    "website": "https://kidtokid.com/",
+    "tags": [
+      "Clothing Closets"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Kiwanis Club of Colonial Heights",
+    "description": "Global organization of volunteers dedicated to changing the world. Meetings are every Wed. 11:30pm at Colonial Italian Grill",
+    "address": "P O Box 246Colonial Heights, VA  23834",
+    "phone": "nan",
+    "website": "kiwanis-club-of-colonial-heights.square.site",
+    "tags": [
+      "Civic Organization, Charity, Volunteer"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Kool Smiles",
+    "description": "Provides general and children's dentistry, orthodontics, and oral surgery",
+    "address": "400-C Southpark Blvd Colonial Heights, VA 23834",
+    "phone": "804-294-2623",
+    "website": "https://www.mykoolsmiles.com/",
+    "tags": [
+      "Dental"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Lakeview Elementary School",
+    "description": "Provides education for grades K-5",
+    "address": "401 Taswell AvenueColonial Heights, VA  23834",
+    "phone": "804-524-3435",
+    "website": "https://lakeview.colonialhts.net/",
+    "tags": [
+      "School, Elementary"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Latinos In Virginia Empowerment Center(LIVE)",
+    "description": "Provides services for those individuals in domestic and sexual violence in the Latino community",
+    "address": "9513 Hull Street Rd N suite b, North Chesterfield, VA 23236",
+    "phone": "(804) 658-3341",
+    "website": "https://latinosenvirginia.org/",
+    "tags": [
+      "Crisis Intervention; Licensed Counseling & Therapy; Peer Counseling; Support Groups; Interpretation Services; Shelter Placement; Legal Clinics; Safety Planning; Protective Order Assistance; Court Accompaniment; Hospital Accompaniment; Financial Assistance; Case Management"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Launch Pad Counseling",
+    "description": "Provides online counseling services for adults, couples, and children. LGBT+ friendly",
+    "address": "5540 Falmouth St., Ste. 100Richmond, VA 23230",
+    "phone": "804-655-4681",
+    "website": "https://launchpadcounseling.com/",
+    "tags": [
+      "Counseling Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Legal Aid Justice Center",
+    "description": "Provides assistance with housing, healthcare and public benefits, consumer and medical debt, immigration, criminal legal system, and special education",
+    "address": "237 North Sycamore Street Suite A Petersburg, VA 23803626 East Broad Street Suite 200R Richmond, VA 23219",
+    "phone": "804-862-2205(Petersburg); 804-643-1086(Central Richmond); 800-763-7323(Toll-free)",
+    "website": "nan",
+    "tags": [
+      "Legal Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Life Christian Academy",
+    "description": "Provides education for students' Pre-K to High School",
+    "address": "Pre-K and Middle/High School:16801 Harrowgate RoadS. Chesterfield, VA  23834Elementary:1221 BoulevardColonial Heights, VA 23834",
+    "phone": "Pre-K: 804-431-5480, Elementary: 804-805-2473, Middle/High School: 804-526-5941",
+    "website": "www.lcaeagles.net",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Life Church",
+    "description": "Provides worship service",
+    "address": "P O Box 51616801 Harrowgate RoadColonial Heights, VA  23834",
+    "phone": "804-526-7000",
+    "website": "http://lifechurch-ag.com/",
+    "tags": [
+      "Church"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Lifebridge Counseling",
+    "description": "Provides school-based and outpatient therapy",
+    "address": "10187 Brook RoadGlen Allen, VA  23859",
+    "phone": "804-612-3302",
+    "website": "www.lifebridgecounseling.com",
+    "tags": [
+      "Residential Facilities"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Little Keswick School",
+    "description": "Therapeutic boarding school for boys",
+    "address": "P O Box 24Keswick, VA  22947",
+    "phone": "434-295-0457",
+    "website": "www.keswickschool.org",
+    "tags": [
+      "Residential Facilities, Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "LogistiCare Medicaid Transportation",
+    "description": "Provides Medicaid Transportation Services",
+    "address": "nan",
+    "phone": "866-386-8331",
+    "website": "www.logisticare.com",
+    "tags": [
+      "Transportation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "M.A.D.D. (Mothers Against Drunk Driving)",
+    "description": "Provides services and resources to those affected by drunk drivers",
+    "address": "5310 Markel Rd., Ste. 101Richmond, VA 23230",
+    "phone": "804-353-7121",
+    "website": "https://www.madd.org/virginia/",
+    "tags": [
+      "Activist Group"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Maggie L Walker Governor School",
+    "description": "Specialty high school for grades 9-12",
+    "address": "1000 North Lombardy Street Richmond, VA 23220",
+    "phone": "804-354-6800",
+    "website": "https://mlwgs.com/",
+    "tags": [
+      "Education/Schools"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Magnolia Grange House Museum",
+    "description": "Historic mansion located in Chesterfield County built in 1822",
+    "address": "10020 Iron Bridge RoadChesterfield, VA  23832",
+    "phone": "804-748-1498",
+    "website": "www.chesterfield.gov/facilities",
+    "tags": [
+      "Recreation, Museum"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Make-A-Wish Foundation \u2013 Central Virginia",
+    "description": "Grants the wishes of children with life-threatening medical conditions.",
+    "address": "2810 North Parham Road, Suite 302Richmond, VA  23294",
+    "phone": "804-217-9474 or 800-234-9474",
+    "website": "https://wish.org",
+    "tags": [
+      "Health Services, Charity"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "March of Dimes",
+    "description": "Provides resources and services via maternal health risks and death, ending preventable preterm birth and infant defect",
+    "address": "nan",
+    "phone": "nan",
+    "website": "www.marchofdimes.org",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Math, Science & Innovation Center",
+    "description": "Provides programs in math and science for young people",
+    "address": "2401 Hartman StreetRichmond, VA  23223",
+    "phone": "804-343-6525",
+    "website": "www.mymsic.org",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Mayor's Beautification Committee",
+    "description": "Promotes litter prevention, beautification and general environmental needs",
+    "address": "200 Comstock DriveColonial Heights, VA  23834",
+    "phone": "nan",
+    "website": "nan",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Mental Health Virginia",
+    "description": "Provides mental health advocacy and resources",
+    "address": "2008 Bremo Rd #101Richmond, VA 23226",
+    "phone": "Office: 804-257-5591, Suicide/Crisis Lifeline: 988",
+    "website": "https://mentalhealthvirginia.org/",
+    "tags": [
+      "Advocacy; Peer run warm line; Recovery Education; Probation peer support"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Mental Health Virginia (MHV)- Warm Line",
+    "description": "Provides space via text or call assisting in mental health assistance",
+    "address": "2008 Bremo Rd #101Richmond, VA 23226",
+    "phone": "1-866-400-6428",
+    "website": "https://mentalhealthvirginia.org/",
+    "tags": [
+      "Advocacy; Peer warm line; Recovery education; Probation peer support"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Mercy Mall",
+    "description": "Provides clothing and resources for the homeless and those individuals in need",
+    "address": "7519 Whitepine Rd. N Chesterfield, VA 23237",
+    "phone": "804-728-2928; appointments@mercymallva.org",
+    "website": "https://mercymallva.org/",
+    "tags": [
+      "Clothing; Household Items; Emergency Assistances"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Meridian Group",
+    "description": "Provides mental health services via licensed therapists",
+    "address": "9401 Courthouse Rd, Ste. 206Chesterfield, VA 23832",
+    "phone": "804-751-8644",
+    "website": "https://www.meridianhelp.com/",
+    "tags": [
+      "Child, family; adolescent, and adult counseling; Anxiety, depression; stress; loss; self-esteem, and trauma issues; Child and adolescent educational; behavioral, and emotional problems;ADHD Assessments and treatment;Psychological assessments of intellectual learning, emotional, and behavior issues; Couples counseling; Divorce, custody, and co-parenting facilitation; Pre-surgical psychological screening evaluations"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Michael A. Stansfield, DDS",
+    "description": "Provides dental care",
+    "address": "3660 BLVD ST F Colonial Heights VA 23834",
+    "phone": "804-526-2200",
+    "website": "nan",
+    "tags": [
+      "Dental Care"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Molina (Magellan) Complete Care of VA",
+    "description": "Provides Medicaid Transportation Services",
+    "address": "nan",
+    "phone": "877-790-9472",
+    "website": "www.molinahealthcare.com",
+    "tags": [
+      "Transportation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Mount Pleasant Baptist",
+    "description": "Provides worship services and bible study",
+    "address": "3110 Greenwood AvenueColonial Heights VA 23834",
+    "phone": "804-526-0816",
+    "website": "www.mpblife.com",
+    "tags": [
+      "Church"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Multiple Sclerosis Society \u2013 Central Virginia",
+    "description": "Provides resources and assistance for those experiencing Multiple Sclerosis",
+    "address": "4200 Inslake Drive # 301 Glen Allen, VA 23060",
+    "phone": "804-353-5008",
+    "website": "www.nationalmssociety.org",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Muscular Dystrophy Association",
+    "description": "Provides resources and assistance for those experiencing Muscular Dystrophy",
+    "address": "1503 Santa Rosa Rd.Richmond, VA  23229",
+    "phone": "1-804-285-2961",
+    "website": "www.mda.org",
+    "tags": [
+      "Disability Services, Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Nami Virginia: Mental Health",
+    "description": "Provides one-on-one help and information necessary to assist family and friends in tackling tough challenges",
+    "address": "W Laburnum AvePO Box 8260Richmond, VA 23226",
+    "phone": "(804) 285-8264",
+    "website": "https://namivirginia.org/",
+    "tags": [
+      "Support groups; Crisis Services; Education; Advocacy"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "National Child Abuse Hotline",
+    "description": "National Child Abuse Hotline",
+    "address": "nan",
+    "phone": "1-800-25-ABUSE (252-2879)",
+    "website": "nan",
+    "tags": [
+      "Abuse, Child Protection, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "National Counseling Group",
+    "description": "Provides services for mental, behavioral, and substance use",
+    "address": "16035 Continental Blvd, Colonial Heights, VA 23834",
+    "phone": "804-767-3470",
+    "website": "https://www.ncgcommunity.com/",
+    "tags": [
+      "Counseling Services; Child & Family services; Life skills; Outpatient services; Therapeutic Day Treatment; Adult support services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "National Domestic Violence Hotline",
+    "description": "Provides assistance for those experiencing domestic violence",
+    "address": "nan",
+    "phone": "1-800-799-SAFE (799-7233), 1-800-787-3224 (TDD for hearing impaired)",
+    "website": "www.thehotline.org",
+    "tags": [
+      "Hotline, Domestic Violence"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "National Hopeline Network (Youth Crisis Hotline)",
+    "description": "Provides counseling and referrals to local drug treatment center, shelters, and counseling services.  Responds to youth dealing with pregnancy, molestation, suicide, and child abuse.",
+    "address": "nan",
+    "phone": "1-800-442-HOPE (442-4673)",
+    "website": "nan",
+    "tags": [
+      "Hotline, Sexual Assault, Domestic Violence, Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "National Hotline for Missing & Exploited Children",
+    "description": "Hotline for reporting missing children and sightings of missing children. Offers assistance to law enforcement agents",
+    "address": "nan",
+    "phone": "1-800-843-5678",
+    "website": "nan",
+    "tags": [
+      "Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "National Kidney Foundation of Virginia",
+    "description": "Accepts old cars for donation (agency will pick up)",
+    "address": "1622 East Parham RoadRichmond, VA  23228",
+    "phone": "804-288-8342",
+    "website": "www.kidneyva.org",
+    "tags": [
+      "Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "National Runaway Safeline",
+    "description": "Provides assistance for runaway and homeless youth, their parents and families, teens in crisis, and others who might benefit",
+    "address": "nan",
+    "phone": "1-800-621-4000, 1-800-RUNAWAY",
+    "website": "https://www.1800runaway.org/",
+    "tags": [
+      "Counseling, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "National Suicide Prevention Lifeline",
+    "description": "Provides crisis intervention; English & Spanish speaking advocates.",
+    "address": "nan",
+    "phone": "988",
+    "website": "nan",
+    "tags": [
+      "Hotline, Suicide Prevention"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "NDUTime Youth and Family Services",
+    "description": "Provides mental health services for individuals and families",
+    "address": "6015 Staples Mill RdHenrico, VA 23228",
+    "phone": "804-303-8393",
+    "website": "https://www.ndutime.org",
+    "tags": [
+      "Counseling; Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "New Hope Youth LLC",
+    "description": "Provides mental health and resources",
+    "address": "3236 BoulevardColonial Heights, VA 23834",
+    "phone": "804.518.5664",
+    "website": "https://www.newhopeyouthllc.com/",
+    "tags": [
+      "Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "New Life Super Thrift",
+    "description": "Provides used clothes and other items for sale",
+    "address": "2501 Turner Rd, Richmond, VA 23224",
+    "phone": "(804) 276-9364",
+    "website": "https://www.newlifethriftcenter.com/",
+    "tags": [
+      "Thrift store"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "North Elementary School",
+    "description": "Provides education for student K-5",
+    "address": "3201 Dale AvenueColonial Heights, VA  23834",
+    "phone": "804-524-3430",
+    "website": "https://north.colonialhts.net/",
+    "tags": [
+      "School, Elementary"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Northstar Career Center",
+    "description": "Provides school and education for those individuals with disabilities",
+    "address": "11501 Nuckols RdGlen Allen, VA 23059",
+    "phone": "804-747-1003",
+    "website": "www.northstarva.org",
+    "tags": [
+      "Education, School, Special Needs"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Oak Hill Academy",
+    "description": "School provided for boys and girls in grades 8-12. Nurturing and structured environment/college preparatory courses.",
+    "address": "2635 Oak Hill RoadMouth of Wilson, VA  24363",
+    "phone": "276-597-2619",
+    "website": "www.oak-hill.net",
+    "tags": [
+      "Residential Facilities, School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Obsidian Therapy Group",
+    "description": "Provides counseling services for children, individuals, and couples",
+    "address": "3522 Boulevard, Suite DColonial Heights, VA 23834",
+    "phone": "804-613-6068",
+    "website": "https://www.obsidiantherapy.org/",
+    "tags": [
+      "Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Office of Support Services \u2013 Colonial Heights Public Schools",
+    "description": "Provides support for special education for blind, deaf, emotionally disturbed, learning disabled, mentally retarded, physically handicapped, and homebound instruction",
+    "address": "3451 Conduit RoadColonial Heights, VA  23834",
+    "phone": "804-524-3445",
+    "website": "www.chhs.colonialhts.net",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Old Blandford Church",
+    "description": "Tourist attraction on Petersburg Tour. Church contains original Tiffany windows. Civil War Cemetery in addition to regular cemetery",
+    "address": "319 South Crater RoadPetersburg, VA  23803",
+    "phone": "804-733-2400",
+    "website": "nan",
+    "tags": [
+      "Recreation, Museum, Church"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Parent Abduction Hotline",
+    "description": "Provides crisis mediation and resolution",
+    "address": "nan",
+    "phone": "1-800-292-9688",
+    "website": "nan",
+    "tags": [
+      "Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Parent Resource Center",
+    "description": "Provides resources for parent via the Colonial Heights Schools Technical Center Building Room 25",
+    "address": "3451 Conduit RoadColonial Heights, VA 23834",
+    "phone": "804-524-3405 Ext 105",
+    "website": "www.chhs.colonialhts.net",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Parents Without Partners (Tri-Cities Chapter #116)",
+    "description": "Parents Without Partners (PWP) is a single parent support group for all single parents and their children. PWP is a 501.C3 educational organization promoting single parents and their children.",
+    "address": "nan",
+    "phone": "804-744-8006",
+    "website": "http://www.parentswithoutpartners.org/",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Parent\u2019s Heart - Grief Support Group",
+    "description": "aparentsheart@comcast.net. Meets on second Monday, 7:00 pm For parents who have lost a child.",
+    "address": "House of Prayer Church10500 Newby\u2019s Bridge RoadChesterfield, VA  23832",
+    "phone": "804-314-2927",
+    "website": "nan",
+    "tags": [
+      "Counseling, Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Pathway To Promise",
+    "description": "Pathway to Promise intervenes in the lives of Virginia teenagers who\u2019ve become entwined within the juvenile criminal justice system. Recognizing that nearly 80% of these juveniles are rearrested within three years of their release from juvenile detention centers, we put these young people and their needs at the center or our mission.",
+    "address": "Email- contact@pathwaytopromise.org",
+    "phone": "nan",
+    "website": "https://pathwaytopromise.org/",
+    "tags": [
+      "Youth; Emotional Intelligence; Case Managers; Ages 13-18; Job Training; Mentoring; Continuing Education; Transportation; Physical/Mental Well-Being; Legal Aid; Transitional Housing; Student Internships"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Pathway to Success, LLC",
+    "description": "Provides residential housing services, clinical and therapeutic services",
+    "address": "nan",
+    "phone": "804-451-9551",
+    "website": "www.pathwaytosuccessllc.com",
+    "tags": [
+      "Group Home"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Pathways Free Specialty Clinic",
+    "description": "Primary Care; Education; Employment; Offender Re-Entry; Housing Resources/Assistances",
+    "address": "1200 West Washington Street Petersburg, VA 23803",
+    "phone": "804-862-1104",
+    "website": "https://www.pathways-va.org",
+    "tags": [
+      "Health Care; Social Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Peak Experience",
+    "description": "Rock climbing experience with qualified instructors",
+    "address": "11421 Polo CircleMidlothian, VA 22112",
+    "phone": "804-897-6800",
+    "website": "nan",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Petersburg Area Art League",
+    "description": "Art classes, exhibits. Special events.",
+    "address": "7 East Old StreetPetersburg, VA  23803",
+    "phone": "804-861-4611",
+    "website": "nan",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Petersburg National Battlefield (National Park Services)",
+    "description": "Self-guided tour of Civil War Battlefield. Fee to enter National Park.",
+    "address": "1539 Hickory Hill RoadPetersburg, VA  23803",
+    "phone": "804-732-3531",
+    "website": "nan",
+    "tags": [
+      "Recreation, Park"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Petersburg Public Library",
+    "description": "Library",
+    "address": "201 West Washington StreetPetersburg, VA  23803",
+    "phone": "804-733-2387",
+    "website": "http://www.ppls.org/",
+    "tags": [
+      "Library"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Petersburg Symphony",
+    "description": "60 member orchestra performing quality music at scheduled concerts",
+    "address": "19 Goodrich AvenuePetersburg, VA  23805",
+    "phone": "804-732-0999",
+    "website": "nan",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Petersburg VT Extension",
+    "description": "Parenting",
+    "address": "nan",
+    "phone": "804-733-1880",
+    "website": "https://petersburg.ext.vt.edu/",
+    "tags": [
+      "parenting"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Pharmacy Point of Service (POS) Support",
+    "description": "Providing DMAS service providers, other DMAS business associates and special interest groups with general knowledge of pharmaceutical programs being implemented and to serve as a reference guide for any pharmacy initiatives. This is a reference site for the Preferred Drug List and Prior Authorization Programs, as well as for information on upcoming changes.",
+    "address": "600 East Board StreetRichmond, VA 23219",
+    "phone": "1-800-932-6648",
+    "website": "https://www.dmas.virginia.gov/for-providers/pharmacy-and-drug-formularies/",
+    "tags": [
+      "Medication, Medical, Pharmacy"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Physician Referral Network",
+    "description": "nan",
+    "address": "nan",
+    "phone": "800-888-3627",
+    "website": "nan",
+    "tags": [
+      "Referral"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Pocahontas State Park",
+    "description": "Located 4 miles south of Chesterfield Courthouse off Beach Road in Chesterfield County. Public swimming, nature trails, camping sites, canoeing, concession stand. Summer concerts.",
+    "address": "10301 State Park RoadChesterfield, VA  23838",
+    "phone": "804-796-4255",
+    "website": "nan",
+    "tags": [
+      "Recreation, Park"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Poison Control",
+    "description": "nan",
+    "address": "nan",
+    "phone": "1-800-222-1222 \u2013 TDD Accessible (for any kind of substance)",
+    "website": "nan",
+    "tags": [
+      "Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Poplar Springs Hospital",
+    "description": "Provides psychiatric care Inpatient psychological testing, outpatient counseling. Residential treatment for adolescents ages 11-21",
+    "address": "350 Poplar DrivePetersburg, VA 23805",
+    "phone": "804-733-6874",
+    "website": "https://poplarsprings.com/",
+    "tags": [
+      "Counseling, Hospital"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Positive & Practical Parenting \u2013 offered by Petersburg DSS",
+    "description": "nan",
+    "address": "nan",
+    "phone": "733-1880",
+    "website": "nan",
+    "tags": [
+      "Parenting"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Positive Paths Wellness Coaching",
+    "description": "At Positive Paths Wellness Coaching, our mission is to empower individuals to embrace their unique journeys towards holistic well-being, inspiring them to cultivate resilience, celebrate progress, and nurture a balanced, vibrant life through compassionate coaching and unwavering support.",
+    "address": "positivepathscoaching@gmail.com",
+    "phone": "804-982-3818",
+    "website": "https://www.positivepathswellness.com/",
+    "tags": [
+      "Wellness; Coaching; Work Life Balance; Self-care; Stress management; Life planning"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Pregnancy Support Center of the Tri-Cities",
+    "description": "Volunteer organization of women helping other women through the crisis of an unplanned pregnancy. Agency does NOT refer for abortions",
+    "address": "700 South Sycamore Street, Suite 12Petersburg, VA  23803",
+    "phone": "804-861-5433: Help Line, 804-861-5517: Business",
+    "website": "nan",
+    "tags": [
+      "Pregnancy Counseling, Health Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Presbyterian Homes & Family Services, Inc.",
+    "description": "Traditional residential home for children ages 5-18. Emergency 30-day care for children ages 2-12",
+    "address": "150 Linden AvenueLynchburg, VA  24503",
+    "phone": "434-384-3131",
+    "website": "nan",
+    "tags": [
+      "Residential Facilities"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Prevent Child Abuse Virginia",
+    "description": "Prevention & treatment of child abuse and neglect. Information & referrals",
+    "address": "8100 Three Chop Road #212Richmond, VA  23230",
+    "phone": "804-359-6166",
+    "website": "www.pcav.org",
+    "tags": [
+      "Child Protection, Abuse"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Primrose Schools",
+    "description": "Infant, Early Preschool. Pre-K, Kindergarten, Toddler, Summer Adventure Club",
+    "address": "11351 Iron Creek Road Chester, VA 23831",
+    "phone": "804-751-0233",
+    "website": "https://www.primroseschools.com",
+    "tags": [
+      "Childcare. Pre-School, Daycare"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Prince George County Regional Heritage Center",
+    "description": "Open Thurs. \u2013 Sun., 1:00-4:00 pm. Group tours arranged on other days & times. Treasures and artifacts of Prince George County on display. County History Time-Line",
+    "address": "6406 Courthouse RoadPrince George, VA  23875",
+    "phone": "804-863-0212",
+    "website": "nan",
+    "tags": [
+      "Recreation, Mueseum"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Program of All Inclusive Care for the Elderly (PACE)",
+    "description": "Assistance for the elderly",
+    "address": "600 East Broad StreetRichmond, VA 23219",
+    "phone": "804-371-8894",
+    "website": "https://www.dmas.virginia.gov/",
+    "tags": [
+      "Elderly, Care, Health, Assistance"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Progressive Adult Rehabilitation Center, Inc.",
+    "description": "Advocacy, welfare, and social planning/information",
+    "address": "114 North Union Street, Suite BPetersburg, VA  23803",
+    "phone": "804-732-0685",
+    "website": "nan",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Progressive Community Outreach",
+    "description": "Provides parent coaching, therapeutic services, and coaching",
+    "address": "123 S Adams StPetersburg, VA 23803",
+    "phone": "804-861-5003",
+    "website": "www.pcoservices.org",
+    "tags": [
+      "Counseling, Youth"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Project Hope-Virgina",
+    "description": "Provides a program for the education of homeless children and youth, and resources",
+    "address": "William and Mary, School of EducationMonticello Ave.PO Box 8795Williamsburg, VA 23187",
+    "phone": "757-221-4002, 1-877-455-3412",
+    "website": "www.projecthopevirginia.org",
+    "tags": [
+      "Youth, Housing, Education"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "RAINN National RAPE & Sexual Assault Crisis Hotline",
+    "description": "nan",
+    "address": "nan",
+    "phone": "1-800-656-4673",
+    "website": "nan",
+    "tags": [
+      "Hotline, Sexual Assault"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Randstad",
+    "description": "Staffing Agency",
+    "address": "3333 South Crater Road Suite 4A Petersburg, VA 23805",
+    "phone": "804-732-0297",
+    "website": "nan",
+    "tags": [
+      "Employment/ Volunteer Opportunites"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "REACH",
+    "description": "24/7 crisis hotline to support individuals with an intellectual disability, developmental disability, or mental health condition",
+    "address": "nan",
+    "phone": "855-282-1006",
+    "website": "nan",
+    "tags": [
+      "Crisis hotline; Intellectual disability; Development disability; Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Read Center",
+    "description": "Helping adults learn to read or read more proficiently",
+    "address": "4915 Radford Avenue #204Richmond, VA 23226",
+    "phone": "804-288-9930",
+    "website": "nan",
+    "tags": [
+      "School, Special Education"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Redeemer Lutheran",
+    "description": "Food Pantry(Thursday 3-6pm; Saturday 11-2pm);  Clothing Closet- 2nd Saturday every month",
+    "address": "9400 Redbridge Road Richmond, VA 23236",
+    "phone": "804-272-7973; 804-272-7824(Child Development Center)",
+    "website": "https://redeemerric.org/home",
+    "tags": [
+      "Food Pantry; Childcare"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Regenesis Thrift",
+    "description": "nan",
+    "address": "24 Pickwick Ave, Colonial Heights, VA 23835",
+    "phone": "(804) 717-1116",
+    "website": "https://www.regenesislife.org/",
+    "tags": [
+      "Clothing Closet"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Reid's Wellness Therapy and Research Center",
+    "description": "Provides wellness, psychotherapy, clinical assessment, and research services",
+    "address": "3900 Chamberlayne Avenue Richmond, VA 23227",
+    "phone": "804-591-0840",
+    "website": "www.reidswellness.com",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Resilience Counseling & Social Skills Center",
+    "description": "Resilience Counseling & Social Skills Center provides high quality counseling, psychotherapy, psychological testing, psychiatry and mental health services to children, teens and adults.",
+    "address": "4 Locations:5374 Twin Hickory RoadGlen Allen, VA 230596524 Woodlake Village CircleMidlothian, VA, 23112306 Westwood Office ParkFredericksburg, VA 224012052 Richmond Highway, Suite 201Stafford, VA 22554",
+    "phone": "540-699-0226",
+    "website": "https://www.resiliencecounseling.care/",
+    "tags": [
+      "Mental health, Psychological Testing, Psychiatric Services, Groups"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Resources for Independent Living",
+    "description": "Serves individuals with disabilities (age 14-adulthood ). Teaches independent living skills",
+    "address": "4009 Fitzhugh Avenue # 100 Richmond, VA 23230",
+    "phone": "804-353-6503",
+    "website": "www.ril-va.org",
+    "tags": [
+      "Counseling, Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "RESPOND",
+    "description": "24/7. A free comprehensive community services providing 24-hour mental health crisis intervention, assessment, information, and referral assistance. Offers referrals to outpatient or inpatient care based on need.",
+    "address": "nan",
+    "phone": "804-796-2100",
+    "website": "nan",
+    "tags": [
+      "Counseling, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Rest Assured, LLC",
+    "description": "Provides residential group home facilities for youth aged 12-17",
+    "address": "3820 Monza DriveNorth Chesterfield VA 23234",
+    "phone": "804-267-3565",
+    "website": "restassuredllc@verizon.com",
+    "tags": [
+      "Group Home"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Richard Bland College",
+    "description": "2 year college",
+    "address": "11301 Johnson RoadPetersburg, VA  23803",
+    "phone": "804-862-6100",
+    "website": "nan",
+    "tags": [
+      "College"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Richmond AIDS Network",
+    "description": "STD/HIV testing. HIV/AIDS Hotline. Provides medical treatment, health education and social services.",
+    "address": "1010 North Thompson StreetRichmond, VA  23221",
+    "phone": "804-358-6343 - Clinic Services. 804-358-6343",
+    "website": "www.fanfreeclinic.org",
+    "tags": [
+      "Health Services, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Richmond Behavioral Health Authority (RBHA)",
+    "description": "RBHA is the statutorily established public entity responsible for providing mental health, intellectual disabilities, substance abuse and prevention services to the citizens of the City of Richmond.",
+    "address": "107 South Fifth Street,Richmond, VA 23219",
+    "phone": "804-819-4100",
+    "website": "107 South Fifth Street, Richmond, VA 23219",
+    "tags": [
+      "24/7 Crisis Services; Adult Services; Children Services; Medical Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Richmond Friends of the Homeless",
+    "description": "Lunch meal site Monday-Friday 12:00pm",
+    "address": "609 Jefferson Davis HighwayRichmond, VA",
+    "phone": "804-608-0971",
+    "website": "nan",
+    "tags": [
+      "Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Richmond Medical Center for Women",
+    "description": "Free pregnancy testing. First trimester therapeutic abortion.",
+    "address": "118 North BoulevardRichmond, VA  23173",
+    "phone": "804-359-5066",
+    "website": "nan",
+    "tags": [
+      "Health Services, Clinic"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "River Run Dental",
+    "description": "River Run Dental is a leading dental clinic in Colonial Heights. Our expertise and care are some of the reasons why so many rate us highly. It\u2019s not just glowing reviews from patients either; we\u2019ve received many local awards and accolades like Top Dentist Winner by Richmond Magazine, frequent Best of Virginia winner, and many other publications.",
+    "address": "241 Charles H Dimmock ParkwayST 2Colonial Heights, VA 23834",
+    "phone": "8045200699",
+    "website": "https://riverrundentalspa.com/dentist-colonial-heights/",
+    "tags": [
+      "Dental Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Robert A. Lewis Christian School",
+    "description": "Kindergarten \u2013 Grade 8",
+    "address": "300 Poplar DrivePetersburg, VA  23805",
+    "phone": "804-732-4733",
+    "website": "nan",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Rock Church Academy",
+    "description": "Pre-School through Grade 12; Before & After School Care; Summer Camp; Sports",
+    "address": "2301 County DrivePetersburg, VA  23803",
+    "phone": "804-733-3973, Ext. 2",
+    "website": "www.rockchurchacademy.org",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Rodof Sholom Branch",
+    "description": "Library",
+    "address": "1865 South Sycamore StreetPetersburg, VA  23805",
+    "phone": "804-733-2393",
+    "website": "nan",
+    "tags": [
+      "Library"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Rosecrest Garden Club",
+    "description": "Civic Engagement",
+    "address": "96 Swift Creek LaneColonial Heights, VA  23834",
+    "phone": "804-526-3874",
+    "website": "nan",
+    "tags": [
+      "Civic Organization, Club"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Sacred Heart Center",
+    "description": "Food Pantry(Tuesday & Thursday 9:00am-4:30pm & Wednesday 1:00pm--4:30pm)",
+    "address": "1400 Perry Street Richmond, VA 23224",
+    "phone": "804-230-4399",
+    "website": "https://shcrichmond.org/en",
+    "tags": [
+      "Food Pantry; Latino Community"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Sacred Heart Center (Centro Sagrado Corazon)",
+    "description": "Sacred Heart Center has offered comprehensive education and support services for Latino families and individuals for over 12 years and we provide the children\u2019s programs, transportation, language access, long-term support, and cultural affirmation that allow Latino individuals and families to overcome the barriers that prevent them from connecting their talents and skills to opportunities and resources.",
+    "address": "1400 Perry StreetRichmond, VA 23224",
+    "phone": "804-230-4399",
+    "website": "https://shcrichmond.org/",
+    "tags": [
+      "Adult Education; Youth & Children; Community"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Safe Harbor Human Trafficking Hotline",
+    "description": "Human Trafficking",
+    "address": "nan",
+    "phone": "833-827-2270",
+    "website": "nan",
+    "tags": [
+      "Human Trafficking"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Safe Link Cell Phone",
+    "description": "Free Cell Phones",
+    "address": "nan",
+    "phone": "800-723-3546",
+    "website": "www.safelinkwireless.com",
+    "tags": [
+      "Cell phone"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Salvation Army Family Services",
+    "description": "Disaster Services; Seasonal Services; Casework Services; Transitional Housing; Visitation Services; Camping Activities; Worship Services - Children's / Teen; Community Recreation Programs; Pathway of Hope; Food Pantry; Community Recreation & Education Programs; Day Camp Activities",
+    "address": "1228 South West Street Petersburg, VA  238032 West Grace Street Richmond, VA 23220(Central Richmond)",
+    "phone": "804-732-8449(Petersburg VA); 804-225-7470(Central Richmond)",
+    "website": "https://salvationarmypotomac.org/richmondva",
+    "tags": [
+      "Social Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Sam English III, DDS",
+    "description": "At the Dental Centers of Virginia, we treat your whole family \u2013 from small children to adults advanced in years \u2013 with the same care and consideration that we would offer to our own families. This is the goal of our practice. We truly believe in the words of our philosophy: \u201cPeople don\u2019t care how much you know, until they know how much you care.\u201d",
+    "address": "798 Southpark BlvdST 26Colonial Heights, VA 23834",
+    "phone": "8048434150",
+    "website": "https://www.samenglishdds.com/",
+    "tags": [
+      "Dental Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "SAMHSA's National Helpline",
+    "description": "A confidential, free, 24/7 information service, in English/Spanish, for  individuals and family members facing mental and/or substance use disorders",
+    "address": "nan",
+    "phone": "1-800-662-HELP(4357)",
+    "website": "https://www.samhsa.gov/mental-health",
+    "tags": [
+      "Recovery; Mental Health; Crisis"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Sandstone Care Virginia",
+    "description": "Provides mental health and resources",
+    "address": "4880 Sadler RdGlen Allen, VA 23060",
+    "phone": "888-850-1890",
+    "website": "www.sandstonecare.com",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Savida",
+    "description": "Recovery/Addiction",
+    "address": "601 Old Wagner RdPetersburg, VA 23805",
+    "phone": "8048957040",
+    "website": "www.savidahealth.com",
+    "tags": [
+      "Recovery"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "SCAN - Stop Child Abuse Now",
+    "description": "Offers family support. Parenting program/parent support groups. Volunteer opportunities.",
+    "address": "103 East Grace StreetRichmond, VA  23230",
+    "phone": "804-257-7226",
+    "website": "www.grscan.com",
+    "tags": [
+      "Abuse, Child Protection, Parent Support, Volunteer"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Science Museum of Virginia & Universe Planetarium and IMAX",
+    "description": "Museum & planetarium. IMAX Theater. Open Tuesday \u2013 Saturday, 9:30 am \u2013 5:00 pm  (Open on some Holiday Mondays); Sundays, 11:30 am \u2013 5:00 pm \u2013 Fee",
+    "address": "2500 West Broad StreetRichmond, VA  23220",
+    "phone": "804-864-1400",
+    "website": "nan",
+    "tags": [
+      "Recreation, Mueseum"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Scott Thomas Gilchrist, LCSW",
+    "description": "I am an LCSW, and I have been working for over 30 years with Adults, children and families who have issues with trauma, anxiety, anger management, couples counseling, addictions, ADHD treatment and assessments and issues related to breaking up families. I am a certified Anger Management Specialist, I'm trained in neurofeedback and EMDR. I am a Certified Clinical ADHD, Anxiety and Trauma Treatment Provider through PESI. I have worked with children, men, women, and couples, trying to strengthen themselves and their families. In all cases, I help and try to achieve their maximum potential through helping the mind, body and spirit.I am a certified anger management specialist through NAMA, I have been trained in neurofeedback and EMDR. I am a Certified Clinical ADHD, Anxiety and Trauma Treatment Provider. I have years helping people work through trauma. I use cognitive behavioral therapy, mindfulness practices, Solution Focus, couples counseling, for individuals, couples and groups.I love helping individuals, families and groups to find the maximum potential of which they can achieve.",
+    "address": "17201 Jefferson Davis Highway Colonial Heights, VA 23834",
+    "phone": "804-374-9762",
+    "website": "https://www.psychologytoday.com/us/therapists/scott-thomas-gilchrist-colonial-heights-va/469240",
+    "tags": [
+      "Recovery/Addiction Anger Management; Anxiety; Marital and Premarital; Trauma and PTSD; Domestic Violence; Mood Disorders; Behavioral Issues; Adoption;"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Second Chances Comprehensive Services",
+    "description": "Intensive In Home Counseling, Mental Health Skill Building , Outpatient Therapy, Crisis Stabilization",
+    "address": "320 East Broadway Hopewell, VA 23860",
+    "phone": "804-733-1180",
+    "website": "https://sccsva.com",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Senior Connections (CAAA)",
+    "description": "Finding Options & Resources; Support to Stay Home; Assistance for Caregivers; Advocacy & Support; Senior Connections Volunteer Programs ; Health and Wellness Classes",
+    "address": "24 East Cary Street, Richmond, VA 23219",
+    "phone": "804-343-3000",
+    "website": "https://seniorconnections-va.org",
+    "tags": [
+      "Senior Resources"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Senior Navigator",
+    "description": "Health Care Settings and Providers; Medical Concerns; Healthy Living and Prevention; Mind and Body; Caregiving; Community Based Services; Financial Assistances; Housing; Legal; Transportation",
+    "address": "7501 Boulder View Drive, Suite 630N. Chesterfield, Virginia 23225",
+    "phone": "804-525-7728",
+    "website": "https://seniornavigator.org/",
+    "tags": [
+      "Senior Resources"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Sevita Health (Good Neighbor)",
+    "description": "Provides services for those individuals with disabilities",
+    "address": "6800 Paragon PlaceRichmond, VA 23230",
+    "phone": "(804) 520-8005",
+    "website": "www.sevitahealth.com",
+    "tags": [
+      "Counseling; Residential; Day Support; Community Engagement & Community Coaching"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Sexual Assault Hotline \u2013 John Randolph Women\u2019s Center",
+    "description": "nan",
+    "address": "nan",
+    "phone": "804-458-2704",
+    "website": "nan",
+    "tags": [
+      "Hotline, Sexual Assault"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Sherbourne United Methodist Church",
+    "description": "Food Pantry- Wednesday's 9-11am.",
+    "address": "2619 Sherbourne Road Richmond , VA, 23237",
+    "phone": "(804) 275-6321",
+    "website": "https://www.umc.org/en/find-a-church/church/?id=46440",
+    "tags": [
+      "Food Pantry; Serves zip codes: 23234 & 23237"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Sherwood Hills Swim Club",
+    "description": "Family and individual swimming. Youth swim team. Special social events for members. Members only with paid membership fee",
+    "address": "1033 Forestview DriveColonial Heights, VA  23834",
+    "phone": "804-526-9793",
+    "website": "nan",
+    "tags": [
+      "Recreation, Club"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Shineforth, formerly UMFS",
+    "description": "Provides foster care, residential treatment, and private day school",
+    "address": "3900 W Broad StRichmond, VA 23230",
+    "phone": "804-353-4461",
+    "website": "www.umfs.org",
+    "tags": [
+      "Counseling, Mental Health, Disability"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Side by Side Youth Center",
+    "description": "Side by Side is dedicated to creating supportive communities where Virginia\u2019s LGBTQ+ youth can define themselves, belong, and flourish.",
+    "address": "2311 Westwood Ave, Richmond, VA 23230",
+    "phone": "(804) 644-4800/ Youth Support Hotline- 888-644-4390/ Text-804-793-9999, The Trevor Project- 1-866-488-7386, Text START to 678678(ages 13-24 LGBTQ+ youth in crisis)",
+    "website": "https://www.sidebysideva.org/",
+    "tags": [
+      "Youth Centered; LGBTQ+; Counseling; Parent/ Caregiver Support Group;"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Siege Museum",
+    "description": "Confederate Museum - fee. Open daily 9:00 am \u2013 5:00 pm, Sunday, 12:30 \u2013 5:00 pm.",
+    "address": "15 West Bank StreetPetersburg, VA  23803",
+    "phone": "804-733-2404",
+    "website": "nan",
+    "tags": [
+      "Recreation, Museum"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Skipwith Academy",
+    "description": "Child care",
+    "address": "400 East Westover AvenueColonial heights, VA 23834",
+    "phone": "804-853-9125",
+    "website": "https://www.thecovenantcreche.com",
+    "tags": [
+      "Daycare/Pre-School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Skipwith Academy of Colonial Heights",
+    "description": "Provides pre-school, before & after-school care",
+    "address": "400 E. Westover AvenueColonial Heights, VA  23834",
+    "phone": "804-520-7433",
+    "website": "nan",
+    "tags": [
+      "Daycare, Pre-School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Smiles For Children",
+    "description": "Dental care for FAMIS and FAMIS Plus",
+    "address": "nan",
+    "phone": "1-888-912-3456",
+    "website": "nan",
+    "tags": [
+      "Dental"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Smiles for Children",
+    "description": "In Virginia, the Department of Medical Assistance Services, DMAS, is working to keep Virginia\u2019s children and adults healthy and cavity-free! Virginia's Medicaid Smiles For Children program offers comprehensive dental services to children, through age 20, adults and pregnant members.",
+    "address": "600 East Board StreetRichmond, VA 23219",
+    "phone": "1-800-912-3456",
+    "website": "https://www.dmas.virginia.gov/for-providers/dental/",
+    "tags": [
+      "Dental, Oral Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Smiles for Children.",
+    "description": "Smiles for Children supports children\u2019s hospitals nationwide that provide critical, often lifesaving, medical care to children in times of need. We connect generous donors with reputable hospitals lacking adequate resources to fund treatment advances, state-of-the-art equipment, uncompensated care, and other pressing needs.",
+    "address": "nan",
+    "phone": "1-88-912-3456",
+    "website": "https://smilesforchildren.org/",
+    "tags": [
+      "Dental Services, AMIS & FAMIS Plus"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Soar 365",
+    "description": "Disability Service",
+    "address": "1901 Westwood AvenueRichmond, VA  23227",
+    "phone": "804-358-1874",
+    "website": "nan",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Social Determinants of Health for the Care-A-Van",
+    "description": "Provides free transportation for those who are uninsured every 1st/3rd Fri and 2nd/4th Monday",
+    "address": "3335 S. Crater Rd., Ste. 100Petersburg, VA 23803",
+    "phone": "804-964-8431",
+    "website": "www.bshsi.org",
+    "tags": [
+      "Transportatoin"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Social Security Administration, Social Services",
+    "description": "Retirement insurance, governmental. Medicare insurance/supplemental survivors insurance. Financial aid to disabled/SSI, to aged/SSI, to the blind/SSI. Disability benefits, governmental.",
+    "address": "100 Poplar DrivePetersburg, VA  23805",
+    "phone": "1-877-803-6322",
+    "website": "nan",
+    "tags": [
+      "Disability Services, Social Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southpark Regal Cinemas 16",
+    "description": "Multi-cinema theater. Gift certificates available. Kids\u2019 summer movies",
+    "address": "Southpark MallColonial Heights, VA  23834",
+    "phone": "804-524-0930",
+    "website": "nan",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Community Center",
+    "description": "Our Financial Opportunity Center (FOC) exists to coach and educate families and individuals in our community take charge of their finances through virtual classes in four interconnected areas\u2014finance, employment, benefits, and digital literacy. Our career and financial coaching service center helps low- to moderate-income people build smart money habits and focus on the financial bottom line.",
+    "address": "1624 HULL STREET RICHMOND, VIRGINIA 23224714 HIGH STREET, SUITE APETERSBURG, VIRGINIA 23803400 HALIFAX STREETEMPORIA, VIRGINIA 23847",
+    "phone": "804-231-4449 (Richmond and Petersburg offices) / 434-368-7886 (Emporia office)",
+    "website": "https://www.scdhc.com/financial-opportunity-center",
+    "tags": [
+      "Financial Assistance"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Endodontics",
+    "description": "Our mission is to help patients live healthier lives. We provide a caring, nurturing environment where your comfort and health is of primary importance.",
+    "address": "2524 Boulevard St 8Colonial Heights, VA 23834",
+    "phone": "804-520-0000",
+    "website": "https://www.ssendo.com/",
+    "tags": [
+      "Dental Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Orthodontics",
+    "description": "At Southside Orthodontics, our philosophy is simple. Do things the right way, the first time. We know that everyone expects their orthodontic care to be of the highest quality, but it isn\u2019t easy to know whether it actually is or not. At Southside Orthodontics, we deliver the highest quality orthodontic care possible.  That means that we don\u2019t skip steps or avoid certain treatments because they are more challenging. Instead, we promise to give you the exact care and attention required to bring about your healthiest smile.  Doing the right thing also applies to how we treat our patients. We genuinely care about every person who walks through our door, and our patients can feel it. You can\u2019t fake genuine care, not over the span of a relationship. Our patients know that we have their best interest in mind and care for their well-being in all areas of life, not just in their smiles.",
+    "address": "250 E Ellerslie AvenueColonial Heights, 23834 VA",
+    "phone": "8049382774",
+    "website": "https://www.southsideorthodontics.com/",
+    "tags": [
+      "Dental Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Pediatric Center",
+    "description": "Pediatric medical center (major insurance plans accepted)",
+    "address": "400 Southpark Boulevard, Suite DColonial Heights, VA  23834",
+    "phone": "804-520-8135",
+    "website": "nan",
+    "tags": [
+      "Health Services, Clinic"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Regional Medical Center",
+    "description": "nan",
+    "address": "200 Medical Park BoulevardPetersburg, VA  23805",
+    "phone": "804-765-5000",
+    "website": "nan",
+    "tags": [
+      "Health Services, Hospital"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Regional Medical Center School of Radiation Sciences",
+    "description": "Radiation Sciences",
+    "address": "200 Medical Park BoulevardPetersburg, VA  23805",
+    "phone": "804-765-5883",
+    "website": "nan",
+    "tags": [
+      "College"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Regional Medical Center School of Registered Nursing",
+    "description": "School of Registered Nursing",
+    "address": "200 Medical Park Boulevard Petersburg, VA  23805",
+    "phone": "804-765-5800",
+    "website": "nan",
+    "tags": [
+      "College"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Regional Medical Center \u2013 Volunteer Services",
+    "description": "Volunteer recruitment and placement. Supervision provided",
+    "address": "200 Medical Park BoulevardPetersburg, VA  23805",
+    "phone": "804-765-5000",
+    "website": "nan",
+    "tags": [
+      "Volunteer"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Sheltered Workshop, INC.",
+    "description": "Sheltered or homebound employment. Training to maximize independence.",
+    "address": "3267 South Crater RoadPetersburg, VA  23805",
+    "phone": "804-861-3018",
+    "website": "nan",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Southside Virginia Training Center",
+    "description": "Occupational Therapy. Inpatient services include physical, speech, recreational therapy, and psychological testing. Special education and voacational training for the mentally challenged.",
+    "address": "1910 Byrd AveRichmond, VA 23230",
+    "phone": "804-524-7000",
+    "website": "nan",
+    "tags": [
+      "Disability Services, Therapy"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "SPCA of Petersburg & Colonial Heights",
+    "description": "Please call us if you would like information on spay/neuter assistance or if you have any questions about animal cruelty or would like to volunteer. Our office hours are 9-12:30 PM Monday thru Friday.",
+    "address": "201 Temple Avenue, Suite EColonial Heights, VA 23834",
+    "phone": "804-526-7722",
+    "website": "https://spca-petersburg-colonialheights-va.com/",
+    "tags": [
+      "Volunteer, Charity, Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Special Olympics - Area 16",
+    "description": "Events include softball, basketball, skiing, swimming, track and field, and bowling. Recreational, instruction/coaching, physical fitness, volunteer recruitment program.",
+    "address": "3212 Skipwith RoadRichmond, VA 23294",
+    "phone": "804-726-3032",
+    "website": "nan",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Specialized Youth Services of Virginia",
+    "description": "Behavioral Resources for Exceptional Children, Community based services, Intensive In Home, Special Education Day School, Day Treatment Services, Regional Alternative School",
+    "address": "455 Old Wagner Road Petersburg, VA 23805",
+    "phone": "804-733-2180",
+    "website": "http://sysva.com",
+    "tags": [
+      "Education/Behavioral/Schools"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Spencer Dental & Braces",
+    "description": "Helping our children is the important part of what Spencer Dental does for families. We\u2019re making sure that all children have access to dental care services. Spencer Dental is committed to reducing the need for future extensive dental work & keeping kids healthy through preventative dental care & a range of community & educational programs.",
+    "address": "400 Southpark Boulevard ST CColonial Heights, VA 23834",
+    "phone": "8042942623",
+    "website": "https://www.spencerdentalgroup.com/",
+    "tags": [
+      "Dental/Orthodontics Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Spero",
+    "description": "recovery addiction",
+    "address": "34 Medical Park BoulevardPetersburg, VA 23805",
+    "phone": "8046090175",
+    "website": "www.sperohealth.com",
+    "tags": [
+      "Recovery"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Spero Health",
+    "description": "suboxone",
+    "address": "34 Medical Park Boulevard, Petersburg, VA 23805",
+    "phone": "(804) 609-0175",
+    "website": "https://sperohealth.com/",
+    "tags": [
+      "Recovery"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "St. Ann's Catholic Church",
+    "description": "Catholic Church",
+    "address": "17111 Jefferson Davis HighwayColonial Heights, VA  23834",
+    "phone": "804-526-2548",
+    "website": "http://www.stanncc.com",
+    "tags": [
+      "Church, Catholic"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "St. Ann's Catholic Church- Food Bank",
+    "description": "Food bank used only with prior approval of CCHASM",
+    "address": "17111 Jefferson Davis HighwayColonial Heights, VA  23834",
+    "phone": "804-526-2548",
+    "website": "nan",
+    "tags": [
+      "Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "St. Joseph Catholic School",
+    "description": "Provides school for Pre-School \u2013 Grade 8",
+    "address": "123 Franklin StreetPetersburg, VA  23803",
+    "phone": "804-732-3931",
+    "website": "www.saintjosephschool.com",
+    "tags": [
+      "School, Education"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "St. Joseph's Outreach Clinic",
+    "description": "Provides medical assistance for those individuals who are uninsured",
+    "address": "8000 Brook RoadRichmond, VA 23227",
+    "phone": "804-612-7065",
+    "website": "https://www.neverstopbelieving.org/st-josephs-outreach-clinic/",
+    "tags": [
+      "Medical"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "St. Joseph\u2019s Villa",
+    "description": "Provides mental health and resources, education services, and housing/homelessness services",
+    "address": "8000 Brook RoadRichmond, VA  23227",
+    "phone": "804-553-3200",
+    "website": "www.neverstopbelieving.org",
+    "tags": [
+      "Residential Facilities"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "St. Michael's Episcopal Church",
+    "description": "Episcopal Church",
+    "address": "501 Old Town DriveColonial Heights, VA  23834",
+    "phone": "804-526-1790",
+    "website": "http://www.stmikeschurch.org",
+    "tags": [
+      "Church, Episcopal"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "St. Michael\u2019s Episcopal Church Youth Group",
+    "description": "Youth fellowship, activities, and  Christian education. Member of the Episcopal Diocese of Southern Virginia.",
+    "address": "501 Old Town DriveColonial Heights, VA  23834",
+    "phone": "804-526-1790",
+    "website": "nan",
+    "tags": [
+      "Recreation, Church"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "StepStone Family and Youth Services",
+    "description": "Provides non-therapeutic and therapeutic foster care services",
+    "address": "2701 Emerywood Pkwy, Ste 102Richmond, VA 23294",
+    "phone": "804-756-5023",
+    "website": "www.stepstoneyouth.com",
+    "tags": [
+      "Foster Care"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Strategic Therapy Associates INC.",
+    "description": "nan",
+    "address": "10106 Krause Rd. Ste. 100BChesterfield, VA 23832",
+    "phone": "1-800-716-3534",
+    "website": "https://www.strategictherapyassociates.com/",
+    "tags": [
+      "Recovery/ Addiction; Mental Health; Intensive-in home; Outpatient Therapy; Counseling; Anxiety; Depression; Trauma Related Illness; Adult Services;"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Suicide Hotline",
+    "description": "Mental Health Crisis Interventions",
+    "address": "nan",
+    "phone": "1-800-273-8255",
+    "website": "nan",
+    "tags": [
+      "Hotline Suicide Prevention"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Swaders Sports Park",
+    "description": "Miniature golf, Go-karts, driving range, batting cages, laser tag. Clubhouse available for birthday or corporate parties. Fee",
+    "address": "4725 Whitehill BoulevardPrince George, VA  23875",
+    "phone": "804-733-3700",
+    "website": "www.swaders.com",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Swift Creek Federated Woman's Club",
+    "description": "Civic Engagement",
+    "address": "P O Box 1017Colonial Heights, VA  23834",
+    "phone": "nan",
+    "website": "nan",
+    "tags": [
+      "Club, Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Swift Creek Mill Playhouse",
+    "description": "Dinner theater; presents live theater productions. Summer theatre camp. Admission fee. Gift certificates available.",
+    "address": "17401 Jefferson Davis HighwayColonial Heights, VA  23834",
+    "phone": "804-748-5203",
+    "website": "nan",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "TBC - Tomahawk Baptist Church",
+    "description": "Food Pantry- 1st and 3rd Thursday's 4:30-7pm",
+    "address": "12920 Hull Street Rd N, Midlothian, VA 23112",
+    "phone": "12920 Hull Street Rd N, Midlothian, VA 23112",
+    "website": "https://tomahawkchurch.org/",
+    "tags": [
+      "Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Teen Help Line (dating violence/date rape)",
+    "description": "nan",
+    "address": "nan",
+    "phone": "1-866-331-9474",
+    "website": "nan",
+    "tags": [
+      "Hotline, Sexual Assault"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The Bowling Alley",
+    "description": "Bowling/ Recreational leagues",
+    "address": "2237 BoulevardColonial Heights, VA  23834",
+    "phone": "804-526-3862",
+    "website": "nan",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The Counseling Alliance of Virginia",
+    "description": "Individual Counseling; Family Counseling; Marital/Couples Counseling; Group Counseling; Intensive In-Home Services; Therapeutic Mentoring; Parent Coaching; Latino Access Program; Yoga; Reiki; Therapeutic Massage; Mindfulness Meditation",
+    "address": "2924 Emerywood Parkway Suite 200 Richmond, VA 23294",
+    "phone": "804-346-5165",
+    "website": "https://www.cavahelps.com/",
+    "tags": [
+      "Counseling; Mental Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The Covenant Creche",
+    "description": "nan",
+    "address": "3615 East River Road South Chesterfield, VA 23803",
+    "phone": "804-526-9080",
+    "website": "https://thecovenantcreche.com/",
+    "tags": [
+      "Day Care/ Preschool"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The Daily Planet",
+    "description": "Primary Care; (Mental Health & Substance Use Disorder Services); Dental Care, and Case Management(South Richmond); Primary Care; Behavioral Health (Mental Health & Substance Use Disorder Services); Medication-Assisted Treatment (MAT); Dental Care, and Case Management(Central Richmond)",
+    "address": "180 Belt Blvd Richmond, VA 23224(South Richmond)517 West Grace Street Richmond, VA 23220(Central Richmond)",
+    "phone": "804-783-2505",
+    "website": "https://dailyplanetva.org",
+    "tags": [
+      "Health care"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The Goddard School",
+    "description": "Infants, toddlers, pre-school, after-school, pre-kindergarten, summer",
+    "address": "13036 Rivers Bend BoulevardChester, VA 23831",
+    "phone": "804-530-0096",
+    "website": "nan",
+    "tags": [
+      "Daycare, Pre-School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The James House - Intervention and Prevention Services",
+    "description": "Free and confidential services for those affected by sexual violence, domestic violence, and stalking. Competent staff is trained to work with diverse populations. Spanish speaking services available.",
+    "address": "6610 Commons DrivePrince George, VA  23875229 North Sycamore Street Petersburg, VA 23805(Counseling Center)",
+    "phone": "804-458-2704(Main Office) ; 804-458-2840(24Hr Line) ; 804-732-1711(Counseling Center)",
+    "website": "nan",
+    "tags": [
+      "Domestic Violence, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The L.E.E Academy",
+    "description": "Daycare",
+    "address": "15816 Jefferson Davis Highway Colonial Heights, VA 23834",
+    "phone": "804-410-5741",
+    "website": "nan",
+    "tags": [
+      "Daycare"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The Lead Center, Ltd.",
+    "description": "Elementary and secondary special education day school",
+    "address": "622 S 6th AveHopewell, VA  23860",
+    "phone": "804-452-3730",
+    "website": "nan",
+    "tags": [
+      "School, Special Education"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The Light Beyond Supportive Services, LLC",
+    "description": "At THE LIGHT BEYOND SUPPORTIVE SERVICES, LLC, we believe that true healing comes from a holistic approach. We are dedicated to providing the highest quality mental health services for individuals struggling with depression, anxiety, stress, and other mental health disorders. Our team of experienced professionals are here to support you every step of the way on your path to wellness.",
+    "address": "7410 Hull Street Road Ste 200Box 3087North Chesterfield, VA 23235",
+    "phone": "804-229-0133",
+    "website": "https://www.thelightbeyondservicesllc.com/",
+    "tags": [
+      "Outpatient Therapy; Cognitive Behavioral Therapy; Solution-Focused Therapy; Mental Health; Individual Therapy; Couples Therapy; Stress Management; LCSW Coaching; LCSW Test Preparation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "The Nit Fairies",
+    "description": "Head lice services",
+    "address": "13619 Genito Road Midlothian, VA 23112",
+    "phone": "804-385-0793",
+    "website": "https://thenitfairies.com",
+    "tags": [
+      "Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Thomas G. Schleiher, DDS",
+    "description": "The practice of Thomas G. Schleicher, DDS PLC proudly provides comprehensive dentistry in Colonial Heights, Virginia, and the surrounding areas. Our skilled dentist and team are committed to providing personalized, high-quality care to patients of all ages, and we utilize advanced dental technology to ensure that your visit to our friendly office is comfortable and free of stress or anxiety. With a variety of services ranging from preventive care to restorative dentistry, and from general treatment to cosmetic dentistry, we are here to meet all of your dental needs. We invite you to contact us today to learn more about our dental treatment options and to schedule your appointment with our experienced dentist, Dr. Tom G. Schleicher. We look forward to caring for your smile!",
+    "address": "3630 Southpark BoulevardColonial Heights, VA 23834",
+    "phone": "8045260231",
+    "website": "https://www.dentistvirginiaforteeth.com/",
+    "tags": [
+      "Dental Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Threatt Counseling Services",
+    "description": "Transportation, Mental Health Skill Building(Adults) , Intensive In Home, Outpatient Therapy.",
+    "address": "700 S. Sycamore Street Suite #6 Petersburg, VA 23803",
+    "phone": "804-621-6867",
+    "website": "nan",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Thriveworks Chesterfield Counseling",
+    "description": "Thriveworks offers mental health services to individuals of all ages, from adults to teens to children helping them with their unique individual and relationship challenges.",
+    "address": "9846 Lori Rd #210, Chesterfield, VA 23832",
+    "phone": "804-419-4122",
+    "website": "https://thriveworks.com/chesterfield-counseling/",
+    "tags": [
+      "Child therapy; mental health services; counseling; family therapy; anger management therapy;  LGBTQ+ counseling; anxiety"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Timber Ridge School",
+    "description": "Physical Address is 1463 New Hope Road, Cross Junction, VA 22625. Licensed residential treatment and accredited education program. Serves young males (ages 12-17) with a history of serious emotional, learning and/or behavior difficulties. Shapes boys by providing a safe & supportive environment. Advocates for their needs.",
+    "address": "P O Box 3178Winchester, VA  22604",
+    "phone": "540-888-3456",
+    "website": "nan",
+    "tags": [
+      "Residential Facilities"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Tomahawk Baptist Church",
+    "description": "Food Pantry(1st & 3rd Thursday 4:30-7:00pm)",
+    "address": "12920 Hull Street Road Midlothian, VA 23112",
+    "phone": "804-744-2044",
+    "website": "https://tomahawkchurch.org/",
+    "tags": [
+      "Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Touchstone Behavioral Arts, LLC",
+    "description": "Children, adolescents, adults, seniors,",
+    "address": "117 Orange Avenue Colonial Heights, VA",
+    "phone": "nan",
+    "website": "https://www.touchstonenehavioralarts.com/",
+    "tags": [
+      "Counseling Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Tri-City Coin Club",
+    "description": "Civic Engagement",
+    "address": "2505 Pin Oak CourtColonial Heights, VA 23834",
+    "phone": "804-732-2813",
+    "website": "nan",
+    "tags": [
+      "Club, Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Tri-City Driving School",
+    "description": "Driving School",
+    "address": "1910 BoulevardColonial Heights, VA  23834",
+    "phone": "804-526-7798",
+    "website": "nan",
+    "tags": [
+      "Driving School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Tri-City Literacy Council",
+    "description": "Program to help adults learn to read",
+    "address": "1766 Flank RoadPetersburg, VA  23805",
+    "phone": "804-862-9262",
+    "website": "nan",
+    "tags": [
+      "School, Special Education"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "TriCities Hospital (John Randolph Medical Center)",
+    "description": "Provides medical services, treatment, and ER",
+    "address": "411 W Randolph RdHopewell, VA 23860",
+    "phone": "804-541-1600",
+    "website": "nan",
+    "tags": [
+      "Health Services, Hospital"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Tussing Elementary School",
+    "description": "Elementary School",
+    "address": "5501 Conduit RoadColonial Heights, VA  23834",
+    "phone": "804-524-3440",
+    "website": "https://tussing.colonialhts.net/",
+    "tags": [
+      "School, Elementary"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "U.S. Department of Housing and Urban Development (HUD)",
+    "description": "United States Housing Resources",
+    "address": "nan",
+    "phone": "800-842-2610",
+    "website": "HUD.gov",
+    "tags": [
+      "Housing Subsidy; Low Income"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "United Methodist Family Services",
+    "description": "Pregnancy counseling. Adoption Placement for infants & older children. Parent & child support groups. Fees for some services.",
+    "address": "3900 West Broad StreetRichmond, VA 23230",
+    "phone": "804-353-4461",
+    "website": "www.umfs.org",
+    "tags": [
+      "Adoption, Pregnancy Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "United Smiles",
+    "description": "At United Smiles, our philosophy is to provide the best quality dentistry to our patients in the most comfortable and convenient manner. Our friendly staff is well trained to assist you and answer any of your questions, whether it\u2019s regarding the dental treatment or insurance questions.  Our Practice: United Smiles has five offices in the US and one office in India. We are committed to taking part in our great community. We have sponsored and will always look to sponsor and encourage the several community events that make Virginia a fabulous state to live in! We strive to bring convenience to our patients.",
+    "address": "723 Southpark BoulevardST FColonial Heights, VA 23834",
+    "phone": "8045040012",
+    "website": "https://unitedsmiles.com/",
+    "tags": [
+      "Dental Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "United Smiles Family Dentistry & Orthodontics",
+    "description": "Provides dental emergencies, implants, orthodontics, teeth whitening, and moe",
+    "address": "723 Southpark BlvdColonial Heights VA 23834",
+    "phone": "804-504-0012",
+    "website": "www.unitedsmiles.com",
+    "tags": [
+      "Dental"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "United States Military Recruiting",
+    "description": "Military Recruiting",
+    "address": "4004 Southpark BoulevardColonial Heights, VA 23834",
+    "phone": "804-526-8072",
+    "website": "nan",
+    "tags": [
+      "Employment"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "United States Missing Children Hotline",
+    "description": "Provides parents with assistance in the search for their missing child",
+    "address": "nan",
+    "phone": "1-800-235-3535",
+    "website": "nan",
+    "tags": [
+      "Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "United Way of Southside Virginia (Information & Referral Services)",
+    "description": "nan",
+    "address": "105 Marshall StreetPetersburg, VA  23803",
+    "phone": "804-861-9330",
+    "website": "nan",
+    "tags": [
+      "Referral"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "US Care In-Home Behavioral Health",
+    "description": "DELIVERING EVIDENCE-BASED BEHAVIORAL HEALTH SERVICES By focusing on your individual needs, our highly-qualified staff conducts regular, in-home sessions or holds outpatient therapy appointments during which we establish your trust and build rapport with you, helping you along your journey. At U.S. Care Behavioral Health, our personalized counseling and other services help you achieve and maintain stability, reach your goals, and lead a fulfilling and productive life. Our services are designed to address each client\u2019s unique needs and provide the right tools to leverage existing strengths and abilities in order to achieve success in life. To learn more about what we do or to request behavioral health services, get in touch with us today.",
+    "address": "3900 Westerre Parkway, Suite 300 Richmond, VA 23233",
+    "phone": "(888) 978-3801",
+    "website": "https://www.myuscare.com/",
+    "tags": [
+      "Community Stabilization; Intensive In-Home; Mental Health Outpatient; Mental Health Skill Building; Substance Use (IOP); Substance Abuse Outpatient Therapy; Substance Abuse Hospitalization Program; VASAP Assessment"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Valentine Richmond History Center",
+    "description": "Open Tuesday \u2013 Saturday, 10:00 am \u2013 5:00 pm; Sunday, Noon \u2013 5:00 pm. Special programs and activities; programs for schools. Gift Shop. Caf\u00e9 Richmond.",
+    "address": "1015 East Clay StreetRichmond, VA  23219",
+    "phone": "804-649-0711",
+    "website": "nan",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "VCU Adolescent Clinic \u2013 VCU Medical Center",
+    "description": "Comprehensive diagnosis and treatment for adolescents.",
+    "address": "1001 East Marshall Street \u2013 Children\u2019s Pavilion Richmond, VA  23298",
+    "phone": "804-828-9449",
+    "website": "nan",
+    "tags": [
+      "Hospital, Clinic"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "VCU Health System-Coordinated Care Program for the Uninsured",
+    "description": "The VCC Program provides access to affordable health care for uninsured individuals living in the Greater Richmond Metro and the Tri Cities areas.",
+    "address": "1200 E. Marshall StreetRichmond, VA 23298",
+    "phone": "808-828-0966",
+    "website": "https://www.vcuhealth.org/-/media/media/file/working-with-your-primary-care-physician.ashx",
+    "tags": [
+      "Health care services for uninsured."
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "VCU Medical Center",
+    "description": "Medical Services; Behavioral Health; Pediatrics; Family Medicine; Oncology; Psychiatry",
+    "address": "1250 E Marshall St, Richmond, VA 23298",
+    "phone": "804-828-9000; 804-828-0966(Financial Advisor)",
+    "website": "https://www.vcuhealth.org",
+    "tags": [
+      "Medical; Dental; Behavioral Health"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "VCU School of Dentistry",
+    "description": "Dental Care",
+    "address": "520 N 12th St Fl 4, Richmond, VA 23298",
+    "phone": "(804) 828-9190 (Emergency Care Only)",
+    "website": "https://vcudentalcare.com/",
+    "tags": [
+      "Dentist"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Vernon J. Harris Medical Center",
+    "description": "Primary Adult Care; Pediatrics; Dental Care (Adult and Pediatrics); Health Education; Mental Health; HIV/AIDS Care; Diabetes; Self-Management Education (DSME) Program; Medication Assistance Program; Affordable Care Act Enrollment Education; Patient Advocacy; Transportation Services; Social Services",
+    "address": "2809 North Avenue, Richmond, VA 23222",
+    "phone": "804-780-0840",
+    "website": "https://cahealthnet.org/vernon-j-harris-medical-center/",
+    "tags": [
+      "Medical; Dental"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Veterns of Foreign Wars (VFW)",
+    "description": "Civic Engagement",
+    "address": "P O Box 67Colonial Heights, VA  23834",
+    "phone": "nan",
+    "website": "nan",
+    "tags": [
+      "Veteran, Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Victim Witness Assistance Program",
+    "description": "Assists persons who have been victims and witnesses of crime",
+    "address": "550 BoulevardColonial Heights, VA  23834",
+    "phone": "804-520-9258",
+    "website": "nan",
+    "tags": [
+      "Crime Victims Court Advocacy"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Victory Tabernacle",
+    "description": "Food Pantry- Thursday's(except holiday's) 10:00am",
+    "address": "11700 Genito Rd, Midlothian, VA 23112",
+    "phone": "(804) 744-8881",
+    "website": "https://www.victorytab.org/",
+    "tags": [
+      "Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Board for People with Disabilities",
+    "description": "Provides services and resources to individuals with disabilities",
+    "address": "1602 Rolling Hills Dr., Ste 100Richmond, VA 23229",
+    "phone": "804-786-0016",
+    "website": "www.vbpd.virginia.gov",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Child Abuse/ Neglect Hotline",
+    "description": "Phone hotline for child abuse/neglect.",
+    "address": "nan",
+    "phone": "1-800-552-7096",
+    "website": "nan",
+    "tags": [
+      "ABUSE, CHILD PROTECTION, HOTLINE"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Child Abuse/Neglect Hotline",
+    "description": "Phone hotline for child abuse/neglect.",
+    "address": "nan",
+    "phone": "1-800-552-7096",
+    "website": "nan",
+    "tags": [
+      "Abuse, Child Protection, Hotline"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Department for Aging and Rehabilitative Services",
+    "description": "Education; Employment; Training Services",
+    "address": "nan",
+    "phone": "804-714-2021",
+    "website": "nan",
+    "tags": [
+      "Education; Employment; Training Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Employment Commission",
+    "description": "Job services and unemployment services. Claims and inquiries.",
+    "address": "5240 Oaklawn BoulevardHopewell, VA  23860",
+    "phone": "804-541-6548: Job services and unemployment services 1-866-832-2363: Claims and inquiries",
+    "website": "nan",
+    "tags": [
+      "Employment"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Family Violence & Sexual Assault",
+    "description": "nan",
+    "address": "nan",
+    "phone": "1-800-838-8238",
+    "website": "nan",
+    "tags": [
+      "Hotline, Domestic Violence"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Home for Boys & Girls",
+    "description": "Residential Facility \u2013 Alternative School. Offers counseling, medical and dental care, tutorial assistance. Special education for emotionally disturbed or learning disabled. Social Service placement",
+    "address": "8716 West Broad StreetRichmond, VA  23294",
+    "phone": "804-270-6566",
+    "website": "nan",
+    "tags": [
+      "Residential Facilities, School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Housing Development Authority",
+    "description": "State Housing Resources for Low Income",
+    "address": "nan",
+    "phone": "804-782-1986",
+    "website": "www.vhda.com; www.virginiahousingsearch.com",
+    "tags": [
+      "Housing Subsidy; Low Income"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Institute of Pastoral Care (VIPCARE)",
+    "description": "Pastoral counseling services, Satellite locations available.",
+    "address": "2000 Bremo Road, Suite 105Richmond, VA  23226",
+    "phone": "804-282-8332",
+    "website": "nan",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Lawyer Referral Service",
+    "description": "Referral service of qualified attorneys",
+    "address": "1111 East Main., Suite 700 Richmond, VA 23219",
+    "phone": "1-800-552-7977",
+    "website": "nan",
+    "tags": [
+      "Legal Service"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Medicad",
+    "description": "Provides resources and services for those needing assistance via Medicaid and FAMIS",
+    "address": "600 East Broad Street Richmond, VA 23219",
+    "phone": "1-800-421-7376",
+    "website": "https://www.dmas.virginia.gov",
+    "tags": [
+      "Maternal, Pregnancy, Health, Children, Baby, Infant, Disability,"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia National Guard Youth Challenge",
+    "description": "nan",
+    "address": "P O Box 7510Virginia Beach, VA  23458",
+    "phone": "1-800-796-6472",
+    "website": "nan",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Protection & Advocacy Office",
+    "description": "Provides legal advice, advocacy, technical assistance, information and referral.",
+    "address": "1910 Byrd AvenueRichmond, VA  23230",
+    "phone": "804-225-2042",
+    "website": "nan",
+    "tags": [
+      "Disability Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia South Psychiatric & Family Services",
+    "description": "Family Therapy, Individual Therapy, Psychotropic Medication Management, Psychological Evaluations",
+    "address": "Petersburg Office: 269 Medical Park Blvd.Petersburg, VA 23805Hopewell Office: 207 North 4the Avenue Hopewell, VA 23860Midlothian Office: 13901 Coalfield Commons Pl. Suite 102 Midlothian, VA 23114",
+    "phone": "(804) 863-4626,  804-541-0918,  804-378-0800",
+    "website": "https://vasouth.com/",
+    "tags": [
+      "Counseling Services"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia State University",
+    "description": "VSU",
+    "address": "P O Box 9018Petersburg, VA  23805",
+    "phone": "804-524-5000",
+    "website": "nan",
+    "tags": [
+      "University, College"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Treatment Center for Children",
+    "description": "Child mental health services Clinical services to children & families",
+    "address": "1308 Sherwood AvenueRichmond, VA  23298",
+    "phone": "804-828-3129",
+    "website": "nan",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Virginia Treatment Center for Children (on Campus of VCU Medical Center)",
+    "description": "Offers broad range of mental health services for school age children \u2013 age 17. Occupational therapy; art/music therapy. Inpatient and outpatient programs",
+    "address": "515 North 10th StreetRichmond, VA  23298-0489",
+    "phone": "804-826-3129",
+    "website": "nan",
+    "tags": [
+      "Therapy"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Volunteer Emergency Families for Children (VEFC)",
+    "description": "Short-term shelter care for run-aways. Mentoring for abused, neglected or at-risk youth. Volunteer recruitment and training",
+    "address": "P O Box 35074Richmond, VA  23235",
+    "phone": "804-379-7767",
+    "website": "nan",
+    "tags": [
+      "Residential Facilities, Child Protection, Abuse"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Waitkus & Associates, P.C., L.P.C",
+    "description": "Counseling services",
+    "address": "3606 Boulevard, Suite BColonial Heights, VA  23834",
+    "phone": "804-526-9885",
+    "website": "nan",
+    "tags": [
+      "Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Waymakers Foundation",
+    "description": "Food pantry (Tuesday-Wednesday & Friday-Saturday) by appointment only.",
+    "address": "7106 Hull Street Road Richmond, VA 23235",
+    "phone": "804-920-0179",
+    "website": "https://www.waymakers-foundation.org/",
+    "tags": [
+      "Food Pantry; Latino Community"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Webber Memorial Baptist Church",
+    "description": "Clothing for North Chesterfield residents only. Walk-ins are welcome. Saturdays 10am-11am.",
+    "address": "7800 Salem Church Rd, Chesterfield, VA, United States, Virginia",
+    "phone": "(804) 271-4018 / Appts for Food Pantry, contact 804-796-2749",
+    "website": "nan",
+    "tags": [
+      "Clothing; Food Pantry"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Wesley United Methodist Church Children\u2019s Center",
+    "description": "Pre-school; before & after-school care",
+    "address": "3701 Conduit RoadColonial Heights, VA  23834",
+    "phone": "804-526-3700",
+    "website": "nan",
+    "tags": [
+      "Daycare, Pre-School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Wesley United Methodist Church Youth Group",
+    "description": "Youth fellowship, activities and Christian education.",
+    "address": "3701 North Conduit RoadColonial Heights, VA  23834",
+    "phone": "804-526-3700",
+    "website": "nan",
+    "tags": [
+      "Recreation, Church"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Wesly United Methodist Church",
+    "description": "Methodist Church",
+    "address": "3701 Conduit RoadColonial Heights, VA 23834",
+    "phone": "804-526-3700",
+    "website": "http://www.wesleyumc.com",
+    "tags": [
+      "Church, Methodist"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Wesly United Methodist Church",
+    "description": "Methodist Church",
+    "address": "3701 Conduit RoadColonial Heights, VA 23834",
+    "phone": "804-526-3700",
+    "website": "http://www.wesleyumc.com",
+    "tags": [
+      "Church, Methodist"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "West End Christian School",
+    "description": "Pre-School \u2013 Grade 12",
+    "address": "1600 Atlantic StreetHopewell, VA  23850",
+    "phone": "804-458-6142",
+    "website": "nan",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Women of the Moose, #131",
+    "description": "Civic Engagement",
+    "address": "Colonial Heights Moose LodgeP O Box 253, 170 Moose AvenueColonial Heights, VA 23834",
+    "phone": "804-526-1537",
+    "website": "nan",
+    "tags": [
+      "Civic Organization"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Woodlawn Baptist Church",
+    "description": "Baptist Church",
+    "address": "3120 Woodlawn AvenueColonial Heights, VA 23834",
+    "phone": "804-526-2179",
+    "website": "http://www.woodlawnbaptistch.com",
+    "tags": [
+      "Church, Baptist"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Woodlawn Presbyterian Christian Pre-School",
+    "description": "3 & 4 year olds",
+    "address": "1201 Blackstone AvenueHopewell, VA 23860",
+    "phone": "804-452-3240",
+    "website": "nan",
+    "tags": [
+      "School"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "Work Permits \u2013 Colonial Heights High School",
+    "description": "Information provided for applying for a work permit.",
+    "address": "3600 Conduit RoadColonial Heights, VA  23834",
+    "phone": "804-524-3405",
+    "website": "nan",
+    "tags": [
+      "Work Permits"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "YMCA of Chester",
+    "description": "Youth sports, youth center, after-school program; summer camp program. Swimming, gymnastics, adult fitness, nautilus fitness center, special interest classes.",
+    "address": "3011 West Hundred RoadChester, VA  23831",
+    "phone": "804-748-9622",
+    "website": "nan",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "YMCA of Southside Virginia",
+    "description": "Health/safety information and education. First Aid classes. Basketball, physical fitness, swimming, recreational instruction, coaching, weight control. Day camp",
+    "address": "120 North Madison StreetPetersburg, VA  23803",
+    "phone": "804-733-9333",
+    "website": "nan",
+    "tags": [
+      "Recreation"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "YouthQuest Independent Living",
+    "description": "Provides case management services for young adults ages 17-21",
+    "address": "5511 Staples Mill Rd, Ste 100Richmond, VA 23228",
+    "phone": "804-612-3344",
+    "website": "www.intercepthealth.com",
+    "tags": [
+      "Housing, Teens"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "YWCA Domestic Violence Hotline",
+    "description": "nan",
+    "address": "nan",
+    "phone": "804-796-3066 \u2013 Chesterfield",
+    "website": "nan",
+    "tags": [
+      "Hotline, Domestic Violence"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "YWCA \u2013 Women\u2019s Advocacy Program",
+    "description": "24-hour hotline. Crisis center for raped & battered women. Counseling, shelters.",
+    "address": "6 North Fifth StreetRichmond, VA  23219",
+    "phone": "804-643-6761(Main line) ; 804-612-6126(24hr Hotline)",
+    "website": "nan",
+    "tags": [
+      "Hotline, Counseling"
+    ]
+  },
+  {
+    "type": "resource",
+    "name": "See something wrong with this table? Contact us at 804-520-9286",
+    "description": "nan",
+    "address": "nan",
+    "phone": "nan",
+    "website": "nan",
+    "tags": []
+  }
+]

@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
+import { BACKEND_URL } from '@/constants/BackendConfig';
 
-const BACKEND_URL = process.env.EXPO_PUBLIC_CONTENT_API || '';
+const BACKEND_CONTENT_API = process.env.EXPO_PUBLIC_CONTENT_API || BACKEND_URL;
 
 interface AppItem {
   title: string;
@@ -209,14 +210,14 @@ export default function DomainPage() {
                 elevation: 2,
               }}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-                <Image
-                  source={item.image}
-                  style={{ width: 56, height: 56, marginRight: 16, borderRadius: 8, backgroundColor: '#fff' }}
-                  resizeMode="contain"
-                />
-                <Text style={{ fontWeight: 'bold', fontSize: 18, flex: 1 }}>{item.title}</Text>
-              </View>
+                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                  <Image
+                    source={item.image}
+                    style={{ width: 56, height: 56, marginRight: 16, borderRadius: 8, backgroundColor: '#fff' }}
+                    resizeMode="contain"
+                  />
+                  <Text style={{ fontWeight: 'bold', fontSize: 18, flex: 1, flexShrink: 1 }} numberOfLines={2}>{item.title}</Text>
+                </View>
 
               {item.description && (
                 <Text style={{ fontSize: 14, color: '#4b5563', marginBottom: 12, lineHeight: 20 }}>
@@ -224,19 +225,19 @@ export default function DomainPage() {
                 </Text>
               )}
 
-              {item.features && item.features.length > 0 && (
-                <View>
-                  <Text style={{ fontWeight: '600', fontSize: 14, marginBottom: 8, color: '#1f2937' }}>
-                    Key features:
-                  </Text>
-                  {item.features.map((feature: string, idx: number) => (
-                    <View key={idx} style={{ flexDirection: 'row', marginBottom: 4 }}>
-                      <Text style={{ color: '#2563eb', marginRight: 8 }}>•</Text>
-                      <Text style={{ fontSize: 13, color: '#6b7280', flex: 1 }}>{feature}</Text>
-                    </View>
-                  ))}
-                </View>
-              )}
+               {item.features && item.features.length > 0 && (
+                  <View>
+                    <Text style={{ fontWeight: '600', fontSize: 14, marginBottom: 8, color: '#1f2937' }}>
+                      Key features:
+                    </Text>
+                    {item.features.map((feature: string, idx: number) => (
+                      <View key={idx} style={{ flexDirection: 'row', marginBottom: 4, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+                        <Text style={{ color: '#2563eb', marginRight: 8, flexShrink: 0 }}>•</Text>
+                        <Text style={{ fontSize: 13, color: '#6b7280', flex: 1, flexShrink: 1 }}>{feature}</Text>
+                      </View>
+                    ))}
+                  </View>
+                )}
             </View>
           ))}
         </ScrollView>

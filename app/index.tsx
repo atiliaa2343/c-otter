@@ -6,9 +6,9 @@ import {
   TouchableOpacity, 
   ScrollView, 
   StatusBar,
-  SafeAreaView,
   StyleSheet
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/ThemeContext";
@@ -46,7 +46,7 @@ interface LocationData {
   description?: string;
 }
 
-type NavigationItem = "home" | "research" | "community" | "health" | "faculty" | "contact";
+type NavigationItem = "home" | "research" | "community" | "health" | "team" | "contact";
 
 export default function Index() {
   const { theme, toggleTheme } = useAppTheme();
@@ -97,15 +97,15 @@ export default function Index() {
     getlocations();
   }, []);
 
-  // Navigation items configuration - replacing Resources with Contact
-  const navigationItems = [
-    { id: "home" as NavigationItem, label: "Home", icon: "home", iconSet: "Ionicons" },
-    { id: "research" as NavigationItem, label: "Research", icon: "flask", iconSet: "Ionicons" },
-    { id: "community" as NavigationItem, label: "Community", icon: "people", iconSet: "Ionicons" },
-    { id: "health" as NavigationItem, label: "Health", icon: "medical", iconSet: "Ionicons" },
-    { id: "faculty" as NavigationItem, label: "Faculty", icon: "school", iconSet: "Ionicons" },
-    { id: "contact" as NavigationItem, label: "Contact", icon: "call", iconSet: "Ionicons" },
-  ];
+   // Navigation items configuration - replacing Resources with Contact
+const navigationItems = [
+      { id: "home" as NavigationItem, label: "Home", icon: "home", iconSet: "Ionicons" },
+      { id: "research" as NavigationItem, label: "Research", icon: "flask", iconSet: "Ionicons" },
+      { id: "community" as NavigationItem, label: "Community", icon: "people", iconSet: "Ionicons" },
+      { id: "health" as NavigationItem, label: "Health", icon: "medical", iconSet: "Ionicons" },
+      { id: "team" as NavigationItem, label: "Team", icon: "school", iconSet: "Ionicons" },
+      { id: "contact" as NavigationItem, label: "Contact", icon: "call", iconSet: "Ionicons" },
+    ];
 
   // Render navigation icon based on icon set
   const renderIcon = (iconSet: string, iconName: string, isActive: boolean) => {
@@ -120,25 +120,25 @@ export default function Index() {
     return null;
   };
 
-  // Render page content based on current selection
-  const renderPageContent = () => {
-    switch (currentPage) {
-      case "home":
-        return <HomePage />;
-      case "research":
-        return <Research />;
-      case "community":
-        return <CommunityForm />;
-      case "health":
-        return <HealthForm />;
-      case "faculty":
-        return <FacultyForm />;
-      case "contact":
-        return <ContactSection />;
-      default:
-        return null;
-    }
-  };
+   // Render page content based on current selection
+const renderPageContent = () => {
+      switch (currentPage) {
+        case "home":
+          return <HomePage />;
+        case "research":
+          return <Research />;
+        case "community":
+          return <CommunityForm />;
+        case "health":
+          return <HealthForm />;
+        case "team":
+          return <FacultyForm />;
+        case "contact":
+          return <ContactSection />;
+        default:
+          return null;
+      }
+    };
 
   // Toggle dark mode
   const handleToggleTheme = () => {
@@ -150,9 +150,9 @@ export default function Index() {
     return (
       <View style={{ flex: 1, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center' }}>
         <Image
-          source={require("@/assets/images/C.png")}
-          style={{ width: 300, height: 300, borderRadius: 150, backgroundColor: 'transparent' }}
-          resizeMode="contain"
+          source={require("@/assets/images/Ce Otter.png")}
+          style={{ width: 200, height: 200, borderRadius: 100, overflow: 'hidden', backgroundColor: 'transparent' }}
+          resizeMode="cover"
         />
         <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold', marginTop: 24 }}>CE - OTTER</Text>
         <Text style={{ color: '#bfdbfe', fontSize: 14, marginTop: 8 }}>Connecting Campus Community</Text>

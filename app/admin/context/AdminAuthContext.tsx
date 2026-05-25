@@ -124,8 +124,8 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
         token: data.token,
       });
 
-      // Navigate to dashboard
-      router.replace('/admin/dashboard');
+       // Navigate to login screen
+       router.replace('/admin/login');
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
@@ -145,3 +145,6 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
     </AdminAuthContext.Provider>
   );
 }
+
+// Export empty component to satisfy expo-router requirement for default export
+export default () => null;

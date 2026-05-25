@@ -6,8 +6,9 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <AdminAuthProvider>
-        <Stack>
+         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} ></Stack.Screen>
+          <Stack.Screen name="aisearch" options={{ headerShown: false }} ></Stack.Screen>
         </Stack>
       </AdminAuthProvider>
     </ThemeProvider>
