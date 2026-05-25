@@ -6,9 +6,9 @@ import {
   TouchableOpacity, 
   ScrollView, 
   StatusBar,
+  SafeAreaView,
   StyleSheet
 } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/ThemeContext";
@@ -17,15 +17,13 @@ import { HealthForm } from "@/components/Health";
 import { FacultyForm } from "@/components/Faculty";
 import Research from "@/components/Research";
 import { ContactSection } from "@/components/Contact";
-import { AdminPanel } from "@/components/AdminPanel";
-import CommunityForm from "@/components/Community";
-import { BACKEND_URL } from "@/constants/BackendConfig";
+import { getImageUrl } from "@/constants/BackendConfig";
 
-// Use local logo
-const LOCAL_LOGO = require("@/assets/images/Ce Otter.png");
+// Local logo as fallback
+const LOCAL_LOGO = require("@/assets/images/C-Otter.jpg");
 
 // MongoDB API endpoint
-const API_BASE_URL = BACKEND_URL;
+const API_BASE_URL = 'http://10.0.0.92:4000';
 
 // Types for MongoDB data
 interface HourOfOperation {
@@ -46,7 +44,7 @@ interface LocationData {
   description?: string;
 }
 
-type NavigationItem = "home" | "research" | "community" | "health" | "team" | "contact";
+type NavigationItem = "home" | "research" | "community" | "health" | "faculty" | "contact";
 
 export default function Index() {
   const { theme, toggleTheme } = useAppTheme();
@@ -55,10 +53,10 @@ export default function Index() {
   const [currentPage, setCurrentPage] = useState<NavigationItem>("home");
   const [locations, setlocations] = useState<HourOfOperation[]>();
   const [loading, setLoading] = useState(true);
-  const [showAdminPanel, setShowAdminPanel] = useState(false);
   
-  // Use local logo
-  const headerLogoSource = LOCAL_LOGO;
+  // Try MongoDB first, fallback to local asset for header logo
+  const [headerLogoError, setHeaderLogoError] = useState(false);
+  const headerLogoSource = headerLogoError ? LOCAL_LOGO : { uri: getImageUrl('Ce Otter.png') };
 
   // Theme colors
   const backgroundColor = useThemeColor({}, 'background');
@@ -97,15 +95,15 @@ export default function Index() {
     getlocations();
   }, []);
 
-   // Navigation items configuration - replacing Resources with Contact
-const navigationItems = [
-      { id: "home" as NavigationItem, label: "Home", icon: "home", iconSet: "Ionicons" },
-      { id: "research" as NavigationItem, label: "Research", icon: "flask", iconSet: "Ionicons" },
-      { id: "community" as NavigationItem, label: "Community", icon: "people", iconSet: "Ionicons" },
-      { id: "health" as NavigationItem, label: "Health", icon: "medical", iconSet: "Ionicons" },
-      { id: "team" as NavigationItem, label: "Team", icon: "school", iconSet: "Ionicons" },
-      { id: "contact" as NavigationItem, label: "Contact", icon: "call", iconSet: "Ionicons" },
-    ];
+  // Navigation items configuration - replacing Resources with Contact
+  const navigationItems = [
+    { id: "home" as NavigationItem, label: "Home", icon: "home", iconSet: "Ionicons" },
+    { id: "research" as NavigationItem, label: "Research", icon: "flask", iconSet: "Ionicons" },
+    { id: "community" as NavigationItem, label: "Community", icon: "people", iconSet: "Ionicons" },
+    { id: "health" as NavigationItem, label: "Health", icon: "medical", iconSet: "Ionicons" },
+    { id: "faculty" as NavigationItem, label: "Faculty", icon: "school", iconSet: "Ionicons" },
+    { id: "contact" as NavigationItem, label: "Contact", icon: "call", iconSet: "Ionicons" },
+  ];
 
   // Render navigation icon based on icon set
   const renderIcon = (iconSet: string, iconName: string, isActive: boolean) => {
@@ -120,52 +118,63 @@ const navigationItems = [
     return null;
   };
 
-   // Render page content based on current selection
-const renderPageContent = () => {
-      switch (currentPage) {
-        case "home":
-          return <HomePage />;
-        case "research":
-          return <Research />;
-        case "community":
-          return <CommunityForm />;
-        case "health":
-          return <HealthForm />;
-        case "team":
-          return <FacultyForm />;
-        case "contact":
-          return <ContactSection />;
-        default:
-          return null;
-      }
-    };
+  // Render page content based on current selection
+  const renderPageContent = () => {
+    switch (currentPage) {
+      case "home":
+        return <HomePage />;
+      case "research":
+        return <Research />;
+      case "community":
+        return (
+          <ScrollView style={{ flex: 1, backgroundColor }} contentContainerStyle={{ padding: 20, paddingTop: 100 }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <View style={[styles.emptyStateIcon, { backgroundColor: `${primaryColor}15` }]}>
+                <Ionicons name="people" size={48} color={primaryColor} />
+              </View>
+              <Text style={[styles.emptyStateTitle, { color: textColor }]}>Community</Text>
+              <Text style={[styles.emptyStateSubtitle, { color: textSecondary }]}>
+                Connect with others and build meaningful relationships
+              </Text>
+              <TouchableOpacity 
+                style={[styles.comingSoonButton, { backgroundColor: primaryColor }]}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.comingSoonButtonText}>Coming Soon</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        );
+      case "health":
+        return <HealthForm />;
+      case "faculty":
+        return <FacultyForm />;
+      case "contact":
+        return <ContactSection />;
+      default:
+        return null;
+    }
+  };
 
   // Toggle dark mode
   const handleToggleTheme = () => {
     toggleTheme();
   };
 
-   // Show splash screen
-   if (showSplash) {
-     return (
-       <View style={{ flex: 1, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center' }}>
-         <Image
-           source={require("@/assets/images/Ce Otter.png")}
-           style={{ width: 240, height: 240, borderRadius: 120, overflow: 'hidden', backgroundColor: 'transparent' }}
-           resizeMode="cover"
-         />
-         <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold', marginTop: 24 }}>
-           Ce. OTTER
-         </Text>
-         <Text style={{ fontSize: 12, color: '#fff', marginTop: 4 }}>
-           Center for Outreach and Treatment Through Education and Research
-         </Text>
-         <Text style={{ color: '#bfdbfe', fontSize: 14, marginTop: 12 }}>
-           Connecting Campus Community
-         </Text>
-       </View>
-     );
-   }
+  // Show splash screen
+  if (showSplash) {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center' }}>
+        <Image
+          source={LOCAL_LOGO}
+          style={{ width: 300, height: 300, borderRadius: 150, backgroundColor: 'transparent' }}
+          resizeMode="contain"
+        />
+        <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold', marginTop: 24 }}>CE - OTTER</Text>
+        <Text style={{ color: '#bfdbfe', fontSize: 14, marginTop: 8 }}>Connecting Campus Community</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor }}>
@@ -175,31 +184,19 @@ const renderPageContent = () => {
       <SafeAreaView style={{ backgroundColor: tabBarBg }}>
         <View style={[styles.header, { backgroundColor: tabBarBg, borderBottomColor: tabBarBorder }]}>
           <View style={styles.headerLeft}>
-           <Image
-             source={headerLogoSource}
-             style={{ width: 48, height: 48, borderRadius: 24 }}
-           />
-           <Text style={[styles.headerTitle, { color: textColor }]}>Ce. OTTER</Text>
+            <Image
+              source={headerLogoSource}
+              style={{ width: 36, height: 36, borderRadius: 18 }}
+              onError={() => setHeaderLogoError(true)}
+            />
+            <Text style={[styles.headerTitle, { color: textColor }]}>CE - OTTER</Text>
           </View>
           
           <View style={styles.headerRight}>
-            {/* Admin Icon */}
-            <TouchableOpacity 
-              onPress={() => setShowAdminPanel(true)}
-              style={[styles.iconButton, { backgroundColor: isDarkMode ? '#374151' : '#f3f4f6', marginRight: 8 }]}
-              activeOpacity={0.7}
-            >
-              <Ionicons 
-                name="shield-checkmark" 
-                size={20} 
-                color={primaryColor} 
-              />
-            </TouchableOpacity>
-            
             {/* Dark Mode Toggle */}
             <TouchableOpacity 
               onPress={handleToggleTheme}
-              style={[styles.iconButton, { backgroundColor: isDarkMode ? '#374151' : '#f3f4f6' }]}
+              style={[styles.themeToggle, { backgroundColor: isDarkMode ? '#374151' : '#f3f4f6' }]}
               activeOpacity={0.7}
             >
               <Ionicons 
@@ -216,9 +213,6 @@ const renderPageContent = () => {
       <View style={{ flex: 1 }}>
         {renderPageContent()}
       </View>
-
-      {/* Admin Panel Modal */}
-      <AdminPanel visible={showAdminPanel} onClose={() => setShowAdminPanel(false)} />
 
       {/* Modern Bottom Navigation Bar */}
       <SafeAreaView style={{ backgroundColor: tabBarBg }}>
@@ -272,13 +266,6 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     flexDirection: 'row',
-    alignItems: 'center' as const,
-  },
-  iconButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center' as const,
     alignItems: 'center' as const,
   },
   themeToggle: {
