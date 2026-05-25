@@ -70,5 +70,53 @@
     "published_at": "2025-10-05T14:00:00Z",
     "tags": ["survey", "workplace"],
     "ingested_at": "2025-11-01T12:00:00Z"
+  },
+  {
+    "_id": "m-7",
+    "domain": "mental-health",
+    "type": "resource",
+    "title": "Opioid Addiction Treatment Resources",
+    "summary": "Comprehensive treatment options for opioid addiction and recovery support services.",
+    "url": "https://example.org/opioid-treatment",
+    "source": "Health Department",
+    "published_at": "2025-09-15T10:00:00Z",
+    "tags": ["opioid", "addiction", "treatment"],
+    "ingested_at": "2025-11-01T12:00:00Z"
+  },
+  {
+    "_id": "m-8",
+    "domain": "mental-health",
+    "type": "resource",
+    "title": "Cannabis Withdrawal Support Program",
+    "summary": "Support services for managing cannabis withdrawal symptoms and recovery.",
+    "url": "https://example.org/cannabis-recovery",
+    "source": "Recovery Center",
+    "published_at": "2025-08-30T10:00:00Z",
+    "tags": ["cannabis", "recovery", "withdrawal"],
+    "ingested_at": "2025-11-01T12:00:00Z"
+  },
+  {
+    "_id": "m-9",
+    "domain": "mental-health",
+    "type": "news",
+    "title": "Community Counseling Services Expanded",
+    "summary": "Local clinics expand access to affordable counseling and therapy services for all residents.",
+    "url": "https://example.org/counseling-expansion",
+    "source": "Local News",
+    "published_at": "2025-10-20T09:00:00Z",
+    "tags": ["counseling", "therapy", "community"],
+    "ingested_at": "2025-11-01T12:00:00Z"
+  },
+  {
+    "_id": "m-10",
+    "domain": "health",
+    "type": "resource",
+    "title": "Campus Health Center Services Guide",
+    "summary": "Complete guide to medical, mental health, and wellness services available on campus.",
+    "url": "https://example.org/campus-health",
+    "source": "University Health",
+    "published_at": "2025-09-01T08:00:00Z",
+    "tags": ["health", "campus", "services"],
+    "ingested_at": "2025-11-01T12:00:00Z"
   }
 ]
