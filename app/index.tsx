@@ -145,20 +145,27 @@ const renderPageContent = () => {
     toggleTheme();
   };
 
-  // Show splash screen
-  if (showSplash) {
-    return (
-      <View style={{ flex: 1, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center' }}>
-        <Image
-          source={require("@/assets/images/Ce Otter.png")}
-          style={{ width: 200, height: 200, borderRadius: 100, overflow: 'hidden', backgroundColor: 'transparent' }}
-          resizeMode="cover"
-        />
-        <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold', marginTop: 24 }}>CE - OTTER</Text>
-        <Text style={{ color: '#bfdbfe', fontSize: 14, marginTop: 8 }}>Connecting Campus Community</Text>
-      </View>
-    );
-  }
+   // Show splash screen
+   if (showSplash) {
+     return (
+       <View style={{ flex: 1, backgroundColor: '#2563eb', alignItems: 'center', justifyContent: 'center' }}>
+         <Image
+           source={require("@/assets/images/Ce Otter.png")}
+           style={{ width: 240, height: 240, borderRadius: 120, overflow: 'hidden', backgroundColor: 'transparent' }}
+           resizeMode="cover"
+         />
+         <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold', marginTop: 24 }}>
+           Ce. OTTER
+         </Text>
+         <Text style={{ fontSize: 12, color: '#fff', marginTop: 4 }}>
+           Center for Outreach and Treatment Through Education and Research
+         </Text>
+         <Text style={{ color: '#bfdbfe', fontSize: 14, marginTop: 12 }}>
+           Connecting Campus Community
+         </Text>
+       </View>
+     );
+   }
 
   return (
     <View style={{ flex: 1, backgroundColor }}>
@@ -168,11 +175,11 @@ const renderPageContent = () => {
       <SafeAreaView style={{ backgroundColor: tabBarBg }}>
         <View style={[styles.header, { backgroundColor: tabBarBg, borderBottomColor: tabBarBorder }]}>
           <View style={styles.headerLeft}>
-            <Image
-              source={headerLogoSource}
-              style={{ width: 36, height: 36, borderRadius: 18 }}
-            />
-            <Text style={[styles.headerTitle, { color: textColor }]}>CE - OTTER</Text>
+           <Image
+             source={headerLogoSource}
+             style={{ width: 48, height: 48, borderRadius: 24 }}
+           />
+           <Text style={[styles.headerTitle, { color: textColor }]}>Ce. OTTER</Text>
           </View>
           
           <View style={styles.headerRight}>
