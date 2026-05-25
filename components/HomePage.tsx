@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, ImageBackground } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, ImageBackground, TextInput } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -38,120 +38,95 @@ const eventCards = [
 export function HomePage() {
   const router = useRouter();
   
-  // Use local logo
-  const logoSource = LOCAL_LOGO;
-  
-  // Theme colors
-  const backgroundColor = useThemeColor({}, 'background');
-  const backgroundPrimary = useThemeColor({}, 'backgroundPrimary');
-  const textColor = useThemeColor({}, 'text');
-  const textSecondary = useThemeColor({}, 'textSecondary');
-  const primaryColor = useThemeColor({}, 'primary');
-  const cardBg = useThemeColor({}, 'card');
-  const cardBorder = useThemeColor({}, 'cardBorder');
+   // Use local logo
+   const logoSource = LOCAL_LOGO;
+   
+   // Theme colors
+   const backgroundColor = useThemeColor({}, 'background');
+   const backgroundPrimary = useThemeColor({}, 'backgroundPrimary');
+   const textColor = useThemeColor({}, 'text');
+   const textSecondary = useThemeColor({}, 'textSecondary');
+   const primaryColor = useThemeColor({}, 'primary');
+   const cardBg = useThemeColor({}, 'card');
+   const cardBorder = useThemeColor({}, 'cardBorder');
 
-  return (
-    <ImageBackground 
-      source={BACKGROUND_IMAGE} 
-      style={styles.backgroundImage}
-      imageStyle={styles.backgroundImageStyle}
-    >
-      <ScrollView 
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} 
-        style={{ backgroundColor: 'transparent' }}
-      >
-        {/* AI Search bubble stays at the top */}
-        <View style={styles.aiSearchContainer}>
-        <TouchableOpacity
-          style={[styles.aiBubble, { backgroundColor: cardBg, borderColor: cardBorder }]}
-          onPress={() => router.push("/aisearch")}
-          activeOpacity={0.8}
+   return (
+     <ImageBackground 
+       source={BACKGROUND_IMAGE} 
+       style={styles.backgroundImage}
+       imageStyle={styles.backgroundImageStyle}
+     >
+        <ScrollView 
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} 
+          style={{ backgroundColor: 'transparent' }}
         >
-          <Ionicons name="search" size={18} color={primaryColor} style={{ marginRight: 8 }} />
-          <Text style={[styles.aiText, { color: primaryColor }]}>AI search</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.colorBubble, { backgroundColor: cardBg, borderColor: cardBorder }]}
-          onPress={() => router.push("/coloring")}
-          activeOpacity={0.8}
-        >
-          <Ionicons name="color-palette" size={18} color={primaryColor} style={{ marginRight: 8 }} />
-          <Text style={[styles.aiText, { color: primaryColor }]}>Color</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Main Content */}
-      <View style={styles.mainContent}>
-        {/* Logo and Title Section */}
-        <View style={styles.titleSection}>
-          <Image
-            source={logoSource}
-            style={styles.logoImage}
-            resizeMode="cover"
-          />
-          <Text style={[styles.title, { color: primaryColor }]}>CE - OTTER</Text>
-          <Text style={[styles.subtitle, { color: textSecondary }]}>
-            Connection, Outreach, Transformation, Teaching, Empowerment & Resources
-          </Text>
-        </View>
-
-        {/* Mission Section */}
-        <View style={[styles.missionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
-          <View style={styles.missionHeader}>
-            <Ionicons name="heart" size={24} color={primaryColor} />
-            <Text style={[styles.missionTitle, { color: textColor }]}>Our Mission</Text>
+          {/* AI Search bubble stays at the top */}
+          <View style={styles.aiSearchContainer}>
+            <TextInput
+              placeholder="Search with AI..."
+              style={styles.aiSearchInput}
+              onSubmitEditing={(event) => {
+                const query = event.nativeEvent.text;
+                if (query) {
+                  router.push(`/aisearch?query=${encodeURIComponent(query)}`);
+                }
+              }}
+            />
           </View>
-          <Text style={[styles.missionDesc, { color: textSecondary }]}>
-            C-OTTER empowers students through accessible support, community engagement, and academic growth by providing a unified digital platform designed to uplift, inform, and connect the campus community.
-          </Text>
-        </View>
 
-        {/* Quick Actions */}
-        <View style={styles.quickActionsSection}>
-          <Text style={[styles.sectionTitle, { color: textColor }]}>Quick Actions</Text>
-          <View style={styles.quickActionsGrid}>
-            <TouchableOpacity 
-              style={[styles.quickActionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
-              onPress={() => router.push("/aisearch")}
-            >
-              <View style={[styles.quickActionIcon, { backgroundColor: '#eff6ff' }]}>
-                <Ionicons name="chatbubbles" size={24} color="#2563eb" />
-              </View>
-              <Text style={[styles.quickActionText, { color: textColor }]}>AI Assistant</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={[styles.quickActionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
-              onPress={() => router.push('/health/mental-health')}
-            >
-              <View style={[styles.quickActionIcon, { backgroundColor: '#fdf2f8' }]}>
-                <Ionicons name="heart" size={24} color="#db2777" />
-              </View>
-              <Text style={[styles.quickActionText, { color: textColor }]}>Mental Health</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={[styles.quickActionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
-              onPress={() => router.push('/health/fitness')}
-            >
-              <View style={[styles.quickActionIcon, { backgroundColor: '#fef2f2' }]}>
-                <Ionicons name="fitness" size={24} color="#dc2626" />
-              </View>
-              <Text style={[styles.quickActionText, { color: textColor }]}>Fitness</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={[styles.quickActionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
-              onPress={() => router.push('/health/nutrition')}
-            >
-              <View style={[styles.quickActionIcon, { backgroundColor: '#fefce8' }]}>
-                <Ionicons name="restaurant" size={24} color="#ca8a04" />
-              </View>
-              <Text style={[styles.quickActionText, { color: textColor }]}>Nutrition</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+       {/* Main Content */}
+       <View style={styles.mainContent}>
+         {/* Logo and Title Section */}
+         <View style={styles.titleSection}>
+           <Image
+             source={logoSource}
+             style={styles.logoImage}
+             resizeMode="cover"
+           />
+           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+             <Text style={[styles.title, { color: primaryColor }]}>Ce. OTTER</Text>
+             <Text style={{ fontSize: 12, color: textSecondary, marginTop: 2 }}>
+               Center for Outreach and Treatment Through Education and Research
+             </Text>
+           </View>
+         </View>
+
+         {/* Mission Section */}
+         <View style={[styles.missionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
+           <View style={styles.missionHeader}>
+             <Ionicons name="heart" size={24} color={primaryColor} />
+             <Text style={[styles.missionTitle, { color: textColor }]}>Our Mission</Text>
+           </View>
+           <Text style={[styles.missionDesc, { color: textSecondary }]}>
+             The Center for Outreach & Treatment Through Education & Research is committed to provide community engagement, health education, medical services, and biomedical research training in the fields of Addiction, Public Health, Psychology, and other related fields to faculty, staff, students, and community stakeholders. Through the integration of education and research, the Ce. OTTER will help establish VSU as a health hub for surrounding communities.
+           </Text>
+         </View>
+
+         {/* Quick Actions */}
+         <View style={styles.quickActionsSection}>
+           <Text style={[styles.sectionTitle, { color: textColor }]}>Quick Actions</Text>
+           <View style={styles.quickActionsGrid}>
+             <TouchableOpacity 
+               style={[styles.quickActionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
+               onPress={() => router.push('/admin/login')}
+             >
+               <View style={[styles.quickActionIcon, { backgroundColor: '#eff6ff' }]}>
+                 <Ionicons name="shield-checkmark" size={24} color="#2563eb" />
+               </View>
+               <Text style={[styles.quickActionText, { color: textColor }]}>Admin</Text>
+             </TouchableOpacity>
+             
+             <TouchableOpacity 
+               style={[styles.quickActionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
+               onPress={() => router.push('/coloring')}
+             >
+               <View style={[styles.quickActionIcon, { backgroundColor: '#fdf2f8' }]}>
+                 <Ionicons name="color-palette" size={24} color="#db2777" />
+               </View>
+               <Text style={[styles.quickActionText, { color: textColor }]}>Coloring</Text>
+             </TouchableOpacity>
+           </View>
+         </View>
 
         {/* Event/Alert Cards */}
         <View style={styles.eventsSection}>
@@ -203,28 +178,28 @@ const styles = StyleSheet.create({
     opacity: 0.1,
     resizeMode: 'cover',
   },
-  aiSearchContainer: {
-    position: 'absolute',
-    top: 50,
-    right: 16,
-    zIndex: 10,
-  },
-  aiBubble: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    borderWidth: 1,
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  aiText: {
-    fontWeight: '600',
-    fontSize: 14,
-  },
+   aiSearchContainer: {
+     position: 'absolute',
+     top: 50,
+     left: 16,
+     right: 16,
+     zIndex: 10,
+   },
+   aiSearchInput: {
+     flexDirection: 'row',
+     alignItems: 'center',
+     paddingVertical: 12,
+     paddingHorizontal: 16,
+     borderRadius: 25,
+     borderWidth: 1,
+     borderColor: '#ddd',
+     backgroundColor: '#fff',
+     shadowColor: "#000",
+     shadowOpacity: 0.1,
+     shadowRadius: 4,
+     elevation: 2,
+     width: '100%',
+   },
   mainContent: {
     paddingTop: 100,
     paddingHorizontal: 16,
@@ -233,14 +208,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
-  logoImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginBottom: 12,
-    borderWidth: 3,
-    borderColor: '#2563eb',
-  },
+   logoImage: {
+     width: 120,
+     height: 120,
+     borderRadius: 60,
+     marginBottom: 12,
+     borderWidth: 3,
+     borderColor: '#2563eb',
+   },
   title: {
     fontSize: 32,
     fontWeight: '700',

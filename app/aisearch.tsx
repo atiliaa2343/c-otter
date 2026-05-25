@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, ScrollView, KeyboardAvoidingView, Platform, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { BACKEND_URL } from '@/constants/BackendConfig';
 
@@ -23,9 +23,18 @@ interface AiResponse {
 
 export default function AiSearch() {
   const router = useRouter();
-  const [query, setQuery] = useState('');
+  const { query: urlQuery } = useLocalSearchParams();
+  const [query, setQuery] = useState(urlQuery || '');
   const [isLoading, setIsLoading] = useState(false);
   const [searchResult, setSearchResult] = useState<AiResponse | null>(null);
+
+  // Perform search when query changes (either from URL param or user input)
+  useEffect(() => {
+    if (query.trim()) {
+      // Automatically perform search when query is present
+      handleSearch();
+    }
+  }, [query]);
 
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
