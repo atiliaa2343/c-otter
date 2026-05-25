@@ -3,14 +3,13 @@ import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from "rea
 import { useRouter } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { getImageUrl } from "@/constants/BackendConfig";
 
 interface TopicCard {
   id: string;
   title: string;
   color: string;
   icon?: string;
-  imageFilename: string;
+  imageSource: any;
   description: string;
 }
 
@@ -21,50 +20,22 @@ export function HealthForm() {
   const textColor = useThemeColor({}, 'text');
   const textSecondary = useThemeColor({}, 'textSecondary');
 
-  const topics: TopicCard[] = [
-    { 
-      id: '1', 
-      title: 'Mental Health', 
-      color: '#8B7FE8', 
-      imageFilename: 'mental.png', 
-      description: 'Mind, mood & psychological wellness',
-    },
-    { 
-      id: '2', 
-      title: 'Fitness', 
-      color: '#FF6B6B', 
-      imageFilename: 'fitness.png', 
-      description: 'Physical activity & exercise',
-    },
-    { 
-      id: '3', 
-      title: 'Addiction & Recovery', 
-      color: '#FFB088', 
-      imageFilename: 'drugs.png', 
-      description: 'Support for substance use',
-    },
-    { 
-      id: '4', 
-      title: 'Nutrition', 
-      color: '#FFC857', 
-      imageFilename: 'food.png', 
-      description: 'Healthy eating & diet',
-    },
-    { 
-      id: '5', 
-      title: 'Emotional & Social', 
-      color: '#6BCF7F', 
-      imageFilename: 'social.png', 
-      description: 'Relationships & community',
-    },
-    { 
-      id: '6', 
-      title: 'Financial Health', 
-      color: '#4A5568', 
-      imageFilename: 'money.png', 
-      description: 'Money management & career',
-    },
-  ];
+const topics: TopicCard[] = [
+      { 
+        id: '1', 
+        title: 'Cannabis', 
+        color: '#8B7FE8', 
+        imageSource: require('@/assets/images/cannabis.png'), 
+        description: 'Resources and support for cannabis use',
+      },
+     { 
+       id: '2', 
+       title: 'Opioids', 
+       color: '#FFB088', 
+       imageSource: require('@/assets/images/drugs.png'), 
+       description: 'Resources and support for opioid use',
+     },
+   ];
 
   const slugify = (s: string) =>
     s
@@ -88,7 +59,7 @@ export function HealthForm() {
       >
         <View style={styles.cardContent}>
           <Image 
-            source={{ uri: getImageUrl(topic.imageFilename) }}
+            source={topic.imageSource}
             style={styles.topicImage}
             resizeMode="contain"
           />

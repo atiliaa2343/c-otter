@@ -42,6 +42,27 @@ function ContactCard({ icon, iconSet, title, subtitle, value, onPress }: Contact
   );
 }
 
+interface QuickLinkProps {
+  icon: string;
+  title: string;
+  url: string;
+}
+
+function QuickLink({ icon, title, url }: QuickLinkProps) {
+  const primaryColor = useThemeColor({}, 'primary');
+  const cardBg = useThemeColor({}, 'card');
+  
+  return (
+    <TouchableOpacity 
+      style={[styles.quickLink, { backgroundColor: `${primaryColor}15` }]}
+      onPress={() => Linking.openURL(url)}
+    >
+      <Ionicons name={icon as any} size={24} color={primaryColor} />
+      <Text style={[styles.quickLinkText, { color: primaryColor }]}>{title}</Text>
+    </TouchableOpacity>
+  );
+}
+
 export function ContactSection() {
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
@@ -77,51 +98,66 @@ export function ContactSection() {
         </Text>
       </View>
 
-      {/* Emergency Banner */}
-      <View style={[styles.emergencyBanner, { backgroundColor: '#fef2f2' }]}>
-        <Ionicons name="warning" size={24} color="#dc2626" />
-        <View style={styles.emergencyTextContainer}>
-          <Text style={[styles.emergencyTitle, { color: '#dc2626' }]}>Crisis Hotline</Text>
-          <Text style={[styles.emergencyText, { color: '#991b1b' }]}>
-            If this is an emergency, please call 988
-          </Text>
+{/* Emergency Banner */}
+        <View style={[styles.emergencyBanner, { backgroundColor: '#fef2f2' }]}>
+          <Ionicons name="warning" size={24} color="#dc2626" />
+          <View style={styles.emergencyTextContainer}>
+            <Text style={[styles.emergencyTitle, { color: '#dc2626' }]}>In case of emergency</Text>
+            <Text style={[styles.emergencyText, { color: '#991b1b' }]}>
+              This application provides general public health information and community resources and is not a substitute for emergency medical care, diagnosis, or crisis intervention. If you are experiencing a medical emergency or believe someone is in immediate danger, call 911 immediately or go to the nearest emergency room; for mental health emergencies or emotional distress, call or text 988 for the Suicide & Crisis Lifeline. If you need additional support connecting with healthcare or community services, please contact your local health department or healthcare provider directly.
+            </Text>
+          </View>
         </View>
-        <TouchableOpacity onPress={() => Linking.openURL('tel:988')}>
-          <Text style={[styles.callButton, { backgroundColor: '#dc2626' }]}>Call</Text>
-        </TouchableOpacity>
-      </View>
 
-      {/* Contact Cards */}
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { color: textColor }]}>Reach Out</Text>
-        
-        <ContactCard
-          icon="call"
-          iconSet="Ionicons"
-          title="Phone"
-          subtitle="Main Office"
-          value="(804) 524-5523"
-          onPress={handlePhonePress}
-        />
-        
-        <ContactCard
-          icon="mail"
-          iconSet="Ionicons"
-          title="Email"
-          subtitle="Lab Director"
-          value="lkeen@vsu.edu"
-          onPress={handleEmailPress}
-        />
-        
-        <ContactCard
-          icon="location"
-          iconSet="Ionicons"
-          title="Location"
-          subtitle="Virginia State University"
-          value="Petersburg, VA"
-          onPress={handleLocationPress}
-        />
-      </View>
+       {/* Reach Out - Combined Card */}
+        <View style={styles.section}>
+         <Text style={[styles.sectionTitle, { color: textColor }]}>Reach Out</Text>
+         
+         <View style={[styles.reachOutCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
+           <View style={styles.reachOutRow}>
+             <View style={[styles.iconContainer, { backgroundColor: `${primaryColor}15` }]}>
+               <Ionicons name="call" size={24} color={primaryColor} />
+             </View>
+             <View style={styles.reachOutInfo}>
+               <Text style={[styles.reachOutLabel, { color: textColor }]}>Phone</Text>
+               <Text style={[styles.reachOutValue, { color: primaryColor }]}>(804) 524-5523</Text>
+             </View>
+             <TouchableOpacity onPress={handlePhonePress}>
+               <Ionicons name="call" size={20} color={primaryColor} />
+             </TouchableOpacity>
+           </View>
+           
+           <View style={[styles.divider, { backgroundColor: cardBorder }]} />
+           
+           <View style={styles.reachOutRow}>
+             <View style={[styles.iconContainer, { backgroundColor: `${primaryColor}15` }]}>
+               <Ionicons name="mail" size={24} color={primaryColor} />
+             </View>
+             <View style={styles.reachOutInfo}>
+               <Text style={[styles.reachOutLabel, { color: textColor }]}>Email</Text>
+               <Text style={[styles.reachOutValue, { color: primaryColor }]}>lkeen@vsu.edu</Text>
+             </View>
+             <TouchableOpacity onPress={handleEmailPress}>
+               <Ionicons name="mail" size={20} color={primaryColor} />
+             </TouchableOpacity>
+           </View>
+           
+           <View style={[styles.divider, { backgroundColor: cardBorder }]} />
+           
+           <View style={styles.reachOutRow}>
+             <View style={[styles.iconContainer, { backgroundColor: `${primaryColor}15` }]}>
+               <Ionicons name="location" size={24} color={primaryColor} />
+             </View>
+             <View style={styles.reachOutInfo}>
+               <Text style={[styles.reachOutLabel, { color: textColor }]}>Location</Text>
+               <Text style={[styles.reachOutValue, { color: primaryColor }]}>Virginia State University</Text>
+             </View>
+             <TouchableOpacity onPress={handleLocationPress}>
+               <Ionicons name="map" size={20} color={primaryColor} />
+             </TouchableOpacity>
+           </View>
+         </View>
+       </View>
 
       {/* Office Hours */}
       <View style={styles.section}>
@@ -140,28 +176,24 @@ export function ContactSection() {
         </View>
       </View>
 
-      {/* Quick Links */}
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { color: textColor }]}>Quick Links</Text>
-        
-        <View style={styles.quickLinksContainer}>
-          <TouchableOpacity 
-            style={[styles.quickLink, { backgroundColor: `${primaryColor}15` }]}
-            onPress={() => Linking.openURL('https://www.vsu.edu')}
-          >
-            <Ionicons name="school" size={24} color={primaryColor} />
-            <Text style={[styles.quickLinkText, { color: primaryColor }]}>VSU Website</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={[styles.quickLink, { backgroundColor: `${primaryColor}15` }]}
-            onPress={() => Linking.openURL('https://www.vsu.edu/psychology')}
-          >
-            <Ionicons name="flask" size={24} color={primaryColor} />
-            <Text style={[styles.quickLinkText, { color: primaryColor }]}>Psychology Dept</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+{/* Quick Links */}
+       <View style={styles.section}>
+         <Text style={[styles.sectionTitle, { color: textColor }]}>Quick Links</Text>
+         
+         <View style={styles.quickLinksContainer}>
+           <QuickLink
+             icon="globe"
+             title="PNIRD Lab"
+             url="http://www.pnird.com/"
+           />
+           
+           <QuickLink
+             icon="globe"
+             title="C-OTTER"
+             url="https://www.vsu.edu/academics/special-programs/center-for-otter.php"
+           />
+         </View>
+       </View>
 
       {/* Footer */}
       <View style={styles.footer}>
@@ -212,8 +244,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   emergencyText: {
-    fontSize: 14,
-    marginTop: 2,
+    fontSize: 12,
+    marginTop: 4,
+    lineHeight: 18,
   },
   callButton: {
     paddingHorizontal: 16,
@@ -230,6 +263,29 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 12,
+  },
+  reachOutCard: {
+    borderRadius: 12,
+    borderWidth: 1,
+    overflow: 'hidden',
+  },
+  reachOutRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+  },
+  reachOutInfo: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  reachOutLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  reachOutValue: {
+    fontSize: 14,
+    fontWeight: '500',
+    marginTop: 2,
   },
   contactCard: {
     flexDirection: 'row',
