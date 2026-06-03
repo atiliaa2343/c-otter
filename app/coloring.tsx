@@ -8,21 +8,20 @@ import {
   Image, 
   Dimensions,
   PanResponder,
-  Alert
+  Alert,
+  Animated
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "../hooks/useThemeColor";
-
 const ColoringImage = require("../assets/images/Coloring-Page(1).png");
-
+const PigmentImage = require("../assets/images/pigment.png");
 const COLOR_PALETTE = [
   '#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6',
   '#a855f7', '#ec4899', '#92400e', '#000000', '#6b7280',
   '#ffffff', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4',
   '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f', '#bb8fce',
 ];
-
 export default function ColoringPage() {
   const [pageIndex, setPageIndex] = useState(0); // 0: title, 1: index, 2-6: coloring pages (5 total)
   const [selectedIndex, setSelectedIndex] = useState(1); // Tracks which coloring page is selected on index (1-5)
@@ -36,7 +35,10 @@ export default function ColoringPage() {
   const [isPaletteExpanded, setIsPaletteExpanded] = useState(true); // Track if color palette is expanded
   const [isSaving, setIsSaving] = useState(false);
   const [showSaveOptions, setShowSaveOptions] = useState(false);
-
+  const [isBookOpen, setIsBookOpen] = useState(false);
+  // Animation values for book opening
+  const bookOpenAnim = useRef(new Animated.Value(0)).current;
+  const pageFlipAnim = useRef(new Animated.Value(0)).current;
   // Theme colors
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
@@ -44,7 +46,6 @@ export default function ColoringPage() {
   const cardBorder = useThemeColor({}, 'text');
   const primaryColor = useThemeColor({}, 'tint');
   const textSecondary = useThemeColor({}, 'tabIconDefault');
-
   // Reset points when navigating between coloring pages
   useEffect(() => {
     // Reset points when we're on a coloring page (2-6) and pageIndex changes
@@ -60,7 +61,6 @@ export default function ColoringPage() {
       setFuturePoints([]);
     }
   }, [pageIndex]);
-
   // Add current points to history for undo functionality
   const addToHistory = useCallback(() => {
     if (points.length > 0) {
@@ -68,7 +68,6 @@ export default function ColoringPage() {
       setFuturePoints([]); // Clear future points when new action is performed
     }
   }, [points]);
-
   // Undo function
   const undo = useCallback(() => {
     if (pointsHistory.length > 0) {
@@ -78,7 +77,6 @@ export default function ColoringPage() {
       setPoints(lastPoints);
     }
   }, [points, pointsHistory, futurePoints]);
-
   // Redo function
   const redo = useCallback(() => {
     if (futurePoints.length > 0) {
@@ -88,13 +86,11 @@ export default function ColoringPage() {
       setPoints(nextPoints);
     }
   }, [points, pointsHistory, futurePoints]);
-
   // Clear canvas
   const clearCanvas = useCallback(() => {
     addToHistory();
     setPoints([]);
   }, [addToHistory]);
-
   // Save artwork
   const saveArtwork = async () => {
     try {
@@ -114,7 +110,6 @@ export default function ColoringPage() {
       setIsSaving(false);
     }
   };
-
   // Share artwork
   const shareArtwork = async () => {
     try {
@@ -133,36 +128,52 @@ export default function ColoringPage() {
       setIsSaving(false);
     }
   };
-
   // Handle long press on canvas to show context menu
   const handleCanvasLongPress = () => {
     setShowSaveOptions(true);
   };
-
+  // Book opening animation
+  const openBook = () => {
+    setIsBookOpen(true);
+    Animated.sequence([
+      Animated.timing(bookOpenAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(pageFlipAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setPageIndex(1);
+      // Reset animations
+      bookOpenAnim.setValue(0);
+      pageFlipAnim.setValue(0);
+      setIsBookOpen(false);
+    });
+  };
   // Update refs when state changes
   const selectedColorRef = useRef(selectedColor);
   const brushSizeRef = useRef(brushSize);
   const brushTypeRef = useRef(brushType);
-
   useEffect(() => {
     selectedColorRef.current = selectedColor;
     brushSizeRef.current = brushSize;
     brushTypeRef.current = brushType;
   }, [selectedColor, brushSize, brushType]);
-
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: (evt, gestureState) => {
         addToHistory(); // Add to history when starting a new stroke
-        
         if (brushTypeRef.current === 'eraser') {
           // Eraser: remove points within radius
           const eraserX = evt.nativeEvent.locationX;
           const eraserY = evt.nativeEvent.locationY;
           const eraserRadius = brushSizeRef.current;
-          
           setPoints(prev => prev.filter(point => {
             const distance = Math.sqrt(
               Math.pow(point.x - eraserX, 2) + Math.pow(point.y - eraserY, 2)
@@ -187,7 +198,6 @@ export default function ColoringPage() {
           const eraserX = evt.nativeEvent.locationX;
           const eraserY = evt.nativeEvent.locationY;
           const eraserRadius = brushSizeRef.current;
-          
           setPoints(prev => prev.filter(point => {
             const distance = Math.sqrt(
               Math.pow(point.x - eraserX, 2) + Math.pow(point.y - eraserY, 2)
@@ -211,25 +221,94 @@ export default function ColoringPage() {
       },
     })
   ).current;
-
   const renderPage = () => {
     if (pageIndex === 0) {
-      // Title page - tap to go to index
+      // Title page - book cover design
+      const bookCoverRotate = bookOpenAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '-15deg'],
+      });
+      const bookCoverScale = bookOpenAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 0.9],
+      });
+      const pageFlipRotate = pageFlipAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '-180deg'],
+      });
       return (
-        <TouchableOpacity
-          style={styles.titlePage}
-          onPress={() => setPageIndex(1)}
-        >
-          <Text style={styles.titleText}>Donuts Jam</Text>
-        </TouchableOpacity>
+        <View style={styles.bookContainer}>
+          {/* Book spine */}
+          <View style={styles.bookSpine} />
+          {/* Book cover */}
+          <Animated.View
+            style={[
+              styles.bookCover,
+              {
+                transform: [
+                  { rotate: bookCoverRotate },
+                  { scale: bookCoverScale },
+                ],
+              },
+            ]}
+          >
+            {/* Cover design */}
+            <View style={styles.coverDesign}>
+              <View style={styles.coverBorder}>
+                <View style={styles.coverInner}>
+                  {/* Decorative elements */}
+                  <View style={styles.coverCornerTopLeft} />
+                  <View style={styles.coverCornerTopRight} />
+                  <View style={styles.coverCornerBottomLeft} />
+                  <View style={styles.coverCornerBottomRight} />
+                  {/* Title */}
+                  <Text style={styles.coverTitle}>Donuts Jam</Text>
+                  <Text style={styles.coverSubtitle}>Coloring Book</Text>
+                  {/* Decorative donut icon */}
+                  <View style={styles.coverIcon}>
+                    <View style={styles.donutOuter} />
+                    <View style={styles.donutInner} />
+                  </View>
+                  {/* Tap to open instruction */}
+                  <TouchableOpacity
+                    style={styles.tapToOpen}
+                    onPress={openBook}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={styles.tapToOpenText}>Tap to Open</Text>
+                    <Ionicons name="book" size={24} color="#fff" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Animated.View>
+          {/* Page flip animation overlay */}
+          <Animated.View
+            style={[
+              styles.pageFlipOverlay,
+              {
+                transform: [{ rotateY: pageFlipRotate }],
+                opacity: pageFlipAnim,
+              },
+            ]}
+            pointerEvents="none"
+          >
+            <View style={styles.pageFlipContent} />
+          </Animated.View>
+        </View>
       );
     }
-    
     if (pageIndex === 1) {
-      // Index page with clickable numbers 1-5
+      // Index page with clickable numbers 1-5 - book page style
       return (
-        <View style={[styles.indexPage, { backgroundColor: backgroundColor }]}>
-          <Text style={[styles.indexTitle, { color: textColor }]}>Select a Coloring Page</Text>
+        <View style={styles.bookPageContainer}>
+          {/* Left page edge */}
+          <View style={styles.pageEdgeLeft} />
+          {/* Right page edge */}
+          <View style={styles.pageEdgeRight} />
+          {/* Index content */}
+          <View style={[styles.indexPage, { backgroundColor: 'transparent' }]}>
+            <Text style={[styles.indexTitle, { color: textColor }]}>Table of Contents</Text>
           <View style={styles.indexNumbers}>
             {[1, 2, 3, 4, 5].map((num) => (
               <TouchableOpacity
@@ -257,27 +336,32 @@ export default function ColoringPage() {
             <Ionicons name="chevron-back" size={20} color={textColor} />
           </TouchableOpacity>
         </View>
+      </View>
       );
     }
-    
      // Coloring pages (indices 2-6)
      return (
        <>
-         {/* Image layer - at the back */}
-         <View style={styles.imageContainer} pointerEvents="none">
-           <Image
-             source={ColoringImage}
-             style={styles.image}
-             resizeMode="contain"
-           />
+         {/* Book page container with texture */}
+         <View style={styles.bookPageContainer}>
+           {/* Left page edge */}
+           <View style={styles.pageEdgeLeft} />
+           {/* Image layer - at the back */}
+           <View style={styles.imageContainer} pointerEvents="none">
+             <Image
+               source={ColoringImage}
+               style={styles.image}
+               resizeMode="contain"
+             />
+           </View>
+           {/* Right page edge */}
+           <View style={styles.pageEdgeRight} />
          </View>
-         
           {/* Drawing layer - receives touch events */}
           <View style={styles.drawingContainer} {...panResponder.panHandlers}>
             {points.map((point, index) => {
               // Skip eraser points (they shouldn't be rendered)
               if (point.type === 'eraser') return null;
-              
               // Different brush types have different rendering
               const pointStyle = {
                 position: 'absolute' as const,
@@ -289,7 +373,6 @@ export default function ColoringPage() {
                 borderRadius: point.size / 2,
                 opacity: 0.9
               };
-              
               return (
                 <View
                   key={index.toString()}
@@ -298,14 +381,12 @@ export default function ColoringPage() {
                 />
               );
             })}
-            
             {/* Long press to show save options */}
             <TouchableOpacity 
               style={StyleSheet.absoluteFillObject}
               onLongPress={handleCanvasLongPress}
             />
           </View>
-          
           {/* Save/Export Modal */}
           <View style={showSaveOptions ? styles.modalContainer : styles.modalHidden}>
             <View style={styles.modalContent}>
@@ -333,7 +414,6 @@ export default function ColoringPage() {
               </View>
             </View>
           </View>
-         
           {/* Header - always on top */}
           <View style={[styles.header, { backgroundColor: cardBg, borderBottomColor: cardBorder }]} pointerEvents="box-none">
            <TouchableOpacity
@@ -444,7 +524,6 @@ export default function ColoringPage() {
              <Ionicons name="share" size={20} color={textColor} />
            </TouchableOpacity>
          </View>
-        
          {/* Color Palette - Fixed at bottom */}
          <View style={[styles.bottomPalette, { backgroundColor: cardBg, borderTopColor: cardBorder }]}>
            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.paletteScrollContent}>
@@ -471,20 +550,204 @@ export default function ColoringPage() {
       </>
     );
   };
-
   return (
     <SafeAreaView style={[styles.container, { backgroundColor }]}>
       {renderPage()}
     </SafeAreaView>
   );
 };
-
 const { width } = Dimensions.get('window');
-
 const styles = StyleSheet.create({
    container: {
      flex: 1,
    },
+   // Book container and cover styles
+   bookContainer: {
+     flex: 1,
+     backgroundColor: '#f5f5dc',
+     justifyContent: 'center',
+     alignItems: 'center',
+     padding: 20,
+   },
+   bookSpine: {
+     position: 'absolute',
+     left: 15,
+     top: 20,
+     bottom: 20,
+     width: 8,
+     backgroundColor: '#8B4513',
+     borderRadius: 4,
+     shadowOffset: { width: -2, height: 0 },
+     shadowOpacity: 0.3,
+   },
+   bookCover: {
+     width: '85%',
+     aspectRatio: 0.75,
+     backgroundColor: '#8B4513',
+     borderRadius: 8,
+     shadowOffset: { width: 4, height: 8 },
+     shadowOpacity: 0.4,
+     shadowRadius: 12,
+     elevation: 10,
+   },
+   coverDesign: {
+     flex: 1,
+     margin: 12,
+     backgroundColor: '#DEB887',
+     borderRadius: 6,
+  },
+  coverBorder: {
+    flex: 1,
+    margin: 8,
+    borderWidth: 2,
+    borderColor: 'rgba(0,0,0,0.1)',
+    borderRadius: 4,
+    backgroundColor: '#F5DEB3',
+  },
+  coverInner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  coverCornerTopLeft: {
+    position: 'absolute',
+    top: 15,
+    left: 15,
+    width: 30,
+    height: 30,
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  coverCornerTopRight: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    width: 30,
+    height: 30,
+    borderTopWidth: 3,
+    borderRightWidth: 3,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  coverCornerBottomLeft: {
+    position: 'absolute',
+    bottom: 15,
+    left: 15,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  coverCornerBottomRight: {
+    position: 'absolute',
+    bottom: 15,
+    right: 15,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  coverTitle: {
+    fontSize: 42,
+    fontWeight: '800',
+    textAlign: 'center',
+    marginBottom: 8,
+    textShadowColor: 'rgba(0,0,0,0.1)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
+  coverSubtitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#A0522D',
+    textAlign: 'center',
+    marginBottom: 30,
+    fontStyle: 'italic',
+  },
+  coverIcon: {
+    width: 100,
+    height: 100,
+    marginBottom: 40,
+    position: 'relative',
+  },
+  donutOuter: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#FF6B6B',
+    borderWidth: 4,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  donutInner: {
+    position: 'absolute',
+    top: 25,
+    left: 25,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#F5DEB3',
+    borderWidth: 2,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  tapToOpen: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#8B4513',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 25,
+    gap: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    elevation: 5,
+  },
+  tapToOpenText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  pageFlipOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#fff',
+    backfaceVisibility: 'hidden',
+  },
+  pageFlipContent: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  // Book page styles for coloring pages
+  bookPageContainer: {
+    flex: 1,
+    position: 'relative',
+  },
+  pageEdgeLeft: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 15,
+    backgroundColor: '#00000008', // 5% black opacity
+    shadowOffset: { width: 2, height: 0 },
+    shadowOpacity: 0.15,
+  },
+  pageEdgeRight: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 15,
+    backgroundColor: '#00000008', // 5% black opacity
+    shadowOffset: { width: -2, height: 0 },
+    shadowOpacity: 0.15,
+  },
    titlePage: {
      flex: 1,
      justifyContent: 'center',
@@ -544,7 +807,7 @@ const styles = StyleSheet.create({
    },
    brushTypeBtnActive: {
      borderWidth: 2,
-     borderColor: '#000',
+     borderColor: 'rgba(0,0,0,0.1)',
    },
    undoRedoContainer: {
      flexDirection: 'row',
@@ -586,7 +849,7 @@ const styles = StyleSheet.create({
    },
    brushSizeBtnActive: {
      borderWidth: 2,
-     borderColor: '#000',
+     borderColor: 'rgba(0,0,0,0.1)',
    },
    toolCard: {
      padding: 16,
@@ -625,7 +888,7 @@ const styles = StyleSheet.create({
      borderColor: 'rgba(0,0,0,0.1)',
    },
    colorItemSelected: {
-     borderColor: '#000',
+     borderColor: 'rgba(0,0,0,0.1)',
      transform: [{ scale: 1.1 }],
    },
    // Index page styles
@@ -655,7 +918,7 @@ const styles = StyleSheet.create({
      justifyContent: 'center',
    },
    indexNumberBtnActive: {
-     borderColor: '#000', // Will be overridden with theme color in component
+     borderColor: '#000',
      backgroundColor: '#00000008', // 5% black opacity
    },
    indexNumberText: {
@@ -723,12 +986,11 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      marginHorizontal: 6,
      borderWidth: 2,
-     borderColor: 'rgba(0,0,0,0.2)',
+     borderColor: 'rgba(0,0,0,0.1)',
    },
    colorItemSelectedBottom: {
-     borderColor: '#000',
-     borderWidth: 3,
-     transform: [{ scale: 1.15 }],
+     borderColor: 'rgba(0,0,0,0.1)',
+     borderWidth: 2,
    },
    // Modal styles
    modalContainer: {
@@ -746,7 +1008,6 @@ const styles = StyleSheet.create({
     },
     modalContent: {
       width: '80%',
-      backgroundColor: '#fff',
      borderRadius: 16,
      padding: 24,
    },
@@ -766,7 +1027,7 @@ const styles = StyleSheet.create({
    modalButton: {
      flexDirection: 'row',
      alignItems: 'center',
-     backgroundColor: '#f0f0f0',
+     backgroundColor: '#00000008', // 5% black opacity
      borderRadius: 12,
      padding: 16,
    },
