@@ -270,6 +270,16 @@ export default function ColoringPage() {
       });
       return (
         <View style={styles.bookContainer}>
+          {/* Back button */}
+          <TouchableOpacity
+            style={[styles.backButton, { top: 50, left: 20 }]}
+            onPress={() => {
+              // Navigate back to home or previous screen
+              // You may need to use router.back() if using expo-router
+            }}
+          >
+            <Ionicons name="chevron-back" size={20} color="#000" />
+          </TouchableOpacity>
           {/* Book spine */}
           <View style={styles.bookSpine} />
           {/* Book cover */}
@@ -333,14 +343,10 @@ export default function ColoringPage() {
     if (pageIndex === 1) {
       // Index page with clickable numbers 1-5 - book page style
       return (
-        <View style={styles.bookPageContainer}>
-          {/* Left page edge */}
-          <View style={styles.pageEdgeLeft} />
-          {/* Right page edge */}
-          <View style={styles.pageEdgeRight} />
+        <View style={[styles.bookPageContainer, { backgroundColor: '#f5f5dc' }]}>
           {/* Index content */}
           <View style={[styles.indexPage, { backgroundColor: 'transparent' }]}>
-            <Text style={styles.indexTitle}>Table of Contents</Text>
+            <Text style={[styles.indexTitle, { color: '#000' }]}>Table of Contents</Text>
            <View style={styles.indexNumbers}>
              {[1, 2, 3, 4, 5].map((num) => (
                <TouchableOpacity
@@ -355,7 +361,7 @@ export default function ColoringPage() {
                  }}
                  activeOpacity={0.7}
                >
-                 <Text style={styles.indexNumberText}>
+                 <Text style={[styles.indexNumberText, { color: '#000' }]}>
                    {num}
                  </Text>
                </TouchableOpacity>
@@ -365,7 +371,7 @@ export default function ColoringPage() {
             style={styles.backButton}
             onPress={() => setPageIndex(0)}
           >
-            <Ionicons name="chevron-back" size={20} color={textColor} />
+            <Ionicons name="chevron-back" size={20} color="#000" />
           </TouchableOpacity>
         </View>
       </View>
@@ -376,27 +382,14 @@ export default function ColoringPage() {
        return (
        <>
          <View style={styles.screen}>
-           <View style={styles.topNav}>
-             <View style={styles.navGroup}>
-               <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
-                 <Ionicons name="close" size={24} color="#fff" />
-               </TouchableOpacity>
-               <TouchableOpacity style={styles.navButton} onPress={() => setShowSaveOptions(true)} activeOpacity={0.7}>
-                 <Ionicons name="options" size={24} color="#fff" />
-               </TouchableOpacity>
-             </View>
-             <View style={styles.navGroup}>
-               <TouchableOpacity style={styles.navButton} onPress={undo} activeOpacity={0.7}>
-                 <Ionicons name="arrow-undo-outline" size={24} color={pointsHistory.length ? '#fff' : '#888'} />
-               </TouchableOpacity>
-               <TouchableOpacity style={styles.navButton} onPress={redo} activeOpacity={0.7}>
-                 <Ionicons name="arrow-redo-outline" size={24} color={futurePoints.length ? '#fff' : '#888'} />
-               </TouchableOpacity>
-               <TouchableOpacity style={styles.navButton} onPress={() => setShowSaveOptions(true)} activeOpacity={0.7}>
-                 <Ionicons name="ellipsis-horizontal" size={24} color="#fff" />
-               </TouchableOpacity>
-             </View>
-           </View>
+<View style={styles.topNav}>
+              <View style={styles.navGroup}>
+                <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+                  <Ionicons name="arrow-back" size={24} color="#000" />
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.headerTitle}>Coloring Page</Text>
+            </View>
 
            <View style={styles.canvasWrapper}>
              <View style={styles.canvas}>
@@ -452,61 +445,39 @@ export default function ColoringPage() {
              </View>
            )}
 
-           <View style={styles.bottomToolbar}>
-             <TouchableOpacity
-               style={[styles.toolButton, isPaletteExpanded && styles.toolButtonActive]}
-               onPress={() => setIsPaletteExpanded((prev) => !prev)}
-             >
-               <Ionicons name="color-palette" size={24} color={isPaletteExpanded ? ACTIVE_TOOL_COLOR : '#fff'} />
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={[styles.toolButton, brushType === 'marker' && styles.toolButtonActive]}
-               onPress={() => setBrushType('marker')}
-               activeOpacity={0.7}
-             >
-               <Ionicons name="color-fill" size={24} color={brushType === 'marker' ? ACTIVE_TOOL_COLOR : '#fff'} />
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={[styles.toolButton, brushType === 'pencil' && styles.toolButtonActive]}
-               onPress={() => setBrushType('pencil')}
-               activeOpacity={0.7}
-             >
-               <Ionicons name="pencil-outline" size={24} color={brushType === 'pencil' ? ACTIVE_TOOL_COLOR : '#fff'} />
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={[styles.toolButton, brushType === 'eraser' && styles.toolButtonActive]}
-               onPress={() => setBrushType('eraser')}
-               activeOpacity={0.7}
-             >
-               <Ionicons name="trash-outline" size={24} color={brushType === 'eraser' ? ACTIVE_TOOL_COLOR : '#fff'} />
-             </TouchableOpacity>
-             <TouchableOpacity style={styles.toolButton} onPress={() => setShowSaveOptions(true)}>
-               <Ionicons name="settings-outline" size={24} color="#fff" />
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={[styles.toolButton, styles.navArrowButton]}
-               onPress={() => {
-                 if (pageIndex > 2) {
-                   setPageIndex(pageIndex - 1);
-                   setSelectedIndex(pageIndex - 2);
-                 }
-               }}
-             >
-               <Ionicons name="chevron-back" size={28} color="#fff" />
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={[styles.toolButton, styles.navArrowButton]}
-               onPress={() => {
-                 if (pageIndex < 6) {
-                   setPageIndex(pageIndex + 1);
-                   setSelectedIndex(pageIndex);
-                 }
-               }}
-             >
-               <Ionicons name="chevron-forward" size={28} color="#fff" />
-             </TouchableOpacity>
-           </View>
-         </View>
+<View style={styles.bottomToolbar}>
+              <TouchableOpacity
+                style={[styles.toolButton, isPaletteExpanded && styles.toolButtonActive]}
+                onPress={() => setIsPaletteExpanded((prev) => !prev)}
+              >
+                <Ionicons name="color-palette" size={24} color={isPaletteExpanded ? ACTIVE_TOOL_COLOR : '#000'} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.toolButton, brushType === 'marker' && styles.toolButtonActive]}
+                onPress={() => setBrushType('marker')}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="color-fill" size={24} color={brushType === 'marker' ? ACTIVE_TOOL_COLOR : '#000'} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.toolButton, brushType === 'pencil' && styles.toolButtonActive]}
+                onPress={() => setBrushType('pencil')}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="pencil-outline" size={24} color={brushType === 'pencil' ? ACTIVE_TOOL_COLOR : '#000'} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.toolButton, brushType === 'eraser' && styles.toolButtonActive]}
+                onPress={() => setBrushType('eraser')}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="trash-outline" size={24} color={brushType === 'eraser' ? ACTIVE_TOOL_COLOR : '#000'} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.toolButton} onPress={() => setShowSaveOptions(true)}>
+                <Ionicons name="settings-outline" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
+          </View>
           {/* Save/Export Modal */}
           <View style={showSaveOptions ? styles.modalContainer : styles.modalHidden}>
             <View style={styles.modalContent}>
@@ -540,13 +511,17 @@ export default function ColoringPage() {
 
   if (pageIndex === 7) {
     return (
-      <View style={[styles.bookPageContainer, styles.qrPageContainer]}>
-        <View style={styles.pageEdgeLeft} />
-        <View style={styles.pageEdgeRight} />
+      <View style={[styles.qrPageContainer, { backgroundColor: '#f5f5dc' }]}>
         <View style={styles.qrContent}>
-          <Text style={[styles.qrTitle, { color: textColor }]}>Virginia department of health</Text>
+          <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health</Text>
           <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
         </View>
+        <TouchableOpacity
+          style={[styles.backButton, { top: 50 }]}
+          onPress={() => setPageIndex(0)}
+        >
+          <Ionicons name="chevron-back" size={20} color="#000" />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -773,7 +748,7 @@ const styles = StyleSheet.create({
    },
    screen: {
      flex: 1,
-     backgroundColor: SCREEN_BACKGROUND,
+     backgroundColor: '#f5f5dc',
    },
    topNav: {
      flexDirection: 'row',
@@ -781,20 +756,28 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      paddingHorizontal: 16,
      paddingVertical: 14,
-     backgroundColor: SCREEN_BACKGROUND,
+     backgroundColor: '#f5f5dc',
    },
    navGroup: {
      flexDirection: 'row',
      gap: 12,
    },
-   navButton: {
-     width: 48,
-     height: 48,
-     justifyContent: 'center',
-     alignItems: 'center',
-     borderRadius: 16,
-     backgroundColor: 'rgba(255,255,255,0.08)',
-   },
+navButton: {
+      width: 48,
+      height: 48,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 16,
+      backgroundColor: 'rgba(0,0,0,0.08)',
+    },
+headerTitle: {
+      fontSize: 20,
+      fontWeight: '600',
+      color: '#000',
+      textAlign: 'center',
+      flex: 1,
+      marginLeft: 50,
+    },
    canvasWrapper: {
      flex: 1,
      justifyContent: 'center',
@@ -845,24 +828,24 @@ const styles = StyleSheet.create({
    paletteRowContainer: {
      paddingVertical: 10,
    },
-   bottomToolbar: {
-     flexDirection: 'row',
-     justifyContent: 'space-between',
-     alignItems: 'center',
-     paddingHorizontal: 16,
-     paddingVertical: 14,
-     backgroundColor: SCREEN_BACKGROUND,
-     borderTopWidth: 1,
-     borderTopColor: 'rgba(255,255,255,0.08)',
-   },
-   toolButton: {
-     width: 52,
-     height: 52,
-     borderRadius: 16,
-     justifyContent: 'center',
-     alignItems: 'center',
-     backgroundColor: 'rgba(255,255,255,0.06)',
-   },
+bottomToolbar: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 16,
+      paddingVertical: 14,
+      backgroundColor: '#f5f5dc',
+      borderTopWidth: 1,
+      borderTopColor: 'rgba(0,0,0,0.08)',
+    },
+    toolButton: {
+      width: 52,
+      height: 52,
+      borderRadius: 16,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'transparent',
+    },
    toolButtonActive: {
      backgroundColor: 'rgba(123,95,229,0.18)',
    },
@@ -899,13 +882,13 @@ const styles = StyleSheet.create({
      height: 80,
      borderRadius: 12,
      borderWidth: 2,
-     borderColor: '#ffffff',
+     borderColor: '#000000',
      alignItems: 'center',
      justifyContent: 'center',
    },
    indexNumberBtnActive: {
-     borderColor: '#ffffff',
-     backgroundColor: '#00000008',
+     borderColor: '#000000',
+     backgroundColor: '#00000015',
    },
    indexNumberText: {
      fontSize: 20,
@@ -979,7 +962,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: CANVAS_BACKGROUND,
+    backgroundColor: 'transparent',
   },
   qrTitle: {
     fontSize: 20,
