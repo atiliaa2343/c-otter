@@ -14,9 +14,23 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "../hooks/useThemeColor";
-const ColoringImage = require("../assets/images/Coloring-Page(1).png");
+const DoughnutBlurb1Image = require("../assets/images/Doughnut's Jam final pg 1 blurb1.jpg");
+const DoughnutPg1Image = require("../assets/images/Doughnut's Jam final pg 1.jpg");
+const DoughnutPg2Image = require("../assets/images/Doughnut's Jam final pg2.jpg");
+const DoughnutPg3Image = require("../assets/images/Doughnut's Jam final pg3.jpg");
+const DoughnutPg4Image = require("../assets/images/Doughnut's Jam final pg4.jpg");
+const MuralBorder = require("../assets/images/mural-border.png");
 const PigmentImage = require("../assets/images/pigment.png");
 const CraterQR = require("../assets/images/Crater Webpage QR.png");
+
+const getColoringImage = (idx: number) => {
+  if (idx === 2) return DoughnutBlurb1Image;
+  if (idx === 3) return DoughnutPg1Image;
+  if (idx === 4) return DoughnutPg2Image;
+  if (idx === 5) return DoughnutPg3Image;
+  if (idx === 6) return DoughnutPg4Image;
+  return DoughnutBlurb1Image;
+};
 const COLOR_PALETTE = [
   '#f5c07a', '#f0956a', '#e8664a', '#e05a3a',
   '#d4c050', '#8a9060', '#c82020', '#9e1010', '#7a4a8a',
@@ -24,7 +38,7 @@ const COLOR_PALETTE = [
 const SLIDER_MIN_SIZE = 8;
 const SLIDER_MAX_SIZE = 35;
 const SCREEN_BACKGROUND = '#1c1c1e';
-const CANVAS_BACKGROUND = '#ffffff';
+const CANVAS_BACKGROUND = '#DEB887';
 const CANVAS_BORDER = '#111111';
 const ACTIVE_TOOL_COLOR = '#7b5fe5';
 const SLIDER_TRACK_COLOR = 'transparent';
@@ -343,12 +357,12 @@ export default function ColoringPage() {
     if (pageIndex === 1) {
       // Index page with clickable numbers 1-5 - book page style
       return (
-        <View style={[styles.bookPageContainer, { backgroundColor: '#f5f5dc' }]}>
+        <View style={[styles.bookPageContainer, { backgroundColor: '#DEB887' }]}>
           {/* Index content */}
           <View style={[styles.indexPage, { backgroundColor: 'transparent' }]}>
             <Text style={[styles.indexTitle, { color: '#000' }]}>Table of Contents</Text>
            <View style={styles.indexNumbers}>
-             {[1, 2, 3, 4, 5].map((num) => (
+             {[1, 2, 3, 4, 5, 6].map((num) => (
                <TouchableOpacity
                  key={num}
                  style={[
@@ -393,7 +407,53 @@ export default function ColoringPage() {
 
            <View style={styles.canvasWrapper}>
              <View style={styles.canvas}>
-               <Image source={ColoringImage} style={styles.canvasImage} resizeMode="contain" />
+               <Image
+                 source={getColoringImage(pageIndex)}
+                 style={[styles.canvasImage, (pageIndex >= 2 && pageIndex <= 6) && ({ filter: [{ brightness: 2 }, { saturate: 0 }] } as any)]}
+                 resizeMode="contain"
+               />
+               {pageIndex === 2 && (
+                 <View style={[styles.textOverlayBox, { top: '48%', left: '8%', right: '18%' }]} pointerEvents="none">
+                   <Text style={styles.textOverlayText}>
+                     {"Doughnut Sinclair is a Jolly Jelly newhire, passionate about the fruity deliciousness of jelly. She is tasked with developing a new Jolly Jellicious recipe. Pressure from her supervisor makes her question how far her positivity and work ethic can take her in the jelly-making world."}
+                   </Text>
+                 </View>
+               )}
+               {pageIndex === 3 && (
+                 <View style={[styles.textOverlayBox, { bottom: 10, right: 10 }]} pointerEvents="none">
+                   <Text style={styles.textOverlayText}>Mr.Toast is fussing at me again</Text>
+                 </View>
+               )}
+               {pageIndex === 4 && (
+                 <>
+                   <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>I don't know if she has a problem with my</Text>
+                   </View>
+                   <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>recipe or if she just doesn't like me</Text>
+                   </View>
+                 </>
+               )}
+               {pageIndex === 5 && (
+                 <>
+                   <View style={[styles.textOverlayBox, { top: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>{"however...\nMy passion for jelly"}</Text>
+                   </View>
+                   <View style={[styles.textOverlayBox, { bottom: 5, left: 5 }]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>{"obliterates the bitter\ntaste of inferiority"}</Text>
+                   </View>
+                 </>
+               )}
+               {pageIndex === 6 && (
+                 <>
+                   <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>with the overwhelming positivity from my jelly love</Text>
+                   </View>
+                   <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>I Can overcome anything!!!</Text>
+                   </View>
+                 </>
+               )}
                <View style={styles.drawingContainer} {...panResponder.panHandlers} onStartShouldSetResponder={() => true}>
                  {points.map((point, index) => {
                    if (point.type === 'eraser') return null;
@@ -511,14 +571,18 @@ export default function ColoringPage() {
 
   if (pageIndex === 7) {
     return (
-      <View style={[styles.qrPageContainer, { backgroundColor: '#f5f5dc' }]}>
+      <View style={[styles.qrPageContainer, { backgroundColor: '#DEB887' }]}>
+        {/* Mural border overlay — transparent center so background shows through */}
+        <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
+          <Image source={MuralBorder} style={StyleSheet.absoluteFillObject} resizeMode="stretch" />
+        </View>
         <View style={styles.qrContent}>
           <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health</Text>
           <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
         </View>
         <TouchableOpacity
           style={[styles.backButton, { top: 50 }]}
-          onPress={() => setPageIndex(0)}
+          onPress={() => setPageIndex(1)}
         >
           <Ionicons name="chevron-back" size={20} color="#000" />
         </TouchableOpacity>
@@ -748,7 +812,7 @@ const styles = StyleSheet.create({
    },
    screen: {
      flex: 1,
-     backgroundColor: '#f5f5dc',
+     backgroundColor: '#DEB887',
    },
    topNav: {
      flexDirection: 'row',
@@ -756,7 +820,7 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      paddingHorizontal: 16,
      paddingVertical: 14,
-     backgroundColor: '#f5f5dc',
+     backgroundColor: '#DEB887',
    },
    navGroup: {
      flexDirection: 'row',
@@ -834,7 +898,7 @@ bottomToolbar: {
       alignItems: 'center',
       paddingHorizontal: 16,
       paddingVertical: 14,
-      backgroundColor: '#f5f5dc',
+      backgroundColor: '#DEB887',
       borderTopWidth: 1,
       borderTopColor: 'rgba(0,0,0,0.08)',
     },
@@ -1017,5 +1081,17 @@ bottomToolbar: {
      marginLeft: 12,
      fontSize: 16,
      fontWeight: '500',
+   },
+   textOverlayBox: {
+     position: 'absolute',
+     backgroundColor: '#ffffff',
+     borderRadius: 4,
+     padding: 6,
+     zIndex: 10,
+   },
+   textOverlayText: {
+     fontSize: 11,
+     color: '#333',
+     fontStyle: 'italic',
    },
 });
