@@ -1,59 +1,117 @@
-## ce-otter 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# CE-Otter
 
-## Get started
+A mobile app for connecting the Petersburg area with healthcare information and resources — built with React Native and Expo.
 
-1. Install dependencies
+## What it does
 
-   ```bash
-   npm install
-   ```
+CE-Otter is an app designed to provide residents of the Petersburg area with healthcare resources/information and community events
 
-2. Start the app
+| Section | Description |
+|---|---|
+| **Home** | Landing page with campus overview |
+| **Research** | Research resources and information |
+| **Community** | Community news and events |
+| **Health** | Health resources and forms |
+| **Faculty** | Faculty directory |
+| **Contact** | Campus contact information and location hours |
 
-   ```bash
-   npx expo start
-   ```
+Additional features:
+- **AI Search** — semantic search powered by vector embeddings
+- **Coloring Page** — interactive digital coloring book (kawaii-style line art)
+- **Admin Panel** — content management
+- **Dark / Light mode** — toggle in the header
 
-In the output, you'll find options to open the app in a
+## Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Framework**: [Expo](https://expo.dev) (React Native, file-based routing via expo-router)
+- **Language**: TypeScript
+- **Styling**: NativeWind (Tailwind CSS for React Native)
+- **Database**: MongoDB (backend) 
+- **Backend**: Node.js Express server (`/backend`)
+- **Deployment**: Vercel (web export)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Getting Started
 
-**NOTE**
-You can also use these commands when in the wording directory of the app to run this:
-To run your project, navigate to the directory and run one of the following npm commands.
+### Prerequisites
 
-- cd Ce-Otter
-- npm run android
-- npm run ios # you need to use macOS to build the iOS project - use the Expo app if you need to do iOS development without a Mac
-- npm run web
+- Node.js 18+
+- [Expo Go](https://expo.dev/go) app on your phone, or an iOS/Android emulator
 
-
-## Get a fresh project
-
-When you're ready, run:
+### Install
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Run
 
-## Learn more
+```bash
+# Start Expo dev server
+npx expo start
 
-To learn more about developing your project with Expo, look at the following resources:
+# Or target a specific platform
+npm run android
+npm run ios   # macOS only
+npm run web
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Run the backend
 
-## Join the community
+```bash
+npm run start:backend
+```
 
-Join our community of developers creating universal apps.
+The backend runs on port `4000` by default. To point the app at a custom API host:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+EXPO_PUBLIC_CONTENT_API=http://<your-ip>:4000 npx expo start
+```
+
+## Project Structure
+
+```
+app/              # Expo Router screens
+  index.tsx       # Main app shell (nav, splash, theme)
+  coloring.tsx    # Coloring page feature
+  aisearch.tsx    # AI-powered search
+  admin/          # Admin panel routes
+  health/         # Health section routes
+components/       # Shared UI components
+  HomePage.tsx
+  Faculty.tsx
+  Health.tsx
+  Community.tsx
+  Research.tsx
+  Contact.tsx
+  ColoringPage.tsx
+  AdminPanel.tsx
+backend/          # Node.js Express API
+  index.js        # Server entry point
+  routes/         # API route handlers
+assets/images/    # App icons, illustrations, coloring pages
+constants/        # Theme colors, backend config
+hooks/            # Custom hooks (theme, colors)
+services/         # API service helpers
+db/               # Database scripts and config
+```
+
+## Backend Scripts
+
+Scripts for seeding and managing MongoDB data live in `/backend`:
+
+```bash
+node backend/insert_all_data.js          # Insert all data
+node backend/insert_faculty_to_mongodb.js # Seed faculty records
+node backend/upload_images_to_mongodb.js  # Upload image assets
+node backend/embedding_service.js         # Generate vector embeddings for AI search
+```
+
+## Deployment
+
+The web build deploys to Vercel. The `vercel.json` config handles routing for the static Expo export.
+
+```bash
+npm run vercel-build
+```
+
+

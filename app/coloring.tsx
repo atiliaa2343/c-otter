@@ -427,10 +427,10 @@ export default function ColoringPage() {
                {pageIndex === 4 && (
                  <>
                    <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={styles.textOverlayText}>I don't know if she has a problem with my</Text>
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I don't know if she has a problem with my</Text>
                    </View>
                    <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={styles.textOverlayText}>recipe or if she just doesn't like me</Text>
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>recipe or if she just doesn't like me</Text>
                    </View>
                  </>
                )}
@@ -447,10 +447,10 @@ export default function ColoringPage() {
                {pageIndex === 6 && (
                  <>
                    <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={styles.textOverlayText}>with the overwhelming positivity from my jelly love</Text>
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>with the overwhelming positivity from my jelly love</Text>
                    </View>
                    <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={styles.textOverlayText}>I Can overcome anything!!!</Text>
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I Can overcome anything!!!</Text>
                    </View>
                  </>
                )}
@@ -572,10 +572,6 @@ export default function ColoringPage() {
   if (pageIndex === 7) {
     return (
       <View style={[styles.qrPageContainer, { backgroundColor: '#DEB887' }]}>
-        {/* Mural border overlay — transparent center so background shows through */}
-        <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
-          <Image source={MuralBorder} style={StyleSheet.absoluteFillObject} resizeMode="stretch" />
-        </View>
         <View style={styles.qrContent}>
           <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health</Text>
           <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
@@ -607,7 +603,7 @@ const styles = StyleSheet.create({
    // Book container and cover styles
    bookContainer: {
      flex: 1,
-     backgroundColor: '#f5f5dc',
+     backgroundColor: '#DEB887',
      justifyContent: 'center',
      alignItems: 'center',
      padding: 20,
@@ -835,12 +831,13 @@ navButton: {
       backgroundColor: 'rgba(0,0,0,0.08)',
     },
 headerTitle: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
       fontSize: 20,
       fontWeight: '600',
       color: '#000',
       textAlign: 'center',
-      flex: 1,
-      marginLeft: 50,
     },
    canvasWrapper: {
      flex: 1,
