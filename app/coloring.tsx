@@ -8,25 +8,45 @@ import {
   Image, 
   Dimensions,
   PanResponder,
-  Alert
+  Alert,
+  Animated
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "../hooks/useThemeColor";
+const DoughnutBlurb1Image = require("../assets/images/Doughnut's Jam final pg 1 blurb1.jpg");
+const DoughnutPg1Image = require("../assets/images/Doughnut's Jam final pg 1.jpg");
+const DoughnutPg2Image = require("../assets/images/Doughnut's Jam final pg2.jpg");
+const DoughnutPg3Image = require("../assets/images/Doughnut's Jam final pg3.jpg");
+const DoughnutPg4Image = require("../assets/images/Doughnut's Jam final pg4.jpg");
+const MuralBorder = require("../assets/images/mural-border.png");
+const PigmentImage = require("../assets/images/pigment.png");
+const CraterQR = require("../assets/images/Crater Webpage QR.png");
 
-const ColoringImage = require("../assets/images/Coloring-Page(1).png");
-
+const getColoringImage = (idx: number) => {
+  if (idx === 2) return DoughnutBlurb1Image;
+  if (idx === 3) return DoughnutPg1Image;
+  if (idx === 4) return DoughnutPg2Image;
+  if (idx === 5) return DoughnutPg3Image;
+  if (idx === 6) return DoughnutPg4Image;
+  return DoughnutBlurb1Image;
+};
 const COLOR_PALETTE = [
-  '#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6',
-  '#a855f7', '#ec4899', '#92400e', '#000000', '#6b7280',
-  '#ffffff', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4',
-  '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f', '#bb8fce',
+  '#f5c07a', '#f0956a', '#e8664a', '#e05a3a',
+  '#d4c050', '#8a9060', '#c82020', '#9e1010', '#7a4a8a',
 ];
-
+const SLIDER_MIN_SIZE = 8;
+const SLIDER_MAX_SIZE = 35;
+const SCREEN_BACKGROUND = '#1c1c1e';
+const CANVAS_BACKGROUND = '#DEB887';
+const CANVAS_BORDER = '#111111';
+const ACTIVE_TOOL_COLOR = '#7b5fe5';
+const SLIDER_TRACK_COLOR = 'transparent';
+const SLIDER_THUMB_COLOR = 'transparent';
 export default function ColoringPage() {
   const [pageIndex, setPageIndex] = useState(0); // 0: title, 1: index, 2-6: coloring pages (5 total)
   const [selectedIndex, setSelectedIndex] = useState(1); // Tracks which coloring page is selected on index (1-5)
-  const [selectedColor, setSelectedColor] = useState('#ef4444');
+  const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0]);
   const [brushSize, setBrushSize] = useState(20);
   const [brushType, setBrushType] = useState<'marker' | 'pencil' | 'crayon' | 'eraser'>('marker'); // marker, pencil, crayon, eraser
   const [points, setPoints] = useState<any[]>([]);
@@ -34,9 +54,13 @@ export default function ColoringPage() {
   const [futurePoints, setFuturePoints] = useState<any[]>([]);
   const [textValue, setTextValue] = useState('');
   const [isPaletteExpanded, setIsPaletteExpanded] = useState(true); // Track if color palette is expanded
+  const [sliderWidth, setSliderWidth] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [showSaveOptions, setShowSaveOptions] = useState(false);
-
+  const [isBookOpen, setIsBookOpen] = useState(false);
+  // Animation values for book opening
+  const bookOpenAnim = useRef(new Animated.Value(0)).current;
+  const pageFlipAnim = useRef(new Animated.Value(0)).current;
   // Theme colors
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
@@ -44,7 +68,6 @@ export default function ColoringPage() {
   const cardBorder = useThemeColor({}, 'text');
   const primaryColor = useThemeColor({}, 'tint');
   const textSecondary = useThemeColor({}, 'tabIconDefault');
-
   // Reset points when navigating between coloring pages
   useEffect(() => {
     // Reset points when we're on a coloring page (2-6) and pageIndex changes
@@ -60,7 +83,6 @@ export default function ColoringPage() {
       setFuturePoints([]);
     }
   }, [pageIndex]);
-
   // Add current points to history for undo functionality
   const addToHistory = useCallback(() => {
     if (points.length > 0) {
@@ -68,7 +90,6 @@ export default function ColoringPage() {
       setFuturePoints([]); // Clear future points when new action is performed
     }
   }, [points]);
-
   // Undo function
   const undo = useCallback(() => {
     if (pointsHistory.length > 0) {
@@ -78,7 +99,6 @@ export default function ColoringPage() {
       setPoints(lastPoints);
     }
   }, [points, pointsHistory, futurePoints]);
-
   // Redo function
   const redo = useCallback(() => {
     if (futurePoints.length > 0) {
@@ -88,13 +108,11 @@ export default function ColoringPage() {
       setPoints(nextPoints);
     }
   }, [points, pointsHistory, futurePoints]);
-
   // Clear canvas
   const clearCanvas = useCallback(() => {
     addToHistory();
     setPoints([]);
   }, [addToHistory]);
-
   // Save artwork
   const saveArtwork = async () => {
     try {
@@ -112,6 +130,22 @@ export default function ColoringPage() {
       Alert.alert('Error', 'Failed to save artwork. Please try again.');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  // Handle double tap to navigate pages
+  const handleDoubleTap = () => {
+    if (pageIndex >= 2 && pageIndex <= 6) {
+      // If on last coloring page, go to the final QR page
+      if (pageIndex === 6) {
+        setPageIndex(7);
+      } else {
+        // Otherwise go to next page
+        setPageIndex(pageIndex + 1);
+      }
+    } else if (pageIndex === 7) {
+      // From the QR/resources page, go back to the cover
+      setPageIndex(0);
     }
   };
 
@@ -134,21 +168,46 @@ export default function ColoringPage() {
     }
   };
 
-  // Handle long press on canvas to show context menu
   const handleCanvasLongPress = () => {
     setShowSaveOptions(true);
+  };
+
+  const openBook = () => {
+    setIsBookOpen(true);
+    Animated.timing(bookOpenAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start(() => {
+      setPageIndex(1);
+    });
   };
 
   // Update refs when state changes
   const selectedColorRef = useRef(selectedColor);
   const brushSizeRef = useRef(brushSize);
   const brushTypeRef = useRef(brushType);
-
   useEffect(() => {
     selectedColorRef.current = selectedColor;
     brushSizeRef.current = brushSize;
     brushTypeRef.current = brushType;
   }, [selectedColor, brushSize, brushType]);
+
+  const lastTapRef = useRef<number | null>(null);
+  const handleDrawingPress = () => {
+    const now = Date.now();
+    if (lastTapRef.current && now - lastTapRef.current < 300) {
+      handleDoubleTap();
+    }
+    lastTapRef.current = now;
+  };
+
+  const handleSliderPress = useCallback((locationX: number) => {
+    if (sliderWidth <= 0) return;
+    const ratio = Math.max(0, Math.min(1, locationX / sliderWidth));
+    const size = Math.round(SLIDER_MIN_SIZE + ratio * (SLIDER_MAX_SIZE - SLIDER_MIN_SIZE));
+    setBrushSize(size);
+  }, [sliderWidth]);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -156,13 +215,11 @@ export default function ColoringPage() {
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: (evt, gestureState) => {
         addToHistory(); // Add to history when starting a new stroke
-        
         if (brushTypeRef.current === 'eraser') {
           // Eraser: remove points within radius
           const eraserX = evt.nativeEvent.locationX;
           const eraserY = evt.nativeEvent.locationY;
           const eraserRadius = brushSizeRef.current;
-          
           setPoints(prev => prev.filter(point => {
             const distance = Math.sqrt(
               Math.pow(point.x - eraserX, 2) + Math.pow(point.y - eraserY, 2)
@@ -187,7 +244,6 @@ export default function ColoringPage() {
           const eraserX = evt.nativeEvent.locationX;
           const eraserY = evt.nativeEvent.locationY;
           const eraserRadius = brushSizeRef.current;
-          
           setPoints(prev => prev.filter(point => {
             const distance = Math.sqrt(
               Math.pow(point.x - eraserX, 2) + Math.pow(point.y - eraserY, 2)
@@ -211,101 +267,277 @@ export default function ColoringPage() {
       },
     })
   ).current;
-
   const renderPage = () => {
     if (pageIndex === 0) {
-      // Title page - tap to go to index
+      // Title page - book cover design
+      const bookCoverRotate = bookOpenAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '-15deg'],
+      });
+      const bookCoverScale = bookOpenAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 0.9],
+      });
+      const pageFlipRotate = pageFlipAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '-180deg'],
+      });
       return (
-        <TouchableOpacity
-          style={styles.titlePage}
-          onPress={() => setPageIndex(1)}
-        >
-          <Text style={styles.titleText}>Donuts Jam</Text>
-        </TouchableOpacity>
+        <View style={styles.bookContainer}>
+          {/* Back button */}
+          <TouchableOpacity
+            style={[styles.backButton, { top: 50, left: 20 }]}
+            onPress={() => {
+              // Navigate back to home or previous screen
+              // You may need to use router.back() if using expo-router
+            }}
+          >
+            <Ionicons name="chevron-back" size={20} color="#000" />
+          </TouchableOpacity>
+          {/* Book spine */}
+          <View style={styles.bookSpine} />
+          {/* Book cover */}
+          <Animated.View
+            style={[
+              styles.bookCover,
+              {
+                transform: [
+                  { rotate: bookCoverRotate },
+                  { scale: bookCoverScale },
+                ],
+              },
+            ]}
+          >
+            {/* Cover design */}
+            <View style={styles.coverDesign}>
+              <View style={styles.coverBorder}>
+                <View style={styles.coverInner}>
+                  {/* Decorative elements */}
+                  <View style={styles.coverCornerTopLeft} />
+                  <View style={styles.coverCornerTopRight} />
+                  <View style={styles.coverCornerBottomLeft} />
+                  <View style={styles.coverCornerBottomRight} />
+                  {/* Title */}
+                  <Text style={styles.coverTitle}>Donuts Jam</Text>
+                  <Text style={styles.coverSubtitle}>Coloring Book</Text>
+                  {/* Decorative donut icon */}
+                  <View style={styles.coverIcon}>
+                    <View style={styles.donutOuter} />
+                    <View style={styles.donutInner} />
+                  </View>
+                  {/* Tap to open instruction */}
+                  <TouchableOpacity
+                    style={styles.tapToOpen}
+                    onPress={openBook}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={styles.tapToOpenText}>Tap to Open</Text>
+                    <Ionicons name="book" size={24} color="#fff" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Animated.View>
+          {/* Page flip animation overlay */}
+          <Animated.View
+            style={[
+              styles.pageFlipOverlay,
+              {
+                transform: [{ rotateY: pageFlipRotate }],
+                opacity: pageFlipAnim,
+              },
+            ]}
+            pointerEvents="none"
+          >
+            <View style={styles.pageFlipContent} />
+          </Animated.View>
+        </View>
       );
     }
-    
     if (pageIndex === 1) {
-      // Index page with clickable numbers 1-5
+      // Index page with clickable numbers 1-5 - book page style
       return (
-        <View style={[styles.indexPage, { backgroundColor: backgroundColor }]}>
-          <Text style={[styles.indexTitle, { color: textColor }]}>Select a Coloring Page</Text>
-          <View style={styles.indexNumbers}>
-            {[1, 2, 3, 4, 5].map((num) => (
-              <TouchableOpacity
-                key={num}
-                style={[
-                  styles.indexNumberBtn,
-                  selectedIndex === num && styles.indexNumberBtnActive
-                ]}
-                onPress={() => {
-                  setSelectedIndex(num);
-                  setPageIndex(num + 1); // Go to coloring page (2-6)
-                }}
-                activeOpacity={0.7}
-              >
-                <Text style={[styles.indexNumberText, { color: textColor }]}>
-                  {num}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+        <View style={[styles.bookPageContainer, { backgroundColor: '#DEB887' }]}>
+          {/* Index content */}
+          <View style={[styles.indexPage, { backgroundColor: 'transparent' }]}>
+            <Text style={[styles.indexTitle, { color: '#000' }]}>Table of Contents</Text>
+           <View style={styles.indexNumbers}>
+             {[1, 2, 3, 4, 5, 6].map((num) => (
+               <TouchableOpacity
+                 key={num}
+                 style={[
+                   styles.indexNumberBtn,
+                   selectedIndex === num && styles.indexNumberBtnActive
+                 ]}
+                 onPress={() => {
+                   setSelectedIndex(num);
+                   setPageIndex(num + 1); // Go to coloring page (2-6)
+                 }}
+                 activeOpacity={0.7}
+               >
+                 <Text style={[styles.indexNumberText, { color: '#000' }]}>
+                   {num}
+                 </Text>
+               </TouchableOpacity>
+             ))}
+           </View>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => setPageIndex(0)}
           >
-            <Ionicons name="chevron-back" size={20} color={textColor} />
+            <Ionicons name="chevron-back" size={20} color="#000" />
           </TouchableOpacity>
         </View>
+      </View>
       );
     }
-    
      // Coloring pages (indices 2-6)
-     return (
+     if (pageIndex >= 2 && pageIndex <= 6) {
+       return (
        <>
-         {/* Image layer - at the back */}
-         <View style={styles.imageContainer} pointerEvents="none">
-           <Image
-             source={ColoringImage}
-             style={styles.image}
-             resizeMode="contain"
-           />
-         </View>
-         
-          {/* Drawing layer - receives touch events */}
-          <View style={styles.drawingContainer} {...panResponder.panHandlers}>
-            {points.map((point, index) => {
-              // Skip eraser points (they shouldn't be rendered)
-              if (point.type === 'eraser') return null;
-              
-              // Different brush types have different rendering
-              const pointStyle = {
-                position: 'absolute' as const,
-                left: point.x - point.size / 2,
-                top: point.y - point.size / 2,
-                width: point.size,
-                height: point.size,
-                backgroundColor: point.color,
-                borderRadius: point.size / 2,
-                opacity: 0.9
-              };
-              
-              return (
-                <View
-                  key={index.toString()}
-                  style={[styles.drawPoint, pointStyle]}
-                  pointerEvents="none"
-                />
-              );
-            })}
-            
-            {/* Long press to show save options */}
-            <TouchableOpacity 
-              style={StyleSheet.absoluteFillObject}
-              onLongPress={handleCanvasLongPress}
-            />
+         <View style={styles.screen}>
+<View style={styles.topNav}>
+              <View style={styles.navGroup}>
+                <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+                  <Ionicons name="arrow-back" size={24} color="#000" />
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.headerTitle}>Coloring Page</Text>
+            </View>
+
+           <View style={styles.canvasWrapper}>
+             <View style={styles.canvas}>
+               <Image
+                 source={getColoringImage(pageIndex)}
+                 style={[styles.canvasImage, (pageIndex >= 2 && pageIndex <= 6) && ({ filter: [{ brightness: 2 }, { saturate: 0 }] } as any)]}
+                 resizeMode="contain"
+               />
+               {pageIndex === 2 && (
+                 <View style={[styles.textOverlayBox, { top: '48%', left: '8%', right: '18%' }]} pointerEvents="none">
+                   <Text style={styles.textOverlayText}>
+                     {"Doughnut Sinclair is a Jolly Jelly newhire, passionate about the fruity deliciousness of jelly. She is tasked with developing a new Jolly Jellicious recipe. Pressure from her supervisor makes her question how far her positivity and work ethic can take her in the jelly-making world."}
+                   </Text>
+                 </View>
+               )}
+               {pageIndex === 3 && (
+                 <View style={[styles.textOverlayBox, { bottom: 10, right: 10 }]} pointerEvents="none">
+                   <Text style={styles.textOverlayText}>Mr.Toast is fussing at me again</Text>
+                 </View>
+               )}
+               {pageIndex === 4 && (
+                 <>
+                   <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I don't know if she has a problem with my</Text>
+                   </View>
+                   <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>recipe or if she just doesn't like me</Text>
+                   </View>
+                 </>
+               )}
+               {pageIndex === 5 && (
+                 <>
+                   <View style={[styles.textOverlayBox, { top: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>{"however...\nMy passion for jelly"}</Text>
+                   </View>
+                   <View style={[styles.textOverlayBox, { bottom: 5, left: 5 }]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>{"obliterates the bitter\ntaste of inferiority"}</Text>
+                   </View>
+                 </>
+               )}
+               {pageIndex === 6 && (
+                 <>
+                   <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>with the overwhelming positivity from my jelly love</Text>
+                   </View>
+                   <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I Can overcome anything!!!</Text>
+                   </View>
+                 </>
+               )}
+               <View style={styles.drawingContainer} {...panResponder.panHandlers} onStartShouldSetResponder={() => true}>
+                 {points.map((point, index) => {
+                   if (point.type === 'eraser') return null;
+                   const pointStyle = {
+                     position: 'absolute' as const,
+                     left: point.x - point.size / 2,
+                     top: point.y - point.size / 2,
+                     width: point.size,
+                     height: point.size,
+                     backgroundColor: point.color,
+                     borderRadius: point.size / 2,
+                     opacity: 0.9,
+                   };
+                   return (
+                     <View
+                       key={index.toString()}
+                       style={[styles.drawPoint, pointStyle]}
+                       pointerEvents="none"
+                     />
+                   );
+                 })}
+                 <TouchableOpacity
+                   style={StyleSheet.absoluteFillObject}
+                   onLongPress={handleCanvasLongPress}
+                 />
+               </View>
+             </View>
+           </View>
+
+
+
+           {isPaletteExpanded && (
+             <View style={styles.paletteRowContainer}>
+               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.paletteScrollContent}>
+                 {COLOR_PALETTE.map((item) => (
+                   <TouchableOpacity
+                     key={item}
+                     style={[
+                       styles.colorItemBottom,
+                       { backgroundColor: item },
+                       selectedColor === item && styles.colorItemSelectedBottom,
+                     ]}
+                     onPress={() => setSelectedColor(item)}
+                   >
+                     {selectedColor === item && <View style={styles.colorSelectedDot} />}
+                   </TouchableOpacity>
+                 ))}
+               </ScrollView>
+             </View>
+           )}
+
+<View style={styles.bottomToolbar}>
+              <TouchableOpacity
+                style={[styles.toolButton, isPaletteExpanded && styles.toolButtonActive]}
+                onPress={() => setIsPaletteExpanded((prev) => !prev)}
+              >
+                <Ionicons name="color-palette" size={24} color={isPaletteExpanded ? ACTIVE_TOOL_COLOR : '#000'} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.toolButton, brushType === 'marker' && styles.toolButtonActive]}
+                onPress={() => setBrushType('marker')}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="color-fill" size={24} color={brushType === 'marker' ? ACTIVE_TOOL_COLOR : '#000'} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.toolButton, brushType === 'pencil' && styles.toolButtonActive]}
+                onPress={() => setBrushType('pencil')}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="pencil-outline" size={24} color={brushType === 'pencil' ? ACTIVE_TOOL_COLOR : '#000'} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.toolButton, brushType === 'eraser' && styles.toolButtonActive]}
+                onPress={() => setBrushType('eraser')}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="trash-outline" size={24} color={brushType === 'eraser' ? ACTIVE_TOOL_COLOR : '#000'} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.toolButton} onPress={() => setShowSaveOptions(true)}>
+                <Ionicons name="settings-outline" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
           </View>
-          
           {/* Save/Export Modal */}
           <View style={showSaveOptions ? styles.modalContainer : styles.modalHidden}>
             <View style={styles.modalContent}>
@@ -333,143 +565,28 @@ export default function ColoringPage() {
               </View>
             </View>
           </View>
-         
-          {/* Header - always on top */}
-          <View style={[styles.header, { backgroundColor: cardBg, borderBottomColor: cardBorder }]} pointerEvents="box-none">
-           <TouchableOpacity
-             style={styles.headerButton}
-             onPress={() => setPageIndex(1)} // Go back to index
-           >
-             <Ionicons name="chevron-back" size={20} color={textColor} />
-           </TouchableOpacity>
-           {pageIndex >= 2 && pageIndex <= 6 ? (
-             <Text style={[styles.headerTitle, { color: textColor }]}>
-               Coloring Page {pageIndex - 1}
-             </Text>
-           ) : null}
-           <TouchableOpacity
-             style={styles.headerButton}
-             onPress={() => {
-               const nextPage = pageIndex >= 6 ? 2 : pageIndex + 1; // Loop back to first coloring page
-               setPageIndex(nextPage);
-             }}
-           >
-             <Ionicons name="chevron-forward" size={20} color={textColor} />
-           </TouchableOpacity>
-           {/* Brush Type Selector */}
-           <View style={styles.brushTypeSelector}>
-             <TouchableOpacity
-               style={[
-                 styles.brushTypeBtn,
-                 brushType === 'marker' && styles.brushTypeBtnActive
-               ]}
-               onPress={() => setBrushType('marker')}
-             >
-               <Ionicons name="pencil" size={20} color={brushType === 'marker' ? primaryColor : textSecondary} />
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={[
-                 styles.brushTypeBtn,
-                 brushType === 'pencil' && styles.brushTypeBtnActive
-               ]}
-               onPress={() => setBrushType('pencil')}
-             >
-               <Ionicons name="pencil" size={20} color={brushType === 'pencil' ? primaryColor : textSecondary} />
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={[
-                 styles.brushTypeBtn,
-                 brushType === 'crayon' && styles.brushTypeBtnActive
-               ]}
-               onPress={() => setBrushType('crayon')}
-             >
-               <Ionicons name="brush" size={20} color={brushType === 'crayon' ? primaryColor : textSecondary} />
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={[
-                 styles.brushTypeBtn,
-                 brushType === 'eraser' && styles.brushTypeBtnActive
-               ]}
-               onPress={() => setBrushType('eraser')}
-             >
-               <Ionicons name="trash" size={20} color={brushType === 'eraser' ? primaryColor : textSecondary} />
-             </TouchableOpacity>
-           </View>
-           {/* Undo/Redo Buttons */}
-           <View style={styles.undoRedoContainer}>
-             <TouchableOpacity
-               style={[
-                 styles.undoRedoBtn,
-                 !pointsHistory.length && styles.undoRedoBtnDisabled
-               ]}
-               onPress={undo}
-               activeOpacity={0.7}
-             >
-               <Ionicons name="arrow-undo" size={20} color={pointsHistory.length ? primaryColor : '#ccc'} />
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={[
-                 styles.undoRedoBtn,
-                 !futurePoints.length && styles.undoRedoBtnDisabled
-               ]}
-               onPress={redo}
-               activeOpacity={0.7}
-             >
-               <Ionicons name="arrow-redo" size={20} color={futurePoints.length ? primaryColor : '#ccc'} />
-             </TouchableOpacity>
-           </View>
-           {/* Brush Size Selector */}
-           <View style={styles.brushSizeSelector}>
-             <Text style={styles.brushSizeLabel}>Size:</Text>
-             <View style={styles.brushSizeRow}>
-               {[8, 15, 25, 35].map((size) => (
-                 <TouchableOpacity
-                   key={size}
-                   style={[
-                     styles.brushSizeBtn,
-                     brushSize === size && styles.brushSizeBtnActive
-                   ]}
-                   onPress={() => setBrushSize(size)}
-                 >
-                   <View style={{ width: size, height: size, borderRadius: size/2, backgroundColor: selectedColor }} />
-                 </TouchableOpacity>
-               ))}
-             </View>
-           </View>
-           {/* Save/Export Button */}
-           <TouchableOpacity
-             style={styles.headerButton}
-             onPress={() => setShowSaveOptions(true)}
-           >
-             <Ionicons name="share" size={20} color={textColor} />
-           </TouchableOpacity>
-         </View>
-        
-         {/* Color Palette - Fixed at bottom */}
-         <View style={[styles.bottomPalette, { backgroundColor: cardBg, borderTopColor: cardBorder }]}>
-           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.paletteScrollContent}>
-             {COLOR_PALETTE.map((item) => (
-               <TouchableOpacity
-                 key={item}
-                 style={[
-                   styles.colorItemBottom,
-                   { backgroundColor: item },
-                   selectedColor === item && styles.colorItemSelectedBottom
-                 ]}
-                 onPress={() => {
-                   console.log('Color selected:', item);
-                   setSelectedColor(item);
-                 }}
-               >
-                 {selectedColor === item && (
-                   <Ionicons name="checkmark" size={20} color="#fff" />
-                 )}
-               </TouchableOpacity>
-             ))}
-           </ScrollView>
-         </View>
       </>
     );
+  }
+
+  if (pageIndex === 7) {
+    return (
+      <View style={[styles.qrPageContainer, { backgroundColor: '#DEB887' }]}>
+        <View style={styles.qrContent}>
+          <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health</Text>
+          <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
+        </View>
+        <TouchableOpacity
+          style={[styles.backButton, { top: 50 }]}
+          onPress={() => setPageIndex(1)}
+        >
+          <Ionicons name="chevron-back" size={20} color="#000" />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  return null;
   };
 
   return (
@@ -478,13 +595,199 @@ export default function ColoringPage() {
     </SafeAreaView>
   );
 };
-
 const { width } = Dimensions.get('window');
-
 const styles = StyleSheet.create({
    container: {
      flex: 1,
    },
+   // Book container and cover styles
+   bookContainer: {
+     flex: 1,
+     backgroundColor: '#DEB887',
+     justifyContent: 'center',
+     alignItems: 'center',
+     padding: 20,
+   },
+   bookSpine: {
+     position: 'absolute',
+     left: 15,
+     top: 20,
+     bottom: 20,
+     width: 8,
+     backgroundColor: '#8B4513',
+     borderRadius: 4,
+     shadowOffset: { width: -2, height: 0 },
+     shadowOpacity: 0.3,
+   },
+   bookCover: {
+     width: '85%',
+     aspectRatio: 0.75,
+     backgroundColor: '#8B4513',
+     borderRadius: 8,
+     shadowOffset: { width: 4, height: 8 },
+     shadowOpacity: 0.4,
+     shadowRadius: 12,
+     elevation: 10,
+   },
+   coverDesign: {
+     flex: 1,
+     margin: 12,
+     backgroundColor: '#DEB887',
+     borderRadius: 6,
+  },
+  coverBorder: {
+    flex: 1,
+    margin: 8,
+    borderWidth: 2,
+    borderColor: 'rgba(0,0,0,0.1)',
+    borderRadius: 4,
+    backgroundColor: '#F5DEB3',
+  },
+  coverInner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  coverCornerTopLeft: {
+    position: 'absolute',
+    top: 15,
+    left: 15,
+    width: 30,
+    height: 30,
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  coverCornerTopRight: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    width: 30,
+    height: 30,
+    borderTopWidth: 3,
+    borderRightWidth: 3,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  coverCornerBottomLeft: {
+    position: 'absolute',
+    bottom: 15,
+    left: 15,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  coverCornerBottomRight: {
+    position: 'absolute',
+    bottom: 15,
+    right: 15,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  coverTitle: {
+    fontSize: 42,
+    fontWeight: '800',
+    textAlign: 'center',
+    marginBottom: 8,
+    textShadowColor: 'rgba(0,0,0,0.1)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
+  coverSubtitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#A0522D',
+    textAlign: 'center',
+    marginBottom: 30,
+    fontStyle: 'italic',
+  },
+  coverIcon: {
+    width: 100,
+    height: 100,
+    marginBottom: 40,
+    position: 'relative',
+  },
+  donutOuter: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#FF6B6B',
+    borderWidth: 4,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  donutInner: {
+    position: 'absolute',
+    top: 25,
+    left: 25,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#F5DEB3',
+    borderWidth: 2,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  tapToOpen: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#8B4513',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 25,
+    gap: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    elevation: 5,
+  },
+  tapToOpenText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  pageFlipOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#fff',
+    backfaceVisibility: 'hidden',
+  },
+  pageFlipContent: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  // Book page styles for coloring pages
+  bookPageContainer: {
+    backgroundColor: '#000',
+    flex: 1,
+    position: 'relative',
+  },
+  pageEdgeLeft: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 15,
+    backgroundColor: '#00000008', // 5% black opacity
+    shadowOffset: { width: 2, height: 0 },
+    shadowOpacity: 0.15,
+  },
+  pageEdgeRight: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 15,
+    backgroundColor: '#00000008', // 5% black opacity
+    shadowOffset: { width: -2, height: 0 },
+    shadowOpacity: 0.15,
+  },
    titlePage: {
      flex: 1,
      justifyContent: 'center',
@@ -496,137 +799,126 @@ const styles = StyleSheet.create({
      fontWeight: '700',
      color: '#333',
    },
+   canvasImage: {
+     width: '100%',
+     height: '100%',
+     resizeMode: 'contain',
+     borderRadius: 10,
+     backgroundColor: '#fff',
+   },
+   screen: {
+     flex: 1,
+     backgroundColor: '#DEB887',
+   },
+   topNav: {
+     flexDirection: 'row',
+     justifyContent: 'space-between',
+     alignItems: 'center',
+     paddingHorizontal: 16,
+     paddingVertical: 14,
+     backgroundColor: '#DEB887',
+   },
+   navGroup: {
+     flexDirection: 'row',
+     gap: 12,
+   },
+navButton: {
+      width: 48,
+      height: 48,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 16,
+      backgroundColor: 'rgba(0,0,0,0.08)',
+    },
+headerTitle: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      fontSize: 20,
+      fontWeight: '600',
+      color: '#000',
+      textAlign: 'center',
+    },
+   canvasWrapper: {
+     flex: 1,
+     justifyContent: 'center',
+     alignItems: 'center',
+     paddingVertical: 12,
+   },
+   canvas: {
+     width: '90%',
+     aspectRatio: 0.95,
+     backgroundColor: CANVAS_BACKGROUND,
+     borderWidth: 3,
+     borderColor: CANVAS_BORDER,
+     borderRadius: 18,
+     overflow: 'hidden',
+     justifyContent: 'center',
+     alignItems: 'center',
+   },
    drawingContainer: {
      ...StyleSheet.absoluteFillObject,
    },
-   imageContainer: {
-     ...StyleSheet.absoluteFillObject,
-   },
-   image: {
-     flex: 1,
-     width: undefined,
-     height: undefined,
-   },
-   header: {
-     flexDirection: 'row',
-     alignItems: 'center',
-     justifyContent: 'space-between',
-     paddingHorizontal: 16,
+   sliderContainer: {
+     paddingHorizontal: 20,
      paddingVertical: 12,
-     borderBottomWidth: 1,
-     position: 'absolute',
-     top: 0,
-     left: 0,
-     right: 0,
-     zIndex: 3,
    },
-   headerTitle: {
-     fontSize: 20,
-     fontWeight: '700',
-   },
-   headerButton: {
-     padding: 8,
-   },
-   brushTypeSelector: {
-     flexDirection: 'row',
+   sliderTrackContainer: {
+     height: 32,
      justifyContent: 'center',
-     gap: 8,
-     paddingVertical: 8,
    },
-   brushTypeBtn: {
-     width: 36,
-     height: 36,
-     borderRadius: 18,
-     justifyContent: 'center',
-     alignItems: 'center',
-     borderWidth: 1,
-     borderColor: 'rgba(0,0,0,0.1)',
-   },
-   brushTypeBtnActive: {
-     borderWidth: 2,
-     borderColor: '#000',
-   },
-   undoRedoContainer: {
-     flexDirection: 'row',
-     gap: 8,
-   },
-   undoRedoBtn: {
-     width: 36,
-     height: 36,
-     borderRadius: 18,
-     justifyContent: 'center',
-     alignItems: 'center',
-     borderWidth: 1,
-     borderColor: 'rgba(0,0,0,0.1)',
-   },
-   undoRedoBtnDisabled: {
-     opacity: 0.5,
-   },
-   brushSizeSelector: {
-     flexDirection: 'row',
-     alignItems: 'center',
-     gap: 12,
-     paddingVertical: 8,
-   },
-   brushSizeLabel: {
-     fontSize: 14,
-     fontWeight: '600',
-   },
-   brushSizeRow: {
-     flexDirection: 'row',
-   },
-   brushSizeBtn: {
-     width: 30,
-     height: 30,
-     borderRadius: 15,
-     justifyContent: 'center',
-     alignItems: 'center',
-     borderWidth: 1,
-     borderColor: 'rgba(0,0,0,0.1)',
-   },
-   brushSizeBtnActive: {
-     borderWidth: 2,
-     borderColor: '#000',
-   },
-   toolCard: {
-     padding: 16,
-     borderRadius: 16,
-     borderWidth: 1,
-     marginBottom: 16,
-     marginTop: 60, // account for header
-   },
-   paletteHeader: {
-     flexDirection: 'row',
-     justifyContent: 'space-between',
-     alignItems: 'center',
-   },
-   paletteContainer: {
+   sliderTrack: {
+     width: '100%',
+     height: 6,
+     borderRadius: 3,
+     backgroundColor: SLIDER_TRACK_COLOR,
      overflow: 'hidden',
+     display: 'none',
    },
-   toolLabel: {
-     fontSize: 14,
-     fontWeight: '600',
-     marginBottom: 12,
-   },
-   brushPreview: {
-     borderRadius: 50,
-   },
-   colorGrid: {
-     gap: 10,
-   },
-   colorItem: {
-     width: 36,
-     height: 36,
-     borderRadius: 18,
-     justifyContent: 'center',
-     alignItems: 'center',
-     margin: 5,
+   sliderThumb: {
+     position: 'absolute',
+     top: -8,
+     width: 20,
+     height: 20,
+     borderRadius: 10,
+     backgroundColor: SLIDER_THUMB_COLOR,
      borderWidth: 2,
-     borderColor: 'rgba(0,0,0,0.1)',
+     borderColor: '#fff',
+     display: 'none',
    },
-   colorItemSelected: {
-     borderColor: '#000',
-     transform: [{ scale: 1.1 }],
+   paletteRowContainer: {
+     paddingVertical: 10,
+   },
+bottomToolbar: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 16,
+      paddingVertical: 14,
+      backgroundColor: '#DEB887',
+      borderTopWidth: 1,
+      borderTopColor: 'rgba(0,0,0,0.08)',
+    },
+    toolButton: {
+      width: 52,
+      height: 52,
+      borderRadius: 16,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'transparent',
+    },
+   toolButtonActive: {
+     backgroundColor: 'rgba(123,95,229,0.18)',
+   },
+   navArrowButton: {
+     flex: 1,
+     marginHorizontal: 4,
+   },
+   colorSelectedDot: {
+     width: 12,
+     height: 12,
+     borderRadius: 6,
+     backgroundColor: '#fff',
    },
    // Index page styles
    indexPage: {
@@ -634,11 +926,12 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      justifyContent: 'center',
    },
-   indexTitle: {
-     fontSize: 24,
-     fontWeight: '700',
-     marginBottom: 30,
-   },
+    indexTitle: {
+      fontSize: 24,
+      fontWeight: '700',
+      marginBottom: 30,
+      color: '#ffffff',
+    },
    indexNumbers: {
      flexDirection: 'row',
      flexWrap: 'wrap',
@@ -650,17 +943,18 @@ const styles = StyleSheet.create({
      height: 80,
      borderRadius: 12,
      borderWidth: 2,
-     borderColor: 'rgba(0,0,0,0.1)',
+     borderColor: '#000000',
      alignItems: 'center',
      justifyContent: 'center',
    },
    indexNumberBtnActive: {
-     borderColor: '#000', // Will be overridden with theme color in component
-     backgroundColor: '#00000008', // 5% black opacity
+     borderColor: '#000000',
+     backgroundColor: '#00000015',
    },
    indexNumberText: {
      fontSize: 20,
      fontWeight: '600',
+     color: '#ffffff',
    },
    backButton: {
      position: 'absolute',
@@ -699,37 +993,48 @@ const styles = StyleSheet.create({
      textAlign: 'center',
      fontStyle: 'italic',
    },
-   // Bottom palette styles
-   bottomPalette: {
-     position: 'absolute',
-     bottom: 0,
-     left: 0,
-     right: 0,
-     borderTopWidth: 2,
-     paddingVertical: 12,
-     paddingHorizontal: 8,
-     zIndex: 10,
-   },
    paletteScrollContent: {
      alignItems: 'center',
-     gap: 12,
+     gap: 10,
      paddingHorizontal: 4,
    },
    colorItemBottom: {
-     width: 50,
-     height: 50,
-     borderRadius: 25,
+     width: 42,
+     height: 42,
+     borderRadius: 21,
      justifyContent: 'center',
      alignItems: 'center',
-     marginHorizontal: 6,
-     borderWidth: 2,
-     borderColor: 'rgba(0,0,0,0.2)',
+     marginHorizontal: 4,
+     borderWidth: 1.5,
+     borderColor: 'rgba(0,0,0,0.1)',
    },
    colorItemSelectedBottom: {
-     borderColor: '#000',
-     borderWidth: 3,
-     transform: [{ scale: 1.15 }],
+     borderColor: 'rgba(0,0,0,0.1)',
+     borderWidth: 2,
    },
+  // QR / Resources page styles
+  qrPageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: CANVAS_BACKGROUND,
+  },
+  qrContent: {
+    width: '90%',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'transparent',
+  },
+  qrTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  qrImage: {
+    width: 220,
+    height: 220,
+  },
    // Modal styles
    modalContainer: {
      position: 'absolute',
@@ -746,7 +1051,6 @@ const styles = StyleSheet.create({
     },
     modalContent: {
       width: '80%',
-      backgroundColor: '#fff',
      borderRadius: 16,
      padding: 24,
    },
@@ -766,7 +1070,7 @@ const styles = StyleSheet.create({
    modalButton: {
      flexDirection: 'row',
      alignItems: 'center',
-     backgroundColor: '#f0f0f0',
+     backgroundColor: '#00000008', // 5% black opacity
      borderRadius: 12,
      padding: 16,
    },
@@ -774,5 +1078,17 @@ const styles = StyleSheet.create({
      marginLeft: 12,
      fontSize: 16,
      fontWeight: '500',
+   },
+   textOverlayBox: {
+     position: 'absolute',
+     backgroundColor: '#ffffff',
+     borderRadius: 4,
+     padding: 6,
+     zIndex: 10,
+   },
+   textOverlayText: {
+     fontSize: 11,
+     color: '#333',
+     fontStyle: 'italic',
    },
 });

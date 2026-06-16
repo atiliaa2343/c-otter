@@ -56,7 +56,7 @@ export function ColoringPage() {
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: textColor }]}>Coloring Page</Text>
+        <Text style={[styles.headerTitle, { color: textColor, marginLeft: 40 }]}>Coloring Page</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity 
             style={[styles.headerButton, { backgroundColor: cardBg, borderColor: cardBorder }]}
