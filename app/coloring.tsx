@@ -284,19 +284,14 @@ export default function ColoringPage() {
         outputRange: ['0deg', '-180deg'],
       });
       return (
-        <View style={styles.bookContainer}>
-          {/* Back button */}
-          <TouchableOpacity
-            style={[styles.backButton, { top: 50, left: 20 }]}
-            onPress={() => {
-              // Navigate back to home or previous screen
-              // You may need to use router.back() if using expo-router
-            }}
-          >
-            <Ionicons name="chevron-back" size={20} color="#000" />
-          </TouchableOpacity>
-          {/* Book spine */}
-          <View style={styles.bookSpine} />
+        <View style={[styles.bookContainer, { backgroundColor: '#fff' }]}>
+          <View style={[styles.topNav, { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }]}>
+            <View style={styles.navGroup}>
+              <TouchableOpacity style={styles.navButton} onPress={() => {}} activeOpacity={0.7}>
+                <Ionicons name="arrow-back" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
+          </View>
           {/* Book cover */}
           <Animated.View
             style={[
