@@ -318,7 +318,7 @@ export default function ColoringPage() {
                   <View style={styles.coverCornerBottomLeft} />
                   <View style={styles.coverCornerBottomRight} />
                   {/* Title */}
-                  <Text style={styles.coverTitle}>Donuts Jam</Text>
+                  <Text style={styles.coverTitle}>Doughnut's Jam</Text>
                   <Text style={styles.coverSubtitle}>Coloring Book</Text>
                   {/* Decorative donut icon */}
                   <View style={styles.coverIcon}>
@@ -402,7 +402,6 @@ export default function ColoringPage() {
                   <Ionicons name="arrow-back" size={24} color="#000" />
                 </TouchableOpacity>
               </View>
-              <Text style={styles.headerTitle}>Coloring Page</Text>
             </View>
 
            <View style={styles.canvasWrapper}>
@@ -415,22 +414,27 @@ export default function ColoringPage() {
                {pageIndex === 2 && (
                  <View style={[styles.textOverlayBox, { top: '48%', left: '8%', right: '18%' }]} pointerEvents="none">
                    <Text style={styles.textOverlayText}>
-                     {"Doughnut Sinclair is a Jolly Jelly newhire, passionate about the fruity deliciousness of jelly. She is tasked with developing a new Jolly Jellicious recipe. Pressure from her supervisor makes her question how far her positivity and work ethic can take her in the jelly-making world."}
+                     {"Doughnut Sinclair is a Jolly Jelly new hire, passionate about the fruity deliciousness of jelly. She is tasked with developing a new Jolly Jellicious recipe. Pressure from her supervisor makes her question how far her positivity and work ethic can take her in the jelly-making world."}
                    </Text>
                  </View>
                )}
                {pageIndex === 3 && (
-                 <View style={[styles.textOverlayBox, { bottom: 10, right: 10 }]} pointerEvents="none">
-                   <Text style={styles.textOverlayText}>Mr.Toast is fussing at me again</Text>
-                 </View>
+                 <>
+                   <View style={[styles.textOverlayBox, { top: '7%', left: '20%', right: '54.5%', backgroundColor: '#fff' , borderRadius: 24}]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { fontSize: 9.5 }]}>{"I don't know why they hired you! Now I'm stuck with your stupid ideas."}</Text>
+                   </View>
+                   <View style={[styles.textOverlayBox, { bottom: '3%', right: '8%', backgroundColor: '#fff' }]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>Mr. Toast is fussing at me again!</Text>
+                   </View>
+                 </>
                )}
                {pageIndex === 4 && (
                  <>
-                   <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I don't know if she has a problem with my</Text>
+                   <View style={[styles.textOverlayBox, { top: 3, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' },{ fontSize: 8 }]}>I don't know if she has a problem with my</Text>
                    </View>
-                   <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>recipe or if she just doesn't like me</Text>
+                   <View style={[styles.textOverlayBox, { bottom: 0.5, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }, { fontSize: 8 }]}>recipe or if she just doesn't like me</Text>
                    </View>
                  </>
                )}
@@ -483,7 +487,7 @@ export default function ColoringPage() {
              </View>
            </View>
 
-
+           <Text style={styles.pageNumber}>Page {pageIndex - 1} of 5</Text>
 
            {isPaletteExpanded && (
              <View style={styles.paletteRowContainer}>
@@ -690,7 +694,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.1)',
   },
   coverTitle: {
-    fontSize: 42,
+    fontSize: 34,
     fontWeight: '800',
     textAlign: 'center',
     marginBottom: 8,
@@ -885,6 +889,12 @@ headerTitle: {
      borderWidth: 2,
      borderColor: '#fff',
      display: 'none',
+   },
+   pageNumber: {
+     textAlign: 'center',
+     fontSize: 13,
+     color: '#000',
+     paddingVertical: 4,
    },
    paletteRowContainer: {
      paddingVertical: 10,
