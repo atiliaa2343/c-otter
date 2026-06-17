@@ -9,7 +9,8 @@ import {
   Dimensions,
   PanResponder,
   Alert,
-  Animated
+  Animated,
+  Linking
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from "@expo/vector-icons";
@@ -420,8 +421,8 @@ export default function ColoringPage() {
                )}
                {pageIndex === 3 && (
                  <>
-                   <View style={[styles.textOverlayBox, { top: '7%', left: '20%', right: '54.5%', backgroundColor: '#fff' , borderRadius: 24}]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { fontSize: 9.5 }]}>{"I don't know why they hired you! Now I'm stuck with your stupid ideas."}</Text>
+                   <View style={[styles.textOverlayBox, { top: '8%', left: '10%', right: '55%', backgroundColor: '#fff' , borderRadius: 24}]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { fontSize: 13 }]}>{"I don't know why they hired you! Now I'm stuck with your stupid ideas."}</Text>
                    </View>
                    <View style={[styles.textOverlayBox, { bottom: '3%', right: '8%', backgroundColor: '#fff' }]} pointerEvents="none">
                      <Text style={styles.textOverlayText}>Mr. Toast is fussing at me again!</Text>
@@ -431,30 +432,30 @@ export default function ColoringPage() {
                {pageIndex === 4 && (
                  <>
                    <View style={[styles.textOverlayBox, { top: 3, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' },{ fontSize: 8 }]}>I don't know if she has a problem with my</Text>
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' },{ fontSize: 10 }]}>I don't know if she has a problem with my</Text>
                    </View>
-                   <View style={[styles.textOverlayBox, { bottom: 0.5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' }, { fontSize: 8 }]}>recipe or if she just doesn't like me</Text>
+                   <View style={[styles.textOverlayBox, { bottom: 0.1, left: 3, right: 3 }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }, { fontSize: 10 }]}>recipe or if she just doesn't like me</Text>
                    </View>
                  </>
                )}
                {pageIndex === 5 && (
                  <>
-                   <View style={[styles.textOverlayBox, { top: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={styles.textOverlayText}>{"however...\nMy passion for jelly"}</Text>
+                   <View style={[styles.textOverlayBox, { top: 5, right: 28}]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>{"However...\nMy passion for jelly"}</Text>
                    </View>
                    <View style={[styles.textOverlayBox, { bottom: 5, left: 5 }]} pointerEvents="none">
-                     <Text style={styles.textOverlayText}>{"obliterates the bitter\ntaste of inferiority"}</Text>
+                     <Text style={styles.textOverlayText}>{"washes away the bitter\ntaste of inferiority."}</Text>
                    </View>
                  </>
                )}
                {pageIndex === 6 && (
                  <>
                    <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>with the overwhelming positivity from my jelly love</Text>
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>With the overwhelming positivity from my jelly love</Text>
                    </View>
                    <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I Can overcome anything!!!</Text>
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I CAN overcome anything!!!</Text>
                    </View>
                  </>
                )}
@@ -576,10 +577,20 @@ export default function ColoringPage() {
   if (pageIndex === 7) {
     return (
       <View style={[styles.qrPageContainer, { backgroundColor: '#DEB887' }]}>
-        <View style={styles.qrContent}>
+        <ScrollView contentContainerStyle={styles.qrScrollContent}>
           <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health</Text>
           <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
-        </View>
+          <Text style={styles.qrBodyText}>
+            {"This workbook/App was funded by the American Rescue Plan Act (ARPA) Targeted Community Outreach grant awarded to the Virginia Department of Health. This community resource was developed in partnership with the Virginia Department of Health–Crater Health District, Arts As Healing Project."}
+          </Text>
+          <Text style={styles.qrBodyText}>
+            {"The Crater Health District offers a variety of services across multiple programs including Environmental Health, Population Health, Epidemiology and Clinical Services dedicated to promoting, strengthening, and maintaining community health and wellness. For more information, please visit the Crater Health District website at "}
+            <Text style={styles.qrLink} onPress={() => Linking.openURL('https://www.vdh.virginia.gov/crater')}>
+              {"https://www.vdh.virginia.gov/crater"}
+            </Text>
+            {" or contact the main office at 804-863-1652."}
+          </Text>
+        </ScrollView>
         <TouchableOpacity
           style={[styles.backButton, { top: 50 }]}
           onPress={() => setPageIndex(1)}
@@ -847,11 +858,12 @@ headerTitle: {
      flex: 1,
      justifyContent: 'center',
      alignItems: 'center',
-     paddingVertical: 12,
+     paddingTop: 12,
+     paddingBottom: 28,
    },
    canvas: {
-     width: '90%',
-     aspectRatio: 0.95,
+     width: '95%',
+     aspectRatio: 0.75,
      backgroundColor: CANVAS_BACKGROUND,
      borderWidth: 3,
      borderColor: CANVAS_BORDER,
@@ -1044,6 +1056,24 @@ bottomToolbar: {
   qrImage: {
     width: 220,
     height: 220,
+  },
+  qrScrollContent: {
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 80,
+    paddingBottom: 40,
+  },
+  qrBodyText: {
+    fontSize: 12,
+    color: '#000',
+    textAlign: 'center',
+    marginTop: 16,
+    lineHeight: 18,
+  },
+  qrLink: {
+    fontSize: 12,
+    color: '#0000EE',
+    textDecorationLine: 'underline',
   },
    // Modal styles
    modalContainer: {
