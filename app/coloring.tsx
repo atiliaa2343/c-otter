@@ -358,7 +358,14 @@ export default function ColoringPage() {
     if (pageIndex === 1) {
       // Index page with clickable numbers 1-5 - book page style
       return (
-        <View style={[styles.bookPageContainer, { backgroundColor: '#DEB887' }]}>
+        <View style={[styles.bookPageContainer, { backgroundColor: '#fff' }]}>
+          <View style={styles.topNav}>
+            <View style={styles.navGroup}>
+              <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(0)} activeOpacity={0.7}>
+                <Ionicons name="arrow-back" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
+          </View>
           {/* Index content */}
           <View style={[styles.indexPage, { backgroundColor: 'transparent' }]}>
             <Text style={[styles.indexTitle, { color: '#000' }]}>Table of Contents</Text>
@@ -372,7 +379,7 @@ export default function ColoringPage() {
                  ]}
                  onPress={() => {
                    setSelectedIndex(num);
-                   setPageIndex(num + 1); // Go to coloring page (2-6)
+                   setPageIndex(num + 1);
                  }}
                  activeOpacity={0.7}
                >
@@ -382,12 +389,6 @@ export default function ColoringPage() {
                </TouchableOpacity>
              ))}
            </View>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => setPageIndex(0)}
-          >
-            <Ionicons name="chevron-back" size={20} color="#000" />
-          </TouchableOpacity>
         </View>
       </View>
       );
@@ -576,7 +577,14 @@ export default function ColoringPage() {
 
   if (pageIndex === 7) {
     return (
-      <View style={[styles.qrPageContainer, { backgroundColor: '#DEB887' }]}>
+      <View style={[styles.qrPageContainer, { backgroundColor: '#fff' }]}>
+        <View style={styles.topNav}>
+          <View style={styles.navGroup}>
+            <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          </View>
+        </View>
         <ScrollView contentContainerStyle={styles.qrScrollContent}>
           <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health</Text>
           <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
@@ -591,12 +599,6 @@ export default function ColoringPage() {
             {" or contact the main office at 804-863-1652."}
           </Text>
         </ScrollView>
-        <TouchableOpacity
-          style={[styles.backButton, { top: 50 }]}
-          onPress={() => setPageIndex(1)}
-        >
-          <Ionicons name="chevron-back" size={20} color="#000" />
-        </TouchableOpacity>
       </View>
     );
   }
@@ -823,7 +825,7 @@ const styles = StyleSheet.create({
    },
    screen: {
      flex: 1,
-     backgroundColor: '#DEB887',
+     backgroundColor: '#fff',
    },
    topNav: {
      flexDirection: 'row',
@@ -831,7 +833,7 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      paddingHorizontal: 16,
      paddingVertical: 14,
-     backgroundColor: '#DEB887',
+     backgroundColor: '#fff',
    },
    navGroup: {
      flexDirection: 'row',
@@ -917,7 +919,7 @@ bottomToolbar: {
       alignItems: 'center',
       paddingHorizontal: 16,
       paddingVertical: 14,
-      backgroundColor: '#DEB887',
+      backgroundColor: '#fff',
       borderTopWidth: 1,
       borderTopColor: 'rgba(0,0,0,0.08)',
     },
@@ -1037,9 +1039,7 @@ bottomToolbar: {
   // QR / Resources page styles
   qrPageContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: CANVAS_BACKGROUND,
+    backgroundColor: '#fff',
   },
   qrContent: {
     width: '90%',
@@ -1060,7 +1060,6 @@ bottomToolbar: {
   qrScrollContent: {
     alignItems: 'center',
     padding: 20,
-    paddingTop: 80,
     paddingBottom: 40,
   },
   qrBodyText: {
