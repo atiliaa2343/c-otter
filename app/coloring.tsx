@@ -24,6 +24,60 @@ const MuralBorder = require("../assets/images/mural-border.png");
 const PigmentImage = require("../assets/images/pigment.png");
 const CraterQR = require("../assets/images/Crater Webpage QR.png");
 
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+const DonutPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripWidth?: number }) => {
+  const cellSize = 44;
+  const w = stripWidth ?? SCREEN_WIDTH;
+  const h = SCREEN_HEIGHT;
+  const cols = Math.ceil(w / cellSize) + 1;
+  const rows = Math.ceil(h / cellSize) + 1;
+  const outerR = cellSize * 0.38;
+  const innerR = cellSize * 0.14;
+  const borderColor = '#111';
+  const outerBg = filled ? '#F4A460' : '#fff';
+  const innerBg = filled ? '#8B4513' : '#fff';
+
+  return (
+    <View style={[StyleSheet.absoluteFillObject, { overflow: 'hidden', width: stripWidth }]} pointerEvents="none">
+      {Array.from({ length: rows }).map((_, row) => (
+        <View key={row} style={{ flexDirection: 'row' }}>
+          {Array.from({ length: cols }).map((_, col) => (
+            <View key={col} style={{ width: cellSize, height: cellSize, justifyContent: 'center', alignItems: 'center' }}>
+              {/* Outer donut ring */}
+              <View style={{
+                width: outerR * 2,
+                height: outerR * 2,
+                borderRadius: outerR,
+                borderWidth: 2,
+                borderColor,
+                backgroundColor: outerBg,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                {/* Inner hole */}
+                <View style={{
+                  width: innerR * 2,
+                  height: innerR * 2,
+                  borderRadius: innerR,
+                  borderWidth: 1.5,
+                  borderColor,
+                  backgroundColor: innerBg,
+                }} />
+              </View>
+              {/* Small sprinkle dots around donut */}
+              <View style={{ position: 'absolute', top: 4, left: 10, width: 4, height: 4, borderRadius: 2, borderWidth: 1, borderColor, backgroundColor: outerBg }} />
+              <View style={{ position: 'absolute', top: 6, right: 8, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: outerBg }} />
+              <View style={{ position: 'absolute', bottom: 5, left: 8, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: outerBg }} />
+              <View style={{ position: 'absolute', bottom: 4, right: 10, width: 4, height: 4, borderRadius: 2, borderWidth: 1, borderColor, backgroundColor: outerBg }} />
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+};
+
 const getColoringImage = (idx: number) => {
   if (idx === 2) return DoughnutBlurb1Image;
   if (idx === 3) return DoughnutPg1Image;
@@ -285,6 +339,7 @@ export default function ColoringPage() {
       });
       return (
         <View style={[styles.bookContainer, { backgroundColor: '#fff' }]}>
+          <DonutPattern filled={false} stripWidth={40} />
           <View style={[styles.topNav, { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }]}>
             <View style={styles.navGroup}>
               <TouchableOpacity style={styles.navButton} onPress={() => {}} activeOpacity={0.7}>
@@ -393,15 +448,16 @@ export default function ColoringPage() {
        return (
        <>
          <View style={styles.screen}>
-<View style={styles.topNav}>
-              <View style={styles.navGroup}>
-                <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
-                  <Ionicons name="arrow-back" size={24} color="#000" />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-           <View style={styles.canvasWrapper}>
+           <View style={{ flex: 1, overflow: 'hidden' }}>
+             <DonutPattern filled={false} />
+             <View style={styles.topNav}>
+               <View style={styles.navGroup}>
+                 <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+                   <Ionicons name="arrow-back" size={24} color="#000" />
+                 </TouchableOpacity>
+               </View>
+             </View>
+             <View style={styles.canvasWrapper}>
              <View style={styles.canvas}>
                <Image
                  source={getColoringImage(pageIndex)}
@@ -481,6 +537,7 @@ export default function ColoringPage() {
                    onLongPress={handleCanvasLongPress}
                  />
                </View>
+             </View>
              </View>
            </View>
 
@@ -581,10 +638,14 @@ export default function ColoringPage() {
           </View>
         </View>
         <ScrollView contentContainerStyle={styles.qrScrollContent}>
-          <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health</Text>
+          <Text style={[styles.qrTitle, { color: '#000' }]}>Artist Note (Ayanna Reid)</Text>
+          <Text style={styles.qrBodyText}>
+            {"On the importance of art in the healing process: \"Within healing, art isn't only a tool for managing attention and regulating emotions. Art provides situational control where one can interact and engage with it for whatever desired purpose. The healing that occurs within art grows from the ability to fully represent yourself within your work. The workplace comes as a rigid, structured environment with strict expectations of our behaviors and responses. My goal for this coloring book was to offset the monotonous work environment with a silly, quirky story about a jelly-worker experiencing common problems that occur within the workplace.\""}
+          </Text>
+          <Text style={[styles.qrTitle, { color: '#000', marginTop: 32 }]}>Virginia Department of Health-Crater Health District</Text>
           <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
           <Text style={styles.qrBodyText}>
-            {"This workbook/App was funded by the American Rescue Plan Act (ARPA) Targeted Community Outreach grant awarded to the Virginia Department of Health. This community resource was developed in partnership with the Virginia Department of Health–Crater Health District, Arts As Healing Project."}
+            {"Doughnut's Jam coloring book was funded by the American Rescue Plan Act (ARPA) Targeted Community Outreach grant awarded to the Virginia Department of Health. This community resource was developed in partnership with the Virginia Department of Health–Crater Health District, Arts As Healing Project."}
           </Text>
           <Text style={styles.qrBodyText}>
             {"The Crater Health District offers a variety of services across multiple programs including Environmental Health, Population Health, Epidemiology and Clinical Services dedicated to promoting, strengthening, and maintaining community health and wellness. For more information, please visit the Crater Health District website at "}
@@ -828,7 +889,7 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      paddingHorizontal: 16,
      paddingVertical: 14,
-     backgroundColor: '#fff',
+     backgroundColor: 'transparent',
    },
    navGroup: {
      flexDirection: 'row',
@@ -914,7 +975,7 @@ bottomToolbar: {
       alignItems: 'center',
       paddingHorizontal: 16,
       paddingVertical: 14,
-      backgroundColor: '#fff',
+      backgroundColor: 'transparent',
       borderTopWidth: 1,
       borderTopColor: 'rgba(0,0,0,0.08)',
     },
