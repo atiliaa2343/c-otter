@@ -78,6 +78,57 @@ const DonutPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripW
   );
 };
 
+const JellyPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripWidth?: number }) => {
+  const cellSize = 44;
+  const w = stripWidth ?? SCREEN_WIDTH;
+  const h = SCREEN_HEIGHT;
+  const cols = Math.ceil(w / cellSize) + 1;
+  const rows = Math.ceil(h / cellSize) + 1;
+  const borderColor = '#111';
+  const jarBg = filled ? '#8a9060' : '#fff';
+  const lidBg = filled ? '#7a4a8a' : '#fff';
+
+  return (
+    <View style={[StyleSheet.absoluteFillObject, { overflow: 'hidden', width: stripWidth }]} pointerEvents="none">
+      {Array.from({ length: rows }).map((_, row) => (
+        <View key={row} style={{ flexDirection: 'row' }}>
+          {Array.from({ length: cols }).map((_, col) => (
+            <View key={col} style={{ width: cellSize, height: cellSize, justifyContent: 'center', alignItems: 'center' }}>
+              {/* Jam jar body */}
+              <View style={{
+                width: 18,
+                height: 22,
+                borderRadius: 6,
+                borderWidth: 2,
+                borderColor,
+                backgroundColor: jarBg,
+              }}>
+                {/* Jar lid */}
+                <View style={{
+                  position: 'absolute',
+                  top: -7,
+                  left: -2,
+                  width: 22,
+                  height: 8,
+                  borderRadius: 3,
+                  borderWidth: 1.5,
+                  borderColor,
+                  backgroundColor: lidBg,
+                }} />
+              </View>
+              {/* Small seed dots around jar */}
+              <View style={{ position: 'absolute', top: 4, left: 9, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: jarBg }} />
+              <View style={{ position: 'absolute', top: 8, right: 7, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: jarBg }} />
+              <View style={{ position: 'absolute', bottom: 6, left: 7, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: jarBg }} />
+              <View style={{ position: 'absolute', bottom: 5, right: 9, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: jarBg }} />
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+};
+
 const getColoringImage = (idx: number) => {
   if (idx === 2) return DoughnutBlurb1Image;
   if (idx === 3) return DoughnutPg1Image;
@@ -449,7 +500,11 @@ export default function ColoringPage() {
        <>
          <View style={styles.screen}>
            <View style={{ flex: 1, overflow: 'hidden' }}>
-             <DonutPattern filled={false} />
+             {(pageIndex === 3 || pageIndex === 5) ? (
+               <JellyPattern filled={false} />
+             ) : (
+               <DonutPattern filled={false} />
+             )}
              <View style={styles.topNav}>
                <View style={styles.navGroup}>
                  <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
@@ -630,6 +685,7 @@ export default function ColoringPage() {
   if (pageIndex === 7) {
     return (
       <View style={[styles.qrPageContainer, { backgroundColor: '#fff' }]}>
+        <JellyPattern filled={false} />
         <View style={styles.topNav}>
           <View style={styles.navGroup}>
             <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
@@ -638,6 +694,7 @@ export default function ColoringPage() {
           </View>
         </View>
         <ScrollView contentContainerStyle={styles.qrScrollContent}>
+          <View style={styles.qrCard}>
           <Text style={[styles.qrTitle, { color: '#000' }]}>Artist Note (Ayanna Reid)</Text>
           <Text style={styles.qrBodyText}>
             {"On the importance of art in the healing process: \"Within healing, art isn't only a tool for managing attention and regulating emotions. Art provides situational control where one can interact and engage with it for whatever desired purpose. The healing that occurs within art grows from the ability to fully represent yourself within your work. The workplace comes as a rigid, structured environment with strict expectations of our behaviors and responses. My goal for this coloring book was to offset the monotonous work environment with a silly, quirky story about a jelly-worker experiencing common problems that occur within the workplace.\""}
@@ -654,6 +711,7 @@ export default function ColoringPage() {
             </Text>
             {" or contact the main office at 804-863-1652."}
           </Text>
+          </View>
         </ScrollView>
       </View>
     );
@@ -1117,6 +1175,13 @@ bottomToolbar: {
     alignItems: 'center',
     padding: 20,
     paddingBottom: 40,
+  },
+  qrCard: {
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 16,
   },
   qrBodyText: {
     fontSize: 12,
