@@ -17,7 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "../hooks/useThemeColor";
 const DoughnutBlurb1Image = require("../assets/images/Doughnut's Jam final pg 1 blurb1.jpg");
 const DoughnutPg1Image = require("../assets/images/Doughnut's Jam final pg 1.jpg");
-const DoughnutPg2Image = require("../assets/images/Doughnut's Jam final pg2.jpg");
+const DoughnutPg2Image = require("../assets/images/Doughnut's Jam final pg 2.jpg");
 const DoughnutPg3Image = require("../assets/images/Doughnut's Jam final pg3.jpg");
 const DoughnutPg4Image = require("../assets/images/Doughnut's Jam final pg4.jpg");
 const MuralBorder = require("../assets/images/mural-border.png");
@@ -250,7 +250,10 @@ export default function ColoringPage() {
         setPageIndex(pageIndex + 1);
       }
     } else if (pageIndex === 7) {
-      // From the QR/resources page, go back to the cover
+      // From the notes page, go to the resources page
+      setPageIndex(8);
+    } else if (pageIndex === 8) {
+      // From the resources page, go back to the cover
       setPageIndex(0);
     }
   };
@@ -471,7 +474,7 @@ export default function ColoringPage() {
           <View style={[styles.indexPage, { backgroundColor: 'transparent' }]}>
             <Text style={[styles.indexTitle, { color: '#000' }]}>Table of Contents</Text>
            <View style={styles.indexNumbers}>
-             {[1, 2, 3, 4, 5, 6].map((num) => (
+             {[1, 2, 3, 4, 5, 6, 7].map((num) => (
                <TouchableOpacity
                  key={num}
                  style={[
@@ -699,7 +702,30 @@ export default function ColoringPage() {
           <Text style={styles.qrBodyText}>
             {"On the importance of art in the healing process: \"Within healing, art isn't only a tool for managing attention and regulating emotions. Art provides situational control where one can interact and engage with it for whatever desired purpose. The healing that occurs within art grows from the ability to fully represent yourself within your work. The workplace comes as a rigid, structured environment with strict expectations of our behaviors and responses. My goal for this coloring book was to offset the monotonous work environment with a silly, quirky story about a jelly-worker experiencing common problems that occur within the workplace.\""}
           </Text>
-          <Text style={[styles.qrTitle, { color: '#000', marginTop: 32 }]}>Virginia Department of Health-Crater Health District</Text>
+          <Text style={[styles.qrTitle, { color: '#000', marginTop: 32 }]}>Note from Ce. OTTER</Text>
+          <Text style={styles.qrBodyText}>
+            {"The Center for Outreach & Treatment Through Education & Research is commited to providing community engagement, health education, medical services, and biomedical research training in the fields of Addiction, Public Health, Psychology, and other related fields to faculty, staff, students, and community stakeholders. Through the integration of education and research, the Ce OTTER will help establish VSU as a health hub for surrounding communities. The coloring book will be located on the Ce. Otter app, the app will be available for download on the Apple and Google Play Store fall 2026."}
+          </Text>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+
+  if (pageIndex === 8) {
+    return (
+      <View style={[styles.qrPageContainer, { backgroundColor: '#fff' }]}>
+        <DonutPattern filled={false} />
+        <View style={styles.topNav}>
+          <View style={styles.navGroup}>
+            <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <ScrollView contentContainerStyle={styles.qrScrollContent}>
+          <View style={styles.qrCard}>
+          <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health-Crater Health District</Text>
           <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
           <Text style={styles.qrBodyText}>
             {"Doughnut's Jam coloring book was funded by the American Rescue Plan Act (ARPA) Targeted Community Outreach grant awarded to the Virginia Department of Health. This community resource was developed in partnership with the Virginia Department of Health–Crater Health District, Arts As Healing Project."}
