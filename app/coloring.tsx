@@ -1,19 +1,23 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  StyleSheet, 
-  ScrollView, 
-  Image, 
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Image,
   Dimensions,
   PanResponder,
   Alert,
   Animated,
-  Linking
+  Linking,
+  ActivityIndicator
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from "@expo/vector-icons";
+import ViewShot from "react-native-view-shot";
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
 import { useThemeColor } from "../hooks/useThemeColor";
 const DoughnutBlurb1Image = require("../assets/images/Doughnut's Jam final pg 1 blurb1.jpg");
 const DoughnutPg1Image = require("../assets/images/Doughnut's Jam final pg 1.jpg");
@@ -164,6 +168,8 @@ export default function ColoringPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [showSaveOptions, setShowSaveOptions] = useState(false);
   const [isBookOpen, setIsBookOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const viewShotRef = useRef<ViewShot>(null);
   // Animation values for book opening
   const bookOpenAnim = useRef(new Animated.Value(0)).current;
   const pageFlipAnim = useRef(new Animated.Value(0)).current;
@@ -292,6 +298,46 @@ export default function ColoringPage() {
     });
   };
 
+  // Pages included in the downloadable PDF, in order
+  const PDF_PAGE_INDICES = [0, 2, 3, 4, 5, 6, 7, 8];
+
+  const exportBookToPdf = async () => {
+    const pageBeforeExport = pageIndex;
+    try {
+      setIsExporting(true);
+      const imageUris: string[] = [];
+      for (const idx of PDF_PAGE_INDICES) {
+        setPageIndex(idx);
+        // Let the chrome-free page finish rendering before capturing it
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        const uri = await viewShotRef.current?.capture?.();
+        if (uri) imageUris.push(uri);
+      }
+      const html = `
+        <html>
+          <body style="margin:0;padding:0;">
+            ${imageUris
+              .map(
+                (uri) =>
+                  `<div style="page-break-after:always;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${uri}" style="max-width:100%;max-height:100%;object-fit:contain;" /></div>`
+              )
+              .join('')}
+          </body>
+        </html>
+      `;
+      const { uri: pdfUri } = await Print.printToFileAsync({ html, base64: false });
+      await Sharing.shareAsync(pdfUri, {
+        mimeType: 'application/pdf',
+        dialogTitle: "Doughnut's Jam Coloring Book",
+      });
+    } catch (error) {
+      Alert.alert('Export failed', 'Could not generate the PDF. Please try again.');
+    } finally {
+      setPageIndex(pageBeforeExport);
+      setIsExporting(false);
+    }
+  };
+
   // Update refs when state changes
   const selectedColorRef = useRef(selectedColor);
   const brushSizeRef = useRef(brushSize);
@@ -394,13 +440,15 @@ export default function ColoringPage() {
       return (
         <View style={[styles.bookContainer, { backgroundColor: '#fff' }]}>
           <DonutPattern filled={false} stripWidth={40} />
-          <View style={[styles.topNav, { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }]}>
-            <View style={styles.navGroup}>
-              <TouchableOpacity style={styles.navButton} onPress={() => {}} activeOpacity={0.7}>
-                <Ionicons name="arrow-back" size={24} color="#000" />
-              </TouchableOpacity>
+          {!isExporting && (
+            <View style={[styles.topNav, { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }]}>
+              <View style={styles.navGroup}>
+                <TouchableOpacity style={styles.navButton} onPress={() => {}} activeOpacity={0.7}>
+                  <Ionicons name="arrow-back" size={24} color="#000" />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          )}
           {/* Book cover */}
           <Animated.View
             style={[
@@ -423,7 +471,7 @@ export default function ColoringPage() {
                   <View style={styles.coverCornerBottomLeft} />
                   <View style={styles.coverCornerBottomRight} />
                   {/* Title */}
-                  <Text style={styles.coverTitle}>Doughnut's Jam</Text>
+                  <Text style={[styles.coverTitle, isExporting && { fontSize: 24 }]}>Doughnut's Jam</Text>
                   <Text style={styles.coverSubtitle}>Coloring Book</Text>
                   {/* Decorative donut icon */}
                   <View style={styles.coverIcon}>
@@ -472,7 +520,7 @@ export default function ColoringPage() {
           </View>
           {/* Index content */}
           <View style={[styles.indexPage, { backgroundColor: 'transparent' }]}>
-            <Text style={[styles.indexTitle, { color: '#000' }]}>Table of Contents</Text>
+            <Text style={[styles.indexTitle, { color: '#000' }, isExporting && { fontSize: 30 }]}>Table of Contents</Text>
            <View style={styles.indexNumbers}>
              {[1, 2, 3, 4, 5, 6, 7].map((num) => (
                <TouchableOpacity
@@ -487,12 +535,21 @@ export default function ColoringPage() {
                  }}
                  activeOpacity={0.7}
                >
-                 <Text style={[styles.indexNumberText, { color: '#000' }]}>
+                 <Text style={[styles.indexNumberText, { color: '#000' }, isExporting && { fontSize: 26 }]}>
                    {num}
                  </Text>
                </TouchableOpacity>
              ))}
            </View>
+           <TouchableOpacity
+             style={styles.downloadPdfButton}
+             onPress={exportBookToPdf}
+             disabled={isExporting}
+             activeOpacity={0.7}
+           >
+             <Ionicons name="download-outline" size={20} color="#fff" />
+             <Text style={styles.downloadPdfButtonText}>Download as PDF</Text>
+           </TouchableOpacity>
         </View>
       </View>
       );
@@ -508,13 +565,15 @@ export default function ColoringPage() {
              ) : (
                <DonutPattern filled={false} />
              )}
-             <View style={styles.topNav}>
-               <View style={styles.navGroup}>
-                 <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
-                   <Ionicons name="arrow-back" size={24} color="#000" />
-                 </TouchableOpacity>
+             {!isExporting && (
+               <View style={styles.topNav}>
+                 <View style={styles.navGroup}>
+                   <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+                     <Ionicons name="arrow-back" size={24} color="#000" />
+                   </TouchableOpacity>
+                 </View>
                </View>
-             </View>
+             )}
              <View style={styles.canvasWrapper}>
              <View style={styles.canvas}>
                <Image
@@ -524,7 +583,7 @@ export default function ColoringPage() {
                />
                {pageIndex === 2 && (
                  <View style={[styles.textOverlayBox, { top: '48%', left: '8%', right: '18%' }]} pointerEvents="none">
-                   <Text style={styles.textOverlayText}>
+                   <Text style={[styles.textOverlayText, isExporting && { fontSize: 15 }]}>
                      {"Doughnut Sinclair is a Jolly Jelly new hire, passionate about the fruity deliciousness of jelly. She is tasked with developing a new Jolly Jellicious recipe. Pressure from her supervisor makes her question how far her positivity and work ethic can take her in the jelly-making world."}
                    </Text>
                  </View>
@@ -532,10 +591,10 @@ export default function ColoringPage() {
                {pageIndex === 3 && (
                  <>
                    <View style={[styles.textOverlayBox, { top: '8%', left: '10%', right: '55%', backgroundColor: '#fff' , borderRadius: 24}]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { fontSize: 13 }]}>{"I don't know why they hired you! Now I'm stuck with your stupid ideas."}</Text>
+                     <Text style={[styles.textOverlayText, { fontSize: 13 }, isExporting && { fontSize: 16 }]}>{"I don't know why they hired you! Now I'm stuck with your stupid ideas."}</Text>
                    </View>
                    <View style={[styles.textOverlayBox, { bottom: '3%', right: '8%', backgroundColor: '#fff' }]} pointerEvents="none">
-                     <Text style={styles.textOverlayText}>Mr. Toast is fussing at me again!</Text>
+                     <Text style={[styles.textOverlayText, isExporting && { fontSize: 16 }]}>Mr. Toast is fussing at me again!</Text>
                    </View>
                  </>
                )}
@@ -601,7 +660,7 @@ export default function ColoringPage() {
 
            <Text style={styles.pageNumber}>Page {pageIndex - 1} of 5</Text>
 
-           {isPaletteExpanded && (
+           {!isExporting && isPaletteExpanded && (
              <View style={styles.paletteRowContainer}>
                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.paletteScrollContent}>
                  {COLOR_PALETTE.map((item) => (
@@ -621,6 +680,7 @@ export default function ColoringPage() {
              </View>
            )}
 
+{!isExporting && (
 <View style={styles.bottomToolbar}>
               <TouchableOpacity
                 style={[styles.toolButton, isPaletteExpanded && styles.toolButtonActive]}
@@ -653,6 +713,7 @@ export default function ColoringPage() {
                 <Ionicons name="settings-outline" size={24} color="#000" />
               </TouchableOpacity>
             </View>
+)}
           </View>
           {/* Save/Export Modal */}
           <View style={showSaveOptions ? styles.modalContainer : styles.modalHidden}>
@@ -689,21 +750,23 @@ export default function ColoringPage() {
     return (
       <View style={[styles.qrPageContainer, { backgroundColor: '#fff' }]}>
         <JellyPattern filled={false} />
-        <View style={styles.topNav}>
-          <View style={styles.navGroup}>
-            <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
-              <Ionicons name="arrow-back" size={24} color="#000" />
-            </TouchableOpacity>
+        {!isExporting && (
+          <View style={styles.topNav}>
+            <View style={styles.navGroup}>
+              <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+                <Ionicons name="arrow-back" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        )}
         <ScrollView contentContainerStyle={styles.qrScrollContent}>
           <View style={styles.qrCard}>
-          <Text style={[styles.qrTitle, { color: '#000' }]}>Artist Note (Ayanna Reid)</Text>
-          <Text style={styles.qrBodyText}>
+          <Text style={[styles.qrTitle, { color: '#000' }, isExporting && { fontSize: 26 }]}>Artist Note (Ayanna Reid)</Text>
+          <Text style={[styles.qrBodyText, isExporting && { fontSize: 16, lineHeight: 24 }]}>
             {"On the importance of art in the healing process: \"Within healing, art isn't only a tool for managing attention and regulating emotions. Art provides situational control where one can interact and engage with it for whatever desired purpose. The healing that occurs within art grows from the ability to fully represent yourself within your work. The workplace comes as a rigid, structured environment with strict expectations of our behaviors and responses. My goal for this coloring book was to offset the monotonous work environment with a silly, quirky story about a jelly-worker experiencing common problems that occur within the workplace.\""}
           </Text>
-          <Text style={[styles.qrTitle, { color: '#000', marginTop: 32 }]}>Note from Ce. OTTER</Text>
-          <Text style={styles.qrBodyText}>
+          <Text style={[styles.qrTitle, { color: '#000', marginTop: 32 }, isExporting && { fontSize: 26 }]}>Note from Ce. OTTER</Text>
+          <Text style={[styles.qrBodyText, isExporting && { fontSize: 16, lineHeight: 24 }]}>
             {"The Center for Outreach & Treatment Through Education & Research is commited to providing community engagement, health education, medical services, and biomedical research training in the fields of Addiction, Public Health, Psychology, and other related fields to faculty, staff, students, and community stakeholders. Through the integration of education and research, the Ce OTTER will help establish VSU as a health hub for surrounding communities. The coloring book will be located on the Ce. Otter app, the app will be available for download on the Apple and Google Play Store fall 2026."}
           </Text>
           </View>
@@ -716,21 +779,23 @@ export default function ColoringPage() {
     return (
       <View style={[styles.qrPageContainer, { backgroundColor: '#fff' }]}>
         <DonutPattern filled={false} />
-        <View style={styles.topNav}>
-          <View style={styles.navGroup}>
-            <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
-              <Ionicons name="arrow-back" size={24} color="#000" />
-            </TouchableOpacity>
+        {!isExporting && (
+          <View style={styles.topNav}>
+            <View style={styles.navGroup}>
+              <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+                <Ionicons name="arrow-back" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        )}
         <ScrollView contentContainerStyle={styles.qrScrollContent}>
           <View style={styles.qrCard}>
-          <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health-Crater Health District</Text>
+          <Text style={[styles.qrTitle, { color: '#000' }, isExporting && { fontSize: 26 }]}>Virginia Department of Health-Crater Health District</Text>
           <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
-          <Text style={styles.qrBodyText}>
+          <Text style={[styles.qrBodyText, isExporting && { fontSize: 16, lineHeight: 24 }]}>
             {"Doughnut's Jam coloring book was funded by the American Rescue Plan Act (ARPA) Targeted Community Outreach grant awarded to the Virginia Department of Health. This community resource was developed in partnership with the Virginia Department of Health–Crater Health District, Arts As Healing Project."}
           </Text>
-          <Text style={styles.qrBodyText}>
+          <Text style={[styles.qrBodyText, isExporting && { fontSize: 16, lineHeight: 24 }]}>
             {"The Crater Health District offers a variety of services across multiple programs including Environmental Health, Population Health, Epidemiology and Clinical Services dedicated to promoting, strengthening, and maintaining community health and wellness. For more information, please visit the Crater Health District website at "}
             <Text style={styles.qrLink} onPress={() => Linking.openURL('https://www.vdh.virginia.gov/crater')}>
               {"https://www.vdh.virginia.gov/crater"}
@@ -748,7 +813,15 @@ export default function ColoringPage() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor }]}>
-      {renderPage()}
+      <ViewShot ref={viewShotRef} style={{ flex: 1 }} options={{ format: 'png', quality: 1 }}>
+        {renderPage()}
+      </ViewShot>
+      {isExporting && (
+        <View style={styles.exportOverlay}>
+          <ActivityIndicator size="large" color="#fff" />
+          <Text style={styles.exportOverlayText}>Generating PDF…</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -847,7 +920,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.1)',
   },
   coverTitle: {
-    fontSize: 34,
+    fontSize: 24,
     fontWeight: '800',
     textAlign: 'center',
     marginBottom: 8,
@@ -1120,6 +1193,22 @@ bottomToolbar: {
      fontWeight: '600',
      color: '#ffffff',
    },
+   downloadPdfButton: {
+     flexDirection: 'row',
+     alignItems: 'center',
+     justifyContent: 'center',
+     gap: 8,
+     marginTop: 28,
+     paddingVertical: 12,
+     paddingHorizontal: 24,
+     borderRadius: 12,
+     backgroundColor: '#000',
+   },
+   downloadPdfButtonText: {
+     color: '#fff',
+     fontSize: 15,
+     fontWeight: '600',
+   },
    backButton: {
      position: 'absolute',
      top: 50,
@@ -1180,6 +1269,19 @@ bottomToolbar: {
   qrPageContainer: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  exportOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  exportOverlayText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+    marginTop: 12,
   },
   qrContent: {
     width: '90%',
