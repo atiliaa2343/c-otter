@@ -1,27 +1,137 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  StyleSheet, 
-  ScrollView, 
-  Image, 
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Image,
   Dimensions,
   PanResponder,
   Alert,
-  Animated
+  Animated,
+  Linking,
+  ActivityIndicator
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from "@expo/vector-icons";
+import ViewShot from "react-native-view-shot";
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
 import { useThemeColor } from "../hooks/useThemeColor";
 const DoughnutBlurb1Image = require("../assets/images/Doughnut's Jam final pg 1 blurb1.jpg");
 const DoughnutPg1Image = require("../assets/images/Doughnut's Jam final pg 1.jpg");
-const DoughnutPg2Image = require("../assets/images/Doughnut's Jam final pg2.jpg");
+const DoughnutPg2Image = require("../assets/images/Doughnut's Jam final pg 2.jpg");
 const DoughnutPg3Image = require("../assets/images/Doughnut's Jam final pg3.jpg");
 const DoughnutPg4Image = require("../assets/images/Doughnut's Jam final pg4.jpg");
 const MuralBorder = require("../assets/images/mural-border.png");
 const PigmentImage = require("../assets/images/pigment.png");
 const CraterQR = require("../assets/images/Crater Webpage QR.png");
+
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+const DonutPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripWidth?: number }) => {
+  const cellSize = 44;
+  const w = stripWidth ?? SCREEN_WIDTH;
+  const h = SCREEN_HEIGHT;
+  const cols = Math.ceil(w / cellSize) + 1;
+  const rows = Math.ceil(h / cellSize) + 1;
+  const outerR = cellSize * 0.38;
+  const innerR = cellSize * 0.14;
+  const borderColor = '#111';
+  const outerBg = filled ? '#F4A460' : '#fff';
+  const innerBg = filled ? '#8B4513' : '#fff';
+
+  return (
+    <View style={[StyleSheet.absoluteFillObject, { overflow: 'hidden', width: stripWidth }]} pointerEvents="none">
+      {Array.from({ length: rows }).map((_, row) => (
+        <View key={row} style={{ flexDirection: 'row' }}>
+          {Array.from({ length: cols }).map((_, col) => (
+            <View key={col} style={{ width: cellSize, height: cellSize, justifyContent: 'center', alignItems: 'center' }}>
+              {/* Outer donut ring */}
+              <View style={{
+                width: outerR * 2,
+                height: outerR * 2,
+                borderRadius: outerR,
+                borderWidth: 2,
+                borderColor,
+                backgroundColor: outerBg,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                {/* Inner hole */}
+                <View style={{
+                  width: innerR * 2,
+                  height: innerR * 2,
+                  borderRadius: innerR,
+                  borderWidth: 1.5,
+                  borderColor,
+                  backgroundColor: innerBg,
+                }} />
+              </View>
+              {/* Small sprinkle dots around donut */}
+              <View style={{ position: 'absolute', top: 4, left: 10, width: 4, height: 4, borderRadius: 2, borderWidth: 1, borderColor, backgroundColor: outerBg }} />
+              <View style={{ position: 'absolute', top: 6, right: 8, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: outerBg }} />
+              <View style={{ position: 'absolute', bottom: 5, left: 8, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: outerBg }} />
+              <View style={{ position: 'absolute', bottom: 4, right: 10, width: 4, height: 4, borderRadius: 2, borderWidth: 1, borderColor, backgroundColor: outerBg }} />
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+};
+
+const JellyPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripWidth?: number }) => {
+  const cellSize = 44;
+  const w = stripWidth ?? SCREEN_WIDTH;
+  const h = SCREEN_HEIGHT;
+  const cols = Math.ceil(w / cellSize) + 1;
+  const rows = Math.ceil(h / cellSize) + 1;
+  const borderColor = '#111';
+  const jarBg = filled ? '#8a9060' : '#fff';
+  const lidBg = filled ? '#7a4a8a' : '#fff';
+
+  return (
+    <View style={[StyleSheet.absoluteFillObject, { overflow: 'hidden', width: stripWidth }]} pointerEvents="none">
+      {Array.from({ length: rows }).map((_, row) => (
+        <View key={row} style={{ flexDirection: 'row' }}>
+          {Array.from({ length: cols }).map((_, col) => (
+            <View key={col} style={{ width: cellSize, height: cellSize, justifyContent: 'center', alignItems: 'center' }}>
+              {/* Jam jar body */}
+              <View style={{
+                width: 18,
+                height: 22,
+                borderRadius: 6,
+                borderWidth: 2,
+                borderColor,
+                backgroundColor: jarBg,
+              }}>
+                {/* Jar lid */}
+                <View style={{
+                  position: 'absolute',
+                  top: -7,
+                  left: -2,
+                  width: 22,
+                  height: 8,
+                  borderRadius: 3,
+                  borderWidth: 1.5,
+                  borderColor,
+                  backgroundColor: lidBg,
+                }} />
+              </View>
+              {/* Small seed dots around jar */}
+              <View style={{ position: 'absolute', top: 4, left: 9, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: jarBg }} />
+              <View style={{ position: 'absolute', top: 8, right: 7, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: jarBg }} />
+              <View style={{ position: 'absolute', bottom: 6, left: 7, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: jarBg }} />
+              <View style={{ position: 'absolute', bottom: 5, right: 9, width: 3, height: 3, borderRadius: 1.5, borderWidth: 1, borderColor, backgroundColor: jarBg }} />
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+};
 
 const getColoringImage = (idx: number) => {
   if (idx === 2) return DoughnutBlurb1Image;
@@ -58,6 +168,8 @@ export default function ColoringPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [showSaveOptions, setShowSaveOptions] = useState(false);
   const [isBookOpen, setIsBookOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const viewShotRef = useRef<ViewShot>(null);
   // Animation values for book opening
   const bookOpenAnim = useRef(new Animated.Value(0)).current;
   const pageFlipAnim = useRef(new Animated.Value(0)).current;
@@ -144,7 +256,10 @@ export default function ColoringPage() {
         setPageIndex(pageIndex + 1);
       }
     } else if (pageIndex === 7) {
-      // From the QR/resources page, go back to the cover
+      // From the notes page, go to the resources page
+      setPageIndex(8);
+    } else if (pageIndex === 8) {
+      // From the resources page, go back to the cover
       setPageIndex(0);
     }
   };
@@ -181,6 +296,46 @@ export default function ColoringPage() {
     }).start(() => {
       setPageIndex(1);
     });
+  };
+
+  // Pages included in the downloadable PDF, in order
+  const PDF_PAGE_INDICES = [0, 2, 3, 4, 5, 6, 7, 8];
+
+  const exportBookToPdf = async () => {
+    const pageBeforeExport = pageIndex;
+    try {
+      setIsExporting(true);
+      const imageUris: string[] = [];
+      for (const idx of PDF_PAGE_INDICES) {
+        setPageIndex(idx);
+        // Let the chrome-free page finish rendering before capturing it
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        const uri = await viewShotRef.current?.capture?.();
+        if (uri) imageUris.push(uri);
+      }
+      const html = `
+        <html>
+          <body style="margin:0;padding:0;">
+            ${imageUris
+              .map(
+                (uri) =>
+                  `<div style="page-break-after:always;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${uri}" style="max-width:100%;max-height:100%;object-fit:contain;" /></div>`
+              )
+              .join('')}
+          </body>
+        </html>
+      `;
+      const { uri: pdfUri } = await Print.printToFileAsync({ html, base64: false });
+      await Sharing.shareAsync(pdfUri, {
+        mimeType: 'application/pdf',
+        dialogTitle: "Doughnut's Jam Coloring Book",
+      });
+    } catch (error) {
+      Alert.alert('Export failed', 'Could not generate the PDF. Please try again.');
+    } finally {
+      setPageIndex(pageBeforeExport);
+      setIsExporting(false);
+    }
   };
 
   // Update refs when state changes
@@ -283,19 +438,17 @@ export default function ColoringPage() {
         outputRange: ['0deg', '-180deg'],
       });
       return (
-        <View style={styles.bookContainer}>
-          {/* Back button */}
-          <TouchableOpacity
-            style={[styles.backButton, { top: 50, left: 20 }]}
-            onPress={() => {
-              // Navigate back to home or previous screen
-              // You may need to use router.back() if using expo-router
-            }}
-          >
-            <Ionicons name="chevron-back" size={20} color="#000" />
-          </TouchableOpacity>
-          {/* Book spine */}
-          <View style={styles.bookSpine} />
+        <View style={[styles.bookContainer, { backgroundColor: '#fff' }]}>
+          <DonutPattern filled={false} stripWidth={40} />
+          {!isExporting && (
+            <View style={[styles.topNav, { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }]}>
+              <View style={styles.navGroup}>
+                <TouchableOpacity style={styles.navButton} onPress={() => {}} activeOpacity={0.7}>
+                  <Ionicons name="arrow-back" size={24} color="#000" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
           {/* Book cover */}
           <Animated.View
             style={[
@@ -318,7 +471,7 @@ export default function ColoringPage() {
                   <View style={styles.coverCornerBottomLeft} />
                   <View style={styles.coverCornerBottomRight} />
                   {/* Title */}
-                  <Text style={styles.coverTitle}>Donuts Jam</Text>
+                  <Text style={[styles.coverTitle, isExporting && { fontSize: 24 }]}>Doughnut's Jam</Text>
                   <Text style={styles.coverSubtitle}>Coloring Book</Text>
                   {/* Decorative donut icon */}
                   <View style={styles.coverIcon}>
@@ -357,12 +510,19 @@ export default function ColoringPage() {
     if (pageIndex === 1) {
       // Index page with clickable numbers 1-5 - book page style
       return (
-        <View style={[styles.bookPageContainer, { backgroundColor: '#DEB887' }]}>
+        <View style={[styles.bookPageContainer, { backgroundColor: '#fff' }]}>
+          <View style={styles.topNav}>
+            <View style={styles.navGroup}>
+              <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(0)} activeOpacity={0.7}>
+                <Ionicons name="arrow-back" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
+          </View>
           {/* Index content */}
           <View style={[styles.indexPage, { backgroundColor: 'transparent' }]}>
-            <Text style={[styles.indexTitle, { color: '#000' }]}>Table of Contents</Text>
+            <Text style={[styles.indexTitle, { color: '#000' }, isExporting && { fontSize: 30 }]}>Table of Contents</Text>
            <View style={styles.indexNumbers}>
-             {[1, 2, 3, 4, 5, 6].map((num) => (
+             {[1, 2, 3, 4, 5, 6, 7].map((num) => (
                <TouchableOpacity
                  key={num}
                  style={[
@@ -371,22 +531,25 @@ export default function ColoringPage() {
                  ]}
                  onPress={() => {
                    setSelectedIndex(num);
-                   setPageIndex(num + 1); // Go to coloring page (2-6)
+                   setPageIndex(num + 1);
                  }}
                  activeOpacity={0.7}
                >
-                 <Text style={[styles.indexNumberText, { color: '#000' }]}>
+                 <Text style={[styles.indexNumberText, { color: '#000' }, isExporting && { fontSize: 26 }]}>
                    {num}
                  </Text>
                </TouchableOpacity>
              ))}
            </View>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => setPageIndex(0)}
-          >
-            <Ionicons name="chevron-back" size={20} color="#000" />
-          </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.downloadPdfButton}
+             onPress={exportBookToPdf}
+             disabled={isExporting}
+             activeOpacity={0.7}
+           >
+             <Ionicons name="download-outline" size={20} color="#fff" />
+             <Text style={styles.downloadPdfButtonText}>Download as PDF</Text>
+           </TouchableOpacity>
         </View>
       </View>
       );
@@ -396,16 +559,22 @@ export default function ColoringPage() {
        return (
        <>
          <View style={styles.screen}>
-<View style={styles.topNav}>
-              <View style={styles.navGroup}>
-                <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
-                  <Ionicons name="arrow-back" size={24} color="#000" />
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.headerTitle}>Coloring Page</Text>
-            </View>
-
-           <View style={styles.canvasWrapper}>
+           <View style={{ flex: 1, overflow: 'hidden' }}>
+             {(pageIndex === 3 || pageIndex === 5) ? (
+               <JellyPattern filled={false} />
+             ) : (
+               <DonutPattern filled={false} />
+             )}
+             {!isExporting && (
+               <View style={styles.topNav}>
+                 <View style={styles.navGroup}>
+                   <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+                     <Ionicons name="arrow-back" size={24} color="#000" />
+                   </TouchableOpacity>
+                 </View>
+               </View>
+             )}
+             <View style={styles.canvasWrapper}>
              <View style={styles.canvas}>
                <Image
                  source={getColoringImage(pageIndex)}
@@ -414,43 +583,48 @@ export default function ColoringPage() {
                />
                {pageIndex === 2 && (
                  <View style={[styles.textOverlayBox, { top: '48%', left: '8%', right: '18%' }]} pointerEvents="none">
-                   <Text style={styles.textOverlayText}>
-                     {"Doughnut Sinclair is a Jolly Jelly newhire, passionate about the fruity deliciousness of jelly. She is tasked with developing a new Jolly Jellicious recipe. Pressure from her supervisor makes her question how far her positivity and work ethic can take her in the jelly-making world."}
+                   <Text style={[styles.textOverlayText, isExporting && { fontSize: 15 }]}>
+                     {"Doughnut Sinclair is a Jolly Jelly new hire, passionate about the fruity deliciousness of jelly. She is tasked with developing a new Jolly Jellicious recipe. Pressure from her supervisor makes her question how far her positivity and work ethic can take her in the jelly-making world."}
                    </Text>
                  </View>
                )}
                {pageIndex === 3 && (
-                 <View style={[styles.textOverlayBox, { bottom: 10, right: 10 }]} pointerEvents="none">
-                   <Text style={styles.textOverlayText}>Mr.Toast is fussing at me again</Text>
-                 </View>
+                 <>
+                   <View style={[styles.textOverlayBox, { top: '8%', left: '10%', right: '55%', backgroundColor: '#fff' , borderRadius: 24}]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { fontSize: 13 }, isExporting && { fontSize: 16 }]}>{"I don't know why they hired you! Now I'm stuck with your stupid ideas."}</Text>
+                   </View>
+                   <View style={[styles.textOverlayBox, { bottom: '3%', right: '8%', backgroundColor: '#fff' }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, isExporting && { fontSize: 16 }]}>Mr. Toast is fussing at me again!</Text>
+                   </View>
+                 </>
                )}
                {pageIndex === 4 && (
                  <>
-                   <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I don't know if she has a problem with my</Text>
+                   <View style={[styles.textOverlayBox, { top: 3, left: 5, right: 5 }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' },{ fontSize: 10 }]}>I don't know if she has a problem with my</Text>
                    </View>
-                   <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>recipe or if she just doesn't like me</Text>
+                   <View style={[styles.textOverlayBox, { bottom: 0.1, left: 3, right: 3 }]} pointerEvents="none">
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }, { fontSize: 10 }]}>recipe or if she just doesn't like me</Text>
                    </View>
                  </>
                )}
                {pageIndex === 5 && (
                  <>
-                   <View style={[styles.textOverlayBox, { top: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={styles.textOverlayText}>{"however...\nMy passion for jelly"}</Text>
+                   <View style={[styles.textOverlayBox, { top: 5, right: 28}]} pointerEvents="none">
+                     <Text style={styles.textOverlayText}>{"However...\nMy passion for jelly"}</Text>
                    </View>
                    <View style={[styles.textOverlayBox, { bottom: 5, left: 5 }]} pointerEvents="none">
-                     <Text style={styles.textOverlayText}>{"obliterates the bitter\ntaste of inferiority"}</Text>
+                     <Text style={styles.textOverlayText}>{"washes away the bitter\ntaste of inferiority."}</Text>
                    </View>
                  </>
                )}
                {pageIndex === 6 && (
                  <>
                    <View style={[styles.textOverlayBox, { top: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>with the overwhelming positivity from my jelly love</Text>
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>With the overwhelming positivity from my jelly love</Text>
                    </View>
                    <View style={[styles.textOverlayBox, { bottom: 5, left: 5, right: 5 }]} pointerEvents="none">
-                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I Can overcome anything!!!</Text>
+                     <Text style={[styles.textOverlayText, { textAlign: 'center' }]}>I CAN overcome anything!!!</Text>
                    </View>
                  </>
                )}
@@ -481,11 +655,12 @@ export default function ColoringPage() {
                  />
                </View>
              </View>
+             </View>
            </View>
 
+           <Text style={styles.pageNumber}>Page {pageIndex - 1} of 5</Text>
 
-
-           {isPaletteExpanded && (
+           {!isExporting && isPaletteExpanded && (
              <View style={styles.paletteRowContainer}>
                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.paletteScrollContent}>
                  {COLOR_PALETTE.map((item) => (
@@ -505,6 +680,7 @@ export default function ColoringPage() {
              </View>
            )}
 
+{!isExporting && (
 <View style={styles.bottomToolbar}>
               <TouchableOpacity
                 style={[styles.toolButton, isPaletteExpanded && styles.toolButtonActive]}
@@ -537,6 +713,7 @@ export default function ColoringPage() {
                 <Ionicons name="settings-outline" size={24} color="#000" />
               </TouchableOpacity>
             </View>
+)}
           </View>
           {/* Save/Export Modal */}
           <View style={showSaveOptions ? styles.modalContainer : styles.modalHidden}>
@@ -571,17 +748,62 @@ export default function ColoringPage() {
 
   if (pageIndex === 7) {
     return (
-      <View style={[styles.qrPageContainer, { backgroundColor: '#DEB887' }]}>
-        <View style={styles.qrContent}>
-          <Text style={[styles.qrTitle, { color: '#000' }]}>Virginia Department of Health</Text>
+      <View style={[styles.qrPageContainer, { backgroundColor: '#fff' }]}>
+        <JellyPattern filled={false} />
+        {!isExporting && (
+          <View style={styles.topNav}>
+            <View style={styles.navGroup}>
+              <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+                <Ionicons name="arrow-back" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        <ScrollView contentContainerStyle={styles.qrScrollContent}>
+          <View style={styles.qrCard}>
+          <Text style={[styles.qrTitle, { color: '#000' }, isExporting && { fontSize: 26 }]}>Artist Note (Ayanna Reid)</Text>
+          <Text style={[styles.qrBodyText, isExporting && { fontSize: 16, lineHeight: 24 }]}>
+            {"On the importance of art in the healing process: \"Within healing, art isn't only a tool for managing attention and regulating emotions. Art provides situational control where one can interact and engage with it for whatever desired purpose. The healing that occurs within art grows from the ability to fully represent yourself within your work. The workplace comes as a rigid, structured environment with strict expectations of our behaviors and responses. My goal for this coloring book was to offset the monotonous work environment with a silly, quirky story about a jelly-worker experiencing common problems that occur within the workplace.\""}
+          </Text>
+          <Text style={[styles.qrTitle, { color: '#000', marginTop: 32 }, isExporting && { fontSize: 26 }]}>Note from Ce. OTTER</Text>
+          <Text style={[styles.qrBodyText, isExporting && { fontSize: 16, lineHeight: 24 }]}>
+            {"The Center for Outreach & Treatment Through Education & Research is commited to providing community engagement, health education, medical services, and biomedical research training in the fields of Addiction, Public Health, Psychology, and other related fields to faculty, staff, students, and community stakeholders. Through the integration of education and research, the Ce OTTER will help establish VSU as a health hub for surrounding communities. The coloring book will be located on the Ce. Otter app, the app will be available for download on the Apple and Google Play Store fall 2026."}
+          </Text>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+
+  if (pageIndex === 8) {
+    return (
+      <View style={[styles.qrPageContainer, { backgroundColor: '#fff' }]}>
+        <DonutPattern filled={false} />
+        {!isExporting && (
+          <View style={styles.topNav}>
+            <View style={styles.navGroup}>
+              <TouchableOpacity style={styles.navButton} onPress={() => setPageIndex(1)} activeOpacity={0.7}>
+                <Ionicons name="arrow-back" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        <ScrollView contentContainerStyle={styles.qrScrollContent}>
+          <View style={styles.qrCard}>
+          <Text style={[styles.qrTitle, { color: '#000' }, isExporting && { fontSize: 26 }]}>Virginia Department of Health-Crater Health District</Text>
           <Image source={CraterQR} style={styles.qrImage} resizeMode="contain" />
-        </View>
-        <TouchableOpacity
-          style={[styles.backButton, { top: 50 }]}
-          onPress={() => setPageIndex(1)}
-        >
-          <Ionicons name="chevron-back" size={20} color="#000" />
-        </TouchableOpacity>
+          <Text style={[styles.qrBodyText, isExporting && { fontSize: 16, lineHeight: 24 }]}>
+            {"Doughnut's Jam coloring book was funded by the American Rescue Plan Act (ARPA) Targeted Community Outreach grant awarded to the Virginia Department of Health. This community resource was developed in partnership with the Virginia Department of Health–Crater Health District, Arts As Healing Project."}
+          </Text>
+          <Text style={[styles.qrBodyText, isExporting && { fontSize: 16, lineHeight: 24 }]}>
+            {"The Crater Health District offers a variety of services across multiple programs including Environmental Health, Population Health, Epidemiology and Clinical Services dedicated to promoting, strengthening, and maintaining community health and wellness. For more information, please visit the Crater Health District website at "}
+            <Text style={styles.qrLink} onPress={() => Linking.openURL('https://www.vdh.virginia.gov/crater')}>
+              {"https://www.vdh.virginia.gov/crater"}
+            </Text>
+            {" or contact the main office at 804-863-1652."}
+          </Text>
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -591,7 +813,15 @@ export default function ColoringPage() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor }]}>
-      {renderPage()}
+      <ViewShot ref={viewShotRef} style={{ flex: 1 }} options={{ format: 'png', quality: 1 }}>
+        {renderPage()}
+      </ViewShot>
+      {isExporting && (
+        <View style={styles.exportOverlay}>
+          <ActivityIndicator size="large" color="#fff" />
+          <Text style={styles.exportOverlayText}>Generating PDF…</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -690,7 +920,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.1)',
   },
   coverTitle: {
-    fontSize: 42,
+    fontSize: 24,
     fontWeight: '800',
     textAlign: 'center',
     marginBottom: 8,
@@ -808,7 +1038,7 @@ const styles = StyleSheet.create({
    },
    screen: {
      flex: 1,
-     backgroundColor: '#DEB887',
+     backgroundColor: '#fff',
    },
    topNav: {
      flexDirection: 'row',
@@ -816,7 +1046,7 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      paddingHorizontal: 16,
      paddingVertical: 14,
-     backgroundColor: '#DEB887',
+     backgroundColor: 'transparent',
    },
    navGroup: {
      flexDirection: 'row',
@@ -843,11 +1073,12 @@ headerTitle: {
      flex: 1,
      justifyContent: 'center',
      alignItems: 'center',
-     paddingVertical: 12,
+     paddingTop: 12,
+     paddingBottom: 28,
    },
    canvas: {
-     width: '90%',
-     aspectRatio: 0.95,
+     width: '95%',
+     aspectRatio: 0.75,
      backgroundColor: CANVAS_BACKGROUND,
      borderWidth: 3,
      borderColor: CANVAS_BORDER,
@@ -886,6 +1117,12 @@ headerTitle: {
      borderColor: '#fff',
      display: 'none',
    },
+   pageNumber: {
+     textAlign: 'center',
+     fontSize: 13,
+     color: '#000',
+     paddingVertical: 4,
+   },
    paletteRowContainer: {
      paddingVertical: 10,
    },
@@ -895,7 +1132,7 @@ bottomToolbar: {
       alignItems: 'center',
       paddingHorizontal: 16,
       paddingVertical: 14,
-      backgroundColor: '#DEB887',
+      backgroundColor: 'transparent',
       borderTopWidth: 1,
       borderTopColor: 'rgba(0,0,0,0.08)',
     },
@@ -956,6 +1193,22 @@ bottomToolbar: {
      fontWeight: '600',
      color: '#ffffff',
    },
+   downloadPdfButton: {
+     flexDirection: 'row',
+     alignItems: 'center',
+     justifyContent: 'center',
+     gap: 8,
+     marginTop: 28,
+     paddingVertical: 12,
+     paddingHorizontal: 24,
+     borderRadius: 12,
+     backgroundColor: '#000',
+   },
+   downloadPdfButtonText: {
+     color: '#fff',
+     fontSize: 15,
+     fontWeight: '600',
+   },
    backButton: {
      position: 'absolute',
      top: 50,
@@ -1015,9 +1268,20 @@ bottomToolbar: {
   // QR / Resources page styles
   qrPageContainer: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  exportOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: CANVAS_BACKGROUND,
+    zIndex: 100,
+  },
+  exportOverlayText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+    marginTop: 12,
   },
   qrContent: {
     width: '90%',
@@ -1034,6 +1298,30 @@ bottomToolbar: {
   qrImage: {
     width: 220,
     height: 220,
+  },
+  qrScrollContent: {
+    alignItems: 'center',
+    padding: 20,
+    paddingBottom: 40,
+  },
+  qrCard: {
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 16,
+  },
+  qrBodyText: {
+    fontSize: 12,
+    color: '#000',
+    textAlign: 'center',
+    marginTop: 16,
+    lineHeight: 18,
+  },
+  qrLink: {
+    fontSize: 12,
+    color: '#0000EE',
+    textDecorationLine: 'underline',
   },
    // Modal styles
    modalContainer: {
