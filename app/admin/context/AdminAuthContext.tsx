@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BACKEND_URL } from '@/constants/BackendConfig';
+import { supabase } from '@/db/supabase';
 
 interface AdminUser {
   id: string;
@@ -28,114 +26,96 @@ export function useAdminAuth() {
   return context;
 }
 
+// Loads the signed-in person's profile and returns it only if they're an
+// admin — this is what actually keeps non-admins out of the dashboard,
+// since it's backed by the same role check as the database's own RLS rules.
+async function loadAdminProfile(userId: string, accessToken: string): Promise<AdminUser | null> {
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('id, email, username, role')
+    .eq('id', userId)
+    .single();
+
+  if (error || !profile || profile.role !== 'admin') {
+    return null;
+  }
+
+  return {
+    id: profile.id,
+    email: profile.email,
+    username: profile.username || profile.email,
+    token: accessToken,
+  };
+}
+
 export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AdminUser | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const router = useRouter();
 
   useEffect(() => {
-    // Check for existing token on startup
-    const checkToken = async () => {
+    const checkSession = async () => {
       try {
-        const token = await AsyncStorage.getItem('admin_token');
-        if (token) {
-          // In a real app, you would validate the token with the backend
-          // For now, we'll just set a mock user
-          setUser({
-            id: '1',
-            email: 'admin@example.com',
-            username: 'admin',
-            token: token,
-          });
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          setUser(await loadAdminProfile(session.user.id, session.access_token));
         }
       } catch (error) {
-        console.error('Error checking auth token:', error);
+        console.error('Error checking session:', error);
       } finally {
         setIsLoading(false);
       }
     };
-    checkToken();
+    checkSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (!session) {
+        setUser(null);
+        return;
+      }
+      setUser(await loadAdminProfile(session.user.id, session.access_token));
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      // Call backend login API
-      const response = await fetch(`${BACKEND_URL}/api/admin/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw new Error(error.message);
+      if (!data.session) throw new Error('Login failed');
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Login failed');
+      const adminUser = await loadAdminProfile(data.session.user.id, data.session.access_token);
+      if (!adminUser) {
+        await supabase.auth.signOut();
+        throw new Error("This account doesn't have admin access.");
       }
-
-      const data = await response.json();
-
-      // Store token
-      await AsyncStorage.setItem('admin_token', data.token);
-
-      // Set user
-      setUser({
-        id: data.user.id,
-        email: data.user.email,
-        username: data.user.username,
-        token: data.token,
-      });
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
+      setUser(adminUser);
     } finally {
       setIsLoading(false);
     }
   };
 
   const register = async (email: string, username: string, password: string) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      // Call backend register API
-      const response = await fetch(`${BACKEND_URL}/api/admin/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, username, password }),
+      // Every new account starts as a regular user (see the
+      // handle_new_user trigger in db/schema_accounts.sql). There's no
+      // self-serve way to become an admin — an existing admin has to
+      // promote the account by hand before it can log in here.
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { username } },
       });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Registration failed');
-      }
-
-      const data = await response.json();
-
-      // Store token
-      await AsyncStorage.setItem('admin_token', data.token);
-
-      // Set user
-      setUser({
-        id: data.user.id,
-        email: data.user.email,
-        username: data.user.username,
-        token: data.token,
-      });
-
-       // Navigate to login screen
-       router.replace('/admin/login');
-    } catch (error) {
-      console.error('Registration error:', error);
-      throw error;
+      if (error) throw new Error(error.message);
     } finally {
       setIsLoading(false);
     }
   };
 
   const logout = async () => {
-    await AsyncStorage.removeItem('admin_token');
+    await supabase.auth.signOut();
     setUser(null);
   };
 

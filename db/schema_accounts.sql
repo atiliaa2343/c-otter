@@ -31,12 +31,13 @@ create policy "profiles_select_admin" on public.profiles
 create policy "profiles_update_own" on public.profiles
   for update using (auth.uid() = id);
 
--- Auto-create a profile row whenever someone signs up through Supabase Auth
+-- Auto-create a profile row whenever someone signs up through Supabase Auth.
+-- Picks up `username` from the signup call's metadata, if one was passed.
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-  insert into public.profiles (id, email)
-  values (new.id, new.email);
+  insert into public.profiles (id, email, username)
+  values (new.id, new.email, new.raw_user_meta_data->>'username');
   return new;
 end;
 $$ language plpgsql security definer;

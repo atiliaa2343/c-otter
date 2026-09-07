@@ -43,6 +43,11 @@ export default function RegisterPage() {
     
     try {
       await register(email, username, password);
+      Alert.alert(
+        'Account created',
+        "An existing admin needs to grant you admin access before you can use the dashboard. You'll be able to log in once that happens.",
+        [{ text: 'OK', onPress: () => router.replace('/admin/login') }]
+      );
     } catch (err: any) {
       setError(err.message || 'Registration failed');
     } finally {
