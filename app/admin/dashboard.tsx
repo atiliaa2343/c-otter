@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, RefreshControl, Alert, TouchableOpacity,
 import { useAdminAuth } from '@/app/admin/context/AdminAuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { BACKEND_URL } from '@/constants/BackendConfig';
+import { supabase } from '@/db/supabase';
 
 interface Stats {
   contentItems?: number;
@@ -30,16 +30,21 @@ export default function Dashboard() {
     if (!user) return;
     setIsLoading(true);
     try {
-      const response = await fetch(`${BACKEND_URL}/api/admin/stats`, {
-        headers: {
-          'Authorization': `Bearer ${user.token}`,
-        },
+      const [contentResult, usersResult, adminsResult] = await Promise.all([
+        supabase.from('content_blocks').select('*', { count: 'exact', head: true }),
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'user'),
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'admin'),
+      ]);
+
+      if (contentResult.error) throw contentResult.error;
+      if (usersResult.error) throw usersResult.error;
+      if (adminsResult.error) throw adminsResult.error;
+
+      setStats({
+        contentItems: contentResult.count ?? 0,
+        users: usersResult.count ?? 0,
+        admins: adminsResult.count ?? 0,
       });
-      if (!response.ok) {
-        throw new Error('Failed to fetch stats');
-      }
-      const data = await response.json();
-      setStats(data);
     } catch (err) {
       console.error('Error fetching stats:', err);
       Alert.alert('Error', 'Failed to load statistics');
@@ -101,7 +106,7 @@ export default function Dashboard() {
                   Platform Statistics
                 </Text>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}>
-                  {stats.contentItems && (
+                  {stats.contentItems !== undefined && (
                     <View style={{ backgroundColor: '#f8fafc', padding: 16, borderRadius: 12, flex: 1, minWidth: 120 }}>
                       <Text style={{ fontSize: 32, fontWeight: 'bold', color: primaryColor }}>
                         {stats.contentItems}
@@ -111,7 +116,7 @@ export default function Dashboard() {
                       </Text>
                     </View>
                   )}
-                  {stats.users && (
+                  {stats.users !== undefined && (
                     <View style={{ backgroundColor: '#f8fafc', padding: 16, borderRadius: 12, flex: 1, minWidth: 120 }}>
                       <Text style={{ fontSize: 32, fontWeight: 'bold', color: primaryColor }}>
                         {stats.users}
@@ -121,7 +126,7 @@ export default function Dashboard() {
                       </Text>
                     </View>
                   )}
-                  {stats.admins && (
+                  {stats.admins !== undefined && (
                     <View style={{ backgroundColor: '#f8fafc', padding: 16, borderRadius: 12, flex: 1, minWidth: 120 }}>
                       <Text style={{ fontSize: 32, fontWeight: 'bold', color: primaryColor }}>
                         {stats.admins}

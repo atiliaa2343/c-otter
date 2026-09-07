@@ -20,13 +20,19 @@ create table if not exists public.wearable_connections (
   last_synced_at timestamptz
 );
 
+-- One row = one finished daily summary (e.g. yesterday's resting heart
+-- rate, or last night's total sleep) — not a live, in-progress reading.
+-- "Right now" numbers (today's step count, etc.) are read straight from
+-- the phone and never stored here. For sleep, recorded_at is the date the
+-- person woke up, not the date they fell asleep.
 create table if not exists public.health_metrics (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
-  metric_type text not null check (metric_type in ('heart_rate', 'sleep')),
+  wearable_connection_id uuid references public.wearable_connections(id),  -- null for manual entries
+  metric_type text not null check (metric_type in ('heart_rate', 'sleep', 'steps')),
   value numeric not null,
-  unit text not null,              -- e.g. 'bpm', 'hours'
-  recorded_at timestamptz not null,
+  unit text not null,              -- e.g. 'bpm', 'hours', 'count'
+  recorded_at date not null,
   source text not null check (source in ('apple_health', 'health_connect', 'manual')),
   flagged boolean not null default false,   -- set by the abnormal-range check
   created_at timestamptz not null default now()

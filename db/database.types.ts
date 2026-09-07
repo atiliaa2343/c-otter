@@ -14,6 +14,186 @@ export type Database = {
   }
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          id: string
+          email: string
+          username: string | null
+          role: string
+          created_at: string
+        }
+        Insert: {
+          id: string
+          email: string
+          username?: string | null
+          role?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          username?: string | null
+          role?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      content_blocks: {
+        Row: {
+          id: string
+          tab: string
+          section_key: string
+          type: string
+          value: string | null
+          image_url: string | null
+          updated_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          tab: string
+          section_key: string
+          type: string
+          value?: string | null
+          image_url?: string | null
+          updated_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          tab?: string
+          section_key?: string
+          type?: string
+          value?: string | null
+          image_url?: string | null
+          updated_by?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_blocks_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      questionnaire_responses: {
+        Row: {
+          id: string
+          user_id: string
+          responses: Json
+          submitted_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          responses: Json
+          submitted_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          responses?: Json
+          submitted_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questionnaire_responses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      wearable_connections: {
+        Row: {
+          id: string
+          user_id: string
+          platform: string
+          connected_at: string
+          last_synced_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          platform: string
+          connected_at?: string
+          last_synced_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          platform?: string
+          connected_at?: string
+          last_synced_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wearable_connections_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      health_metrics: {
+        Row: {
+          id: string
+          user_id: string
+          wearable_connection_id: string | null
+          metric_type: string
+          value: number
+          unit: string
+          recorded_at: string
+          source: string
+          flagged: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          wearable_connection_id?: string | null
+          metric_type: string
+          value: number
+          unit: string
+          recorded_at: string
+          source: string
+          flagged?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          wearable_connection_id?: string | null
+          metric_type?: string
+          value?: number
+          unit?: string
+          recorded_at?: string
+          source?: string
+          flagged?: boolean
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_metrics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "health_metrics_wearable_connection_id_fkey"
+            columns: ["wearable_connection_id"]
+            isOneToOne: false
+            referencedRelation: "wearable_connections"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       hours_of_operation: {
         Row: {
           close_time: string | null
