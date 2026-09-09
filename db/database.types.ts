@@ -196,76 +196,219 @@ export type Database = {
       }
       hours_of_operation: {
         Row: {
-          close_time: string | null
-          created_at: string | null
-          Friday: number | null
-          id: number | null
-          location_id: number | null
-          Monday: number | null
+          id: number
+          location_id: number
           open_time: string | null
-          Saturday: number | null
-          Sunday: number | null
-          Thursday: number | null
-          Tuesday: number | null
-          Wednesday: number | null
+          close_time: string | null
+          monday: boolean
+          tuesday: boolean
+          wednesday: boolean
+          thursday: boolean
+          friday: boolean
+          saturday: boolean
+          sunday: boolean
+          created_at: string
         }
         Insert: {
-          close_time?: string | null
-          created_at?: string | null
-          Friday?: number | null
-          id?: number | null
-          location_id?: number | null
-          Monday?: number | null
+          id?: number
+          location_id: number
           open_time?: string | null
-          Saturday?: number | null
-          Sunday?: number | null
-          Thursday?: number | null
-          Tuesday?: number | null
-          Wednesday?: number | null
+          close_time?: string | null
+          monday?: boolean
+          tuesday?: boolean
+          wednesday?: boolean
+          thursday?: boolean
+          friday?: boolean
+          saturday?: boolean
+          sunday?: boolean
+          created_at?: string
         }
         Update: {
-          close_time?: string | null
-          created_at?: string | null
-          Friday?: number | null
-          id?: number | null
-          location_id?: number | null
-          Monday?: number | null
+          id?: number
+          location_id?: number
           open_time?: string | null
-          Saturday?: number | null
-          Sunday?: number | null
-          Thursday?: number | null
-          Tuesday?: number | null
-          Wednesday?: number | null
+          close_time?: string | null
+          monday?: boolean
+          tuesday?: boolean
+          wednesday?: boolean
+          thursday?: boolean
+          friday?: boolean
+          saturday?: boolean
+          sunday?: boolean
+          created_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "hours_of_operation_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       locations: {
         Row: {
-          address: string | null
-          embedding: string
           id: number
-          name: string | null
+          name: string
+          address: string | null
           phone_number: string | null
           theme: string | null
-          updated_at: string
+          hours_summary: string | null
+          created_at: string
         }
         Insert: {
+          id: number
+          name: string
           address?: string | null
-          embedding: string
-          id?: number
-          name?: string | null
           phone_number?: string | null
           theme?: string | null
-          updated_at?: string
+          hours_summary?: string | null
+          created_at?: string
         }
         Update: {
-          address?: string | null
-          embedding?: string
           id?: number
-          name?: string | null
+          name?: string
+          address?: string | null
           phone_number?: string | null
           theme?: string | null
-          updated_at?: string
+          hours_summary?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      resources: {
+        Row: {
+          id: string
+          type: string | null
+          name: string
+          description: string | null
+          address: string | null
+          phone: string | null
+          website: string | null
+          tags: string[] | null
+          embedding: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          type?: string | null
+          name: string
+          description?: string | null
+          address?: string | null
+          phone?: string | null
+          website?: string | null
+          tags?: string[] | null
+          embedding?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          type?: string | null
+          name?: string
+          description?: string | null
+          address?: string | null
+          phone?: string | null
+          website?: string | null
+          tags?: string[] | null
+          embedding?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      faculty_members: {
+        Row: {
+          id: string
+          name: string
+          title: string | null
+          email: string | null
+          phone: string | null
+          image_key: string | null
+          is_director: boolean
+          sort_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          title?: string | null
+          email?: string | null
+          phone?: string | null
+          image_key?: string | null
+          is_director?: boolean
+          sort_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          title?: string | null
+          email?: string | null
+          phone?: string | null
+          image_key?: string | null
+          is_director?: boolean
+          sort_order?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
+      health_topics: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          color: string | null
+          image_key: string | null
+          sort_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          color?: string | null
+          image_key?: string | null
+          sort_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          color?: string | null
+          image_key?: string | null
+          sort_order?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
+      home_events: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          icon: string | null
+          color: string | null
+          sort_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          icon?: string | null
+          color?: string | null
+          sort_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          icon?: string | null
+          color?: string | null
+          sort_order?: number
+          created_at?: string
         }
         Relationships: []
       }
@@ -274,7 +417,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      match_resources: {
+        Args: { query_embedding: string; match_count?: number }
+        Returns: {
+          id: string
+          type: string | null
+          name: string
+          description: string | null
+          address: string | null
+          phone: string | null
+          website: string | null
+          tags: string[] | null
+          similarity: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
