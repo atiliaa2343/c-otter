@@ -116,7 +116,7 @@ export function HomePage() {
                <Text style={[styles.quickActionText, { color: textColor }]}>Admin</Text>
              </TouchableOpacity>
              
-             <TouchableOpacity 
+             <TouchableOpacity
                style={[styles.quickActionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
                onPress={() => router.push('/coloring')}
              >
@@ -124,6 +124,16 @@ export function HomePage() {
                  <Ionicons name="color-palette" size={24} color="#db2777" />
                </View>
                <Text style={[styles.quickActionText, { color: textColor }]}>Coloring</Text>
+             </TouchableOpacity>
+
+             <TouchableOpacity
+               style={[styles.quickActionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
+               onPress={() => router.push('/sign-in/login')}
+             >
+               <View style={[styles.quickActionIcon, { backgroundColor: '#f0fdf4' }]}>
+                 <Ionicons name="log-in" size={24} color="#16a34a" />
+               </View>
+               <Text style={[styles.quickActionText, { color: textColor }]}>Sign In</Text>
              </TouchableOpacity>
            </View>
          </View>
