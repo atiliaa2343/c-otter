@@ -116,7 +116,7 @@ export function HomePage() {
                <Text style={[styles.quickActionText, { color: textColor }]}>Admin</Text>
              </TouchableOpacity>
              
-             <TouchableOpacity 
+             <TouchableOpacity
                style={[styles.quickActionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
                onPress={() => router.push('/coloring')}
              >
