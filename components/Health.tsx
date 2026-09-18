@@ -35,6 +35,13 @@ const topics: TopicCard[] = [
        imageSource: require('@/assets/images/drugs.png'), 
        description: 'Resources and support for opioid use',
      },
+     { 
+       id: '3', 
+       title: 'Health & Wellness', 
+       color: '#85DDA2', 
+       imageSource: require('@/assets/images/drugs.png'), 
+       description: 'Reasources for your health and wellness based on wearable data',
+     },
    ];
 
   const slugify = (s: string) =>
@@ -102,9 +109,9 @@ const topics: TopicCard[] = [
     <ScrollView style={[styles.container, { backgroundColor }]} contentContainerStyle={styles.contentContainer}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.title, { color: textColor }]}>Health Education</Text>
+        <Text style={[styles.title, { color: textColor }]}>Health Resources</Text>
         <Text style={[styles.subtitle, { color: textSecondary }]}>
-          Explore topics to learn about resources and support
+          Explore topics to learn about resources, support, and your health.
         </Text>
       </View>
 
