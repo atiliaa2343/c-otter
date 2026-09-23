@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Platform, RefreshControl } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { HealthService, HealthSnapshot } from '@/services/health';
+import { HealthService, HealthSnapshot, ACTIVE_STEPS_PER_MINUTE } from '@/services/health';
 import { HealthQuestionnaire } from '@/components/HealthQuestionnaire';
 
 const healthService = new HealthService();
@@ -45,15 +45,20 @@ export function HealthData() {
     }
   };
 
-  const renderStat = (label: string, value: string) => (
+  const renderStat = (label: string, value: string, note?: string) => (
     <View style={{ backgroundColor: '#fff', padding: 16, borderRadius: 8, marginBottom: 12 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ fontWeight: '600' }}>{label}</Text>
         <Text>{value}</Text>
       </View>
+      {note ? <Text style={{ color: '#9ca3af', fontSize: 12, marginTop: 4 }}>{note}</Text> : null}
     </View>
   );
 
+  const formatMinutes = (minutes: number) => {
+    const rounded = Math.round(minutes);
+    return rounded >= 60 ? `${Math.floor(rounded / 60)}h ${rounded % 60}m` : `${rounded}m`;
+  };
 
   const renderTodayContent = () => {
     if (hasPermission === null) {
@@ -100,22 +105,40 @@ export function HealthData() {
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 16 }}>Today So Far</Text>
 
           {renderStat('Steps', `${snapshot?.steps ?? 0}`)}
-          {renderStat('Average Heart Rate', snapshot?.avgHeartRate ? `${snapshot.avgHeartRate} bpm` : '—')}
-          {renderStat('Resting Heart Rate', snapshot?.restingHeartRate != null ? `${snapshot.restingHeartRate} bpm` : '—')}
-          {renderStat('Sleep Last Night', snapshot?.sleepHours != null ? `${snapshot.sleepHours} hrs` : '—')}
           {renderStat('Distance', snapshot?.distanceMiles != null ? `${snapshot.distanceMiles} mi` : '—')}
-          {renderStat('Floors Climbed', snapshot?.floorsClimbed != null ? `${snapshot.floorsClimbed}` : '—')}
-          {renderStat('Active Calories', snapshot?.activeCalories != null ? `${snapshot.activeCalories} kcal` : '—')}
+          {renderStat(
+            'Active Calories',
+            snapshot?.activeCalories != null ? `${snapshot.activeCalories} kcal` : '—',
+            snapshot?.activeCaloriesEstimated ? 'Estimated: total calories minus your resting baseline.' : undefined,
+          )}
           {renderStat('Total Calories', snapshot?.totalCalories != null ? `${snapshot.totalCalories} kcal` : '—')}
-          {renderStat('Exercise Sessions', `${snapshot?.exerciseSessionCount ?? 0}`)}
-          {renderStat('Blood Pressure', snapshot?.systolic != null && snapshot?.diastolic != null ? `${snapshot.systolic}/${snapshot.diastolic} mmHg` : '—')}
-          {renderStat('Oxygen Saturation', snapshot?.oxygenSaturation != null ? `${snapshot.oxygenSaturation}%` : '—')}
-          {renderStat('Body Temperature', snapshot?.bodyTemperatureFahrenheit != null ? `${snapshot.bodyTemperatureFahrenheit.toFixed(1)}°F` : '—')}
+          {renderStat(
+            'Activity Duration',
+            snapshot?.activityMinutes != null ? formatMinutes(snapshot.activityMinutes) : '—',
+            snapshot?.activityMinutesEstimated ? `Estimated from minutes with ${ACTIVE_STEPS_PER_MINUTE}+ steps — no workouts were logged.` : undefined,
+          )}
+          {renderStat('Workout Sessions', `${snapshot?.exerciseSessionCount ?? 0}`)}
+          {renderStat(
+            'Average Heart Rate',
+            snapshot?.avgHeartRate ? `${snapshot.avgHeartRate} bpm` : '—',
+            snapshot?.heartRateSamples.length ? `${snapshot.heartRateSamples.length} readings today` : undefined,
+          )}
+          {renderStat('Resting Heart Rate', snapshot?.restingHeartRate != null ? `${snapshot.restingHeartRate} bpm` : '—')}
+          {renderStat(
+            'Sleep Last Night',
+            snapshot?.sleepHours != null ? `${snapshot.sleepHours} hrs` : '—',
+            snapshot?.sleepStages
+              ? [
+                  snapshot.sleepStages.deepMinutes > 0 && `Deep ${formatMinutes(snapshot.sleepStages.deepMinutes)}`,
+                  snapshot.sleepStages.remMinutes > 0 && `REM ${formatMinutes(snapshot.sleepStages.remMinutes)}`,
+                  snapshot.sleepStages.lightMinutes > 0 && `Light ${formatMinutes(snapshot.sleepStages.lightMinutes)}`,
+                  snapshot.sleepStages.unspecifiedMinutes > 0 && `Unstaged ${formatMinutes(snapshot.sleepStages.unspecifiedMinutes)}`,
+                  snapshot.sleepStages.awakeMinutes > 0 && `Awake ${formatMinutes(snapshot.sleepStages.awakeMinutes)}`,
+                ].filter(Boolean).join(' · ')
+              : undefined,
+          )}
           {renderStat('Weight', snapshot?.weightLbs != null ? `${snapshot.weightLbs} lbs` : '—')}
           {renderStat('Height', snapshot?.heightInches != null ? `${Math.floor(snapshot.heightInches / 12)}'${Math.round(snapshot.heightInches % 12)}"` : '—')}
-          {renderStat('Body Fat', snapshot?.bodyFatPercentage != null ? `${snapshot.bodyFatPercentage}%` : '—')}
-          {renderStat('Lean Body Mass', snapshot?.leanBodyMassLbs != null ? `${snapshot.leanBodyMassLbs} lbs` : '—')}
-          {renderStat('Water', `${snapshot?.waterFlOz ?? 0} fl oz`)}
 
           <Text style={{ color: '#9ca3af', fontSize: 12, marginTop: 4 }}>
             Pull to refresh. These numbers are read live and aren't saved yet — daily-summary syncing to your account is the next step.

@@ -5,26 +5,41 @@ export type WearablePlatform = 'apple_health' | 'health_connect';
 
 // A live read of "today so far" — never written to health_metrics, since
 // that table only holds finished daily summaries (see HealthPlatformNotes.md).
+export interface SleepStages {
+  awakeMinutes: number;
+  lightMinutes: number; // "Core" sleep on Apple Health
+  deepMinutes: number;
+  remMinutes: number;
+  unspecifiedMinutes: number; // asleep, but the source didn't say which stage
+}
+
+export interface HeartRateSample {
+  time: string; // ISO timestamp
+  bpm: number;
+}
+
 export interface HealthSnapshot {
   date: string;
   steps: number;
-  avgHeartRate: number | null;
-  sleepHours: number | null;
   distanceMiles: number | null;
-  floorsClimbed: number | null;
   activeCalories: number | null;
-  totalCalories: number | null;
-  exerciseSessionCount: number;
+  // true when the source reported no active calories and activeCalories was
+  // estimated as total minus the resting baseline (see estimateActiveCalories)
+  activeCaloriesEstimated: boolean;
+  totalCalories: number | null; // reported directly on Android; active + basal on iOS
+  activityMinutes: number | null;
+  // true when the source logged no exercise sessions and activityMinutes was
+  // estimated from step cadence instead (see estimateActiveMinutes)
+  activityMinutesEstimated: boolean;
+  exerciseSessionCount: number; // logged workouts today; 0 means none, not unknown
+  avgHeartRate: number | null;
+  // Every heart rate reading from today, for storing in the database later.
+  heartRateSamples: HeartRateSample[];
   restingHeartRate: number | null;
-  systolic: number | null;
-  diastolic: number | null;
-  oxygenSaturation: number | null;
-  bodyTemperatureFahrenheit: number | null;
+  sleepHours: number | null;
+  sleepStages: SleepStages | null;
   weightLbs: number | null;
   heightInches: number | null;
-  bodyFatPercentage: number | null;
-  leanBodyMassLbs: number | null;
-  waterFlOz: number; // no logged water today genuinely means 0, not "unknown"
 }
 
 let AppleHealthKit: any = null;
@@ -71,6 +86,7 @@ function sleepWindowStart(): Date {
   return start;
 }
 
+// Function for height to gather data within a ten year span
 function TenYearWindowStart(): Date {
   const start = new Date();
   start.setDate(start.getDate() - 3562);
@@ -78,7 +94,58 @@ function TenYearWindowStart(): Date {
   return start;
 }
 
-const ASLEEP_VALUES = new Set(['ASLEEP', 'INBED', 'CORE', 'DEEP', 'REM', 'asleep', 'inBed', 'core', 'deep', 'rem']);
+// A minute counts as "active" when at least this many steps landed in it.
+export const ACTIVE_STEPS_PER_MINUTE = 100; // check
+
+// Some sources (Fitbit here) never write exercise sessions, which would leave
+// activity duration permanently empty. Falling back to "minutes with brisk
+// stepping" gives a usable number, and the UI labels it as an estimate.
+function estimateActiveMinutes(stepRecords: any[]): number {
+  const perMinute = new Map<number, number>();
+  for (const r of stepRecords) {
+    const minute = Math.floor(new Date(r.startTime).getTime() / 60000);
+    perMinute.set(minute, (perMinute.get(minute) ?? 0) + (r.count ?? 0));
+  }
+  let active = 0;
+  perMinute.forEach((count) => {
+    if (count >= ACTIVE_STEPS_PER_MINUTE) active++;
+  });
+  return active;
+}
+
+// Some sources (Fitbit here) write total calories but never active calories.
+// Their total is a flat resting rate every minute plus extra when moving, so
+// the lowest per-minute rate of the day is the resting baseline, and whatever
+// is burned above it is active.
+function estimateActiveCalories(totalCalorieRecords: any[]): number | null {
+  let minutes = 0;
+  let totalKcal = 0;
+  let baselineRate = Infinity; // kcal per minute
+  for (const r of totalCalorieRecords) {
+    const recordMinutes = minutesBetween(r.startTime, r.endTime);
+    const kcal = r.energy?.inKilocalories ?? 0;
+    if (recordMinutes <= 0) continue;
+    minutes += recordMinutes;
+    totalKcal += kcal;
+    baselineRate = Math.min(baselineRate, kcal / recordMinutes);
+  }
+  if (minutes === 0) return null;
+  return Math.round(Math.max(0, totalKcal - baselineRate * minutes));
+}
+
+// Health Connect SleepStageType values
+const HC_STAGE = { AWAKE: 1, OUT_OF_BED: 3, LIGHT: 4, DEEP: 5, REM: 6, AWAKE_IN_BED: 7 } as const;
+
+function emptyStages(): SleepStages {
+  return { awakeMinutes: 0, lightMinutes: 0, deepMinutes: 0, remMinutes: 0, unspecifiedMinutes: 0 };
+}
+
+const minutesBetween = (start: any, end: any) =>
+  Math.max(0, (new Date(end).getTime() - new Date(start).getTime()) / 60000);
+
+// HealthKit returns either a single {value} or an array of samples depending on the call.
+const sumValues = (result: any): number =>
+  Array.isArray(result) ? result.reduce((sum, r) => sum + (r?.value ?? 0), 0) : result?.value ?? 0;
 
 // Service class to handle health data permissions and fetching
 export class HealthService {
@@ -101,23 +168,15 @@ export class HealthService {
         permissions: {
           read: [
             HealthKit.Constants.Permissions.StepCount,
-            HealthKit.Constants.Permissions.HeartRate,
-            HealthKit.Constants.Permissions.SleepAnalysis,
             HealthKit.Constants.Permissions.DistanceWalkingRunning,
-            HealthKit.Constants.Permissions.FlightsClimbed, // not "FloorsClimbed" on iOS
             HealthKit.Constants.Permissions.ActiveEnergyBurned,
-            HealthKit.Constants.Permissions.BasalEnergyBurned, // combine with Active for a "total"
-            HealthKit.Constants.Permissions.Workout,
+            HealthKit.Constants.Permissions.BasalEnergyBurned, // added to active for the iOS total
+            HealthKit.Constants.Permissions.AppleExerciseTime, // activity minutes
+            HealthKit.Constants.Permissions.HeartRate,
             HealthKit.Constants.Permissions.RestingHeartRate,
-            HealthKit.Constants.Permissions.BloodPressureSystolic,
-            HealthKit.Constants.Permissions.BloodPressureDiastolic,
-            HealthKit.Constants.Permissions.OxygenSaturation,
-            HealthKit.Constants.Permissions.BodyTemperature,
+            HealthKit.Constants.Permissions.SleepAnalysis,
             HealthKit.Constants.Permissions.BodyMass, // "Weight" is called BodyMass on iOS
             HealthKit.Constants.Permissions.Height,
-            HealthKit.Constants.Permissions.BodyFatPercentage,
-            HealthKit.Constants.Permissions.LeanBodyMass,
-            HealthKit.Constants.Permissions.Water,
           ],
           write: [],
         },
@@ -142,22 +201,15 @@ export class HealthService {
       // read needed data from Health Connect
       const granted = await HC.requestPermission([
         { accessType: 'read', recordType: 'Steps' },
-        { accessType: 'read', recordType: 'HeartRate' },
-        { accessType: 'read', recordType: 'SleepSession' },
         { accessType: 'read', recordType: 'Distance' },
-        { accessType: 'read', recordType: 'FloorsClimbed' },
         { accessType: 'read', recordType: 'ActiveCaloriesBurned' },
         { accessType: 'read', recordType: 'TotalCaloriesBurned' },
         { accessType: 'read', recordType: 'ExerciseSession' },
+        { accessType: 'read', recordType: 'HeartRate' },
         { accessType: 'read', recordType: 'RestingHeartRate' },
-        { accessType: 'read', recordType: 'BloodPressure' },
-        { accessType: 'read', recordType: 'OxygenSaturation' },
-        { accessType: 'read', recordType: 'BodyTemperature' },
+        { accessType: 'read', recordType: 'SleepSession' },
         { accessType: 'read', recordType: 'Weight' },
         { accessType: 'read', recordType: 'Height' },
-        { accessType: 'read', recordType: 'BodyFat' },
-        { accessType: 'read', recordType: 'LeanBodyMass' },
-        { accessType: 'read', recordType: 'Hydration' },
         // Height is effectively static — a reading from years ago is still
         // valid "today." Normal reads are capped at the last 30 days, so
         // seeing further back needs this separate, more sensitive permission.
@@ -189,126 +241,77 @@ export class HealthService {
     const options = { startDate: startOfDay.toISOString(), endDate: now.toISOString() };
     const sleepOptions = { startDate: sleepWindowStart().toISOString(), endDate: now.toISOString() };
 
-    const steps = await new Promise<number>((resolve) => {
-      HealthKit.getStepCount(options, (error: string, result: any) => {
-        if (error || !result) return resolve(0);
-        resolve(Math.round(typeof result === 'number' ? result : result.value ?? 0));
+    // Every HealthKit call is callback-style and reports errors as a string —
+    // resolve null on error so one denied metric doesn't break the others.
+    const call = <T>(method: string, opts: object, pick: (result: any) => T): Promise<T | null> =>
+      new Promise((resolve) => {
+        HealthKit[method](opts, (error: any, result: any) => {
+          resolve(error || result == null ? null : pick(result));
+        });
       });
-    });
 
-    const avgHeartRate = await new Promise<number | null>((resolve) => {
-      HealthKit.getHeartRateSamples(options, (error: string, results: any[]) => {
-        if (error || !results?.length) return resolve(null);
-        const total = results.reduce((sum, r) => sum + (r.value ?? 0), 0);
-        resolve(Math.round(total / results.length));
-      });
-    });
+    const [steps, distanceMiles, activeCalories, basalCalories, exerciseMinutes, heartSamples, restingHeartRate, sleepSamples, weightLbs, heightInches, workoutCount] =
+      await Promise.all([
+        call('getStepCount', options, (r) => Math.round(sumValues(r))),
+        call('getDistanceWalkingRunning', { ...options, unit: 'mile' }, (r) => Number(sumValues(r).toFixed(2))),
+        call('getActiveEnergyBurned', options, (r) => Math.round(sumValues(r))),
+        call('getBasalEnergyBurned', options, (r) => Math.round(sumValues(r))),
+        call('getAppleExerciseTime', options, (r) => Math.round(sumValues(r))),
+        call('getHeartRateSamples', options, (r: any[]) => r),
+        // Same wider window as sleep — resting heart rate is typically computed
+        // from overnight data and dated like a sleep session, not local midnight.
+        call('getRestingHeartRate', sleepOptions, (r) => Math.round(sumValues(r))),
+        call('getSleepSamples', sleepOptions, (r: any[]) => r),
+        call('getLatestWeight', { unit: 'pound' }, (r) => Number((r.value ?? 0).toFixed(1))),
+        call('getLatestHeight', { unit: 'inch' }, (r) => Number((r.value ?? 0).toFixed(1))),
+        call('getAnchoredWorkouts', options, (r) => r.data?.length ?? 0),
+      ]);
 
-    const sleepHours = await new Promise<number | null>((resolve) => {
-      HealthKit.getSleepSamples(sleepOptions, (error: string, results: any[]) => {
-        if (error || !results?.length) return resolve(null);
-        const totalMs = results
-          .filter((s) => ASLEEP_VALUES.has(s.value))
-          .reduce((sum, s) => sum + (new Date(s.endDate).getTime() - new Date(s.startDate).getTime()), 0);
-        resolve(totalMs > 0 ? Number((totalMs / (1000 * 60 * 60)).toFixed(1)) : null);
-      });
-    });
+    const heartRateSamples: HeartRateSample[] = (heartSamples ?? []).map((r: any) => ({
+      time: new Date(r.startDate).toISOString(),
+      bpm: Math.round(r.value),
+    }));
+    const avgHeartRate = heartRateSamples.length
+      ? Math.round(heartRateSamples.reduce((sum, r) => sum + r.bpm, 0) / heartRateSamples.length)
+      : null;
 
-    const distanceMiles = await new Promise<number | null>((resolve) => {
-      HealthKit.getDistanceWalkingRunning({ ...options, unit: 'mile' }, (error: string, result: any) => {
-        resolve(error || !result ? null : Number((result.value ?? 0).toFixed(2)));
-      });
-    });
+    // HealthKit reports sleep as one sample per stage: INBED / AWAKE / ASLEEP (unspecified) / CORE / DEEP / REM.
+    let sleepStages: SleepStages | null = null;
+    let inBedMinutes = 0;
+    if (sleepSamples?.length) {
+      const stages = emptyStages();
+      for (const sample of sleepSamples) {
+        const minutes = minutesBetween(sample.startDate, sample.endDate);
+        switch (String(sample.value).toUpperCase()) {
+          case 'AWAKE': stages.awakeMinutes += minutes; break;
+          case 'CORE': stages.lightMinutes += minutes; break;
+          case 'DEEP': stages.deepMinutes += minutes; break;
+          case 'REM': stages.remMinutes += minutes; break;
+          case 'ASLEEP': stages.unspecifiedMinutes += minutes; break;
+          case 'INBED': inBedMinutes += minutes; break;
+        }
+      }
+      sleepStages = stages;
+    }
+    const asleepMinutes = sleepStages
+      ? sleepStages.lightMinutes + sleepStages.deepMinutes + sleepStages.remMinutes + sleepStages.unspecifiedMinutes
+      : 0;
+    const sleepMinutes = asleepMinutes || inBedMinutes;
+    const sleepHours = sleepMinutes > 0 ? Number((sleepMinutes / 60).toFixed(1)) : null;
 
-    const floorsClimbed = await new Promise<number | null>((resolve) => {
-      HealthKit.getFlightsClimbed(options, (error: string, result: any) => {
-        resolve(error || !result ? null : Math.round(result.value ?? 0));
-      });
-    });
-
-    const activeCalories = await new Promise<number | null>((resolve) => {
-      HealthKit.getActiveEnergyBurned(options, (error: string, result: any) => {
-        resolve(error || !result ? null : Math.round(result.value ?? 0));
-      });
-    });
-
-    const basalCalories = await new Promise<number | null>((resolve) => {
-      HealthKit.getBasalEnergyBurned(options, (error: string, result: any) => {
-        resolve(error || !result ? null : Math.round(result.value ?? 0));
-      });
-    });
-    const totalCalories = activeCalories != null && basalCalories != null ? activeCalories + basalCalories : null;
-    // iOS has no single "total calories" call — Health Connect's TotalCaloriesBurned
-    // doesn't have a HealthKit equivalent, so this is Active + Basal added manually.
-
-    // Same wider window as sleep — resting heart rate is typically computed
-    // from overnight data and dated like a sleep session, not local midnight.
-    const restingHeartRate = await new Promise<number | null>((resolve) => {
-      HealthKit.getRestingHeartRate(sleepOptions, (error: string, result: any) => {
-        resolve(error || !result ? null : Math.round(result.value ?? 0));
-      });
-    });
-
-    const bp = await new Promise<{ systolic: number; diastolic: number } | null>((resolve) => {
-      HealthKit.getBloodPressureSamples(options, (error: string, results: any[]) => {
-        if (error || !results?.length) return resolve(null);
-        const latest = results[results.length - 1];
-        resolve({ systolic: latest.bloodPressureSystolicValue, diastolic: latest.bloodPressureDiastolicValue });
-      });
-    });
-
-    const oxygenSaturation = await new Promise<number | null>((resolve) => {
-      HealthKit.getOxygenSaturationSamples(options, (error: string, results: any[]) => {
-        resolve(error || !results?.length ? null : Math.round((results[results.length - 1].value ?? 0) * 100));
-        // HealthKit reports this as a 0-1 fraction, not 0-100 — check this against a real reading
-      });
-    });
-
-    const bodyTemperatureFahrenheit = await new Promise<number | null>((resolve) => {
-      HealthKit.getBodyTemperatureSamples({ ...options, unit: 'fahrenheit' }, (error: string, results: any[]) => {
-        resolve(error || !results?.length ? null : Number((results[results.length - 1].value ?? 0).toFixed(1)));
-      });
-    });
-
-    const weightLbs = await new Promise<number | null>((resolve) => {
-      HealthKit.getLatestWeight({ unit: 'pound' }, (error: string, result: any) => {
-        resolve(error || !result ? null : Number((result.value ?? 0).toFixed(1)));
-      });
-    });
-
-    const heightInches = await new Promise<number | null>((resolve) => {
-      HealthKit.getLatestHeight({ unit: 'inch' }, (error: string, result: any) => {
-        resolve(error || !result ? null : Number((result.value ?? 0).toFixed(1)));
-      });
-    });
-
-    const bodyFatPercentage = await new Promise<number | null>((resolve) => {
-      HealthKit.getLatestBodyFatPercentage(options, (error: string, result: any) => {
-        resolve(error || !result ? null : Math.round((result.value ?? 0) * 100));
-      });
-    });
-
-    const leanBodyMassLbs = await new Promise<number | null>((resolve) => {
-      HealthKit.getLatestLeanBodyMass({ unit: 'pound' }, (error: string, result: any) => {
-        resolve(error || !result ? null : Number((result.value ?? 0).toFixed(1)));
-      });
-    });
-
-    // This library has no fl-oz unit string (verified against the native
-    // source), so water comes back in liters and gets converted by hand.
-    const waterFlOz = await new Promise<number>((resolve) => {
-      HealthKit.getWater(options, (error: string, result: any) => {
-        resolve(error || !result ? 0 : Number(((result.value ?? 0) * 33.814).toFixed(1)));
-      });
-    });
-
-    const exerciseSessionCount = await new Promise<number>((resolve) => {
-      HealthKit.getAnchoredWorkouts(options, (error: any, results: any) => {
-        resolve(error || !results?.data ? 0 : results.data.length);
-      });
-    });
-
-    return { date: startOfDay.toISOString().split('T')[0], steps, avgHeartRate, sleepHours, distanceMiles, floorsClimbed, activeCalories, totalCalories, exerciseSessionCount, restingHeartRate, systolic: bp?.systolic ?? null, diastolic: bp?.diastolic ?? null, oxygenSaturation, bodyTemperatureFahrenheit, weightLbs, heightInches, bodyFatPercentage, leanBodyMassLbs, waterFlOz };
+    return {
+      date: startOfDay.toISOString().split('T')[0],
+      steps: steps ?? 0,
+      distanceMiles, activeCalories, activeCaloriesEstimated: false,
+      totalCalories: activeCalories != null && basalCalories != null ? activeCalories + basalCalories : null,
+      activityMinutes: exerciseMinutes,
+      activityMinutesEstimated: false,
+      exerciseSessionCount: workoutCount ?? 0,
+      avgHeartRate, heartRateSamples, restingHeartRate,
+      sleepHours,
+      sleepStages: asleepMinutes > 0 || (sleepStages?.awakeMinutes ?? 0) > 0 ? sleepStages : null,
+      weightLbs, heightInches,
+    };
   }
 
   // Android snapshot fetcher
@@ -325,86 +328,121 @@ export class HealthService {
       const sleepFilter = { operator: 'between', startTime: sleepWindowStart().toISOString(), endTime: now.toISOString() };
 
       // Each call is caught individually — a permission missing for one
-      // metric (e.g. Blood Pressure denied) must not fail Promise.all and
-      // wipe out every other metric that *did* have permission.
+      // metric must not fail Promise.all and wipe out every other metric
+      // that *did* have permission.
       const safeAggregate = (recordType: string, timeRangeFilter: any) =>
         HC.aggregateRecord({ recordType, timeRangeFilter }).catch((error: any) => {
           console.warn(`aggregateRecord(${recordType}) failed:`, error?.message ?? error);
           return null;
         });
 
+      // readRecords is paged — follow pageToken until it runs out.
+      const readAll = async (recordType: string, timeRangeFilter: any): Promise<any[]> => {
+        const records: any[] = [];
+        try {
+          let pageToken: string | undefined;
+          do {
+            const page: any = await HC.readRecords(recordType, { timeRangeFilter, pageSize: 1000, pageToken });
+            records.push(...(page?.records ?? []));
+            pageToken = page?.pageToken || undefined;
+          } while (pageToken);
+        } catch (error: any) {
+          console.warn(`readRecords(${recordType}) failed:`, error?.message ?? error);
+        }
+        return records;
+      };
+
+      // Weight is like height — people don't necessarily log it "today", so
+      // grab the single newest record from the wide window.
+      const readLatest = (recordType: string, timeRangeFilter: any) =>
+        HC.readRecords(recordType, { timeRangeFilter, ascendingOrder: false, pageSize: 1 })
+          .then((page: any) => page?.records?.[0] ?? null)
+          .catch((error: any) => {
+            console.warn(`readRecords(${recordType}) failed:`, error?.message ?? error);
+            return null;
+          });
+
       const [
-        stepsAgg, hrAgg, sleepAgg,
-        distanceAgg, floorsAgg, activeCalAgg, totalCalAgg,
-        restingHrAgg, bpAgg, heightAgg, waterAgg,
+        stepsAgg, distanceAgg, activeCalAgg, totalCalAgg, exerciseAgg,
+        restingHrAgg, sleepAgg, heightAgg,
+        heartRecords, sleepRecords, exerciseRecords, totalCalorieRecords, weightRecord,
       ] = await Promise.all([
         safeAggregate('Steps', todayFilter),
-        safeAggregate('HeartRate', todayFilter),
-        safeAggregate('SleepSession', sleepFilter),
         safeAggregate('Distance', todayFilter),
-        safeAggregate('FloorsClimbed', todayFilter),
         safeAggregate('ActiveCaloriesBurned', todayFilter),
         safeAggregate('TotalCaloriesBurned', todayFilter),
+        safeAggregate('ExerciseSession', todayFilter),
         // Resting heart rate is typically computed from overnight data and
         // dated like sleep — use the same wide window, not local midnight.
         safeAggregate('RestingHeartRate', sleepFilter),
-        safeAggregate('BloodPressure', todayFilter),
+        safeAggregate('SleepSession', sleepFilter),
         safeAggregate('Height', tenyearFilter),
-        safeAggregate('Hydration', todayFilter),
+        readAll('HeartRate', todayFilter),
+        readAll('SleepSession', sleepFilter),
+        readAll('ExerciseSession', todayFilter),
+        readAll('TotalCaloriesBurned', todayFilter),
+        readLatest('Weight', tenyearFilter),
       ]);
 
       const steps = Math.round(stepsAgg?.COUNT_TOTAL ?? 0);
-      const avgHeartRate = hrAgg?.dataOrigins?.length ? Math.round(hrAgg.BPM_AVG) : null;
+      const distanceMiles = distanceAgg?.dataOrigins?.length ? Number(distanceAgg.DISTANCE.inMiles.toFixed(2)) : null;
+      const reportedActiveCalories = activeCalAgg?.dataOrigins?.length ? Math.round(activeCalAgg.ACTIVE_CALORIES_TOTAL.inKilocalories) : null;
+      const activeCalories = reportedActiveCalories ?? (totalCalorieRecords.length ? estimateActiveCalories(totalCalorieRecords) : null);
+      const activeCaloriesEstimated = reportedActiveCalories == null && activeCalories != null;
+      const totalCalories = totalCalAgg?.dataOrigins?.length ? Math.round(totalCalAgg.ENERGY_TOTAL.inKilocalories) : null;
+      const restingHeartRate = restingHrAgg?.dataOrigins?.length ? Math.round(restingHrAgg.BPM_AVG) : null;
       const sleepHours = sleepAgg?.dataOrigins?.length
         ? Number((sleepAgg.SLEEP_DURATION_TOTAL / 3600).toFixed(1)) // SLEEP_DURATION_TOTAL is in seconds
         : null;
-      const distanceMiles = distanceAgg?.dataOrigins?.length ? Number(distanceAgg.DISTANCE.inMiles.toFixed(2)) : null;
-      const floorsClimbed = floorsAgg?.dataOrigins?.length ? Math.round(floorsAgg.FLOORS_CLIMBED_TOTAL) : null;
-      const activeCalories = activeCalAgg?.dataOrigins?.length ? Math.round(activeCalAgg.ACTIVE_CALORIES_TOTAL.inKilocalories) : null;
-      const totalCalories = totalCalAgg?.dataOrigins?.length ? Math.round(totalCalAgg.ENERGY_TOTAL.inKilocalories) : null;
-      const restingHeartRate = restingHrAgg?.dataOrigins?.length ? Math.round(restingHrAgg.BPM_AVG) : null;
-      const systolic = bpAgg?.dataOrigins?.length ? Math.round(bpAgg.SYSTOLIC_AVG.inMillimetersOfMercury) : null;
-      const diastolic = bpAgg?.dataOrigins?.length ? Math.round(bpAgg.DIASTOLIC_AVG.inMillimetersOfMercury) : null;
       const heightInches = heightAgg?.dataOrigins?.length ? Number(heightAgg.HEIGHT_AVG.inInches.toFixed(1)) : null;
-      const waterFlOz = waterAgg?.dataOrigins?.length ? Number(waterAgg.VOLUME_TOTAL.inFluidOuncesUs.toFixed(1)) : 0;
+      const weightLbs = weightRecord ? Number(weightRecord.weight.inPounds.toFixed(1)) : null;
 
-      const safeReadRecords = (recordType: string, timeRangeFilter: any) =>
-        HC.readRecords(recordType, { timeRangeFilter }).catch((error: any) => {
-          console.warn(`readRecords(${recordType}) failed:`, error?.message ?? error);
-          return null;
-        });
+      // Every individual reading — a record is a batch of samples.
+      const heartRateSamples: HeartRateSample[] = heartRecords.flatMap((record: any) =>
+        (record.samples ?? []).map((sample: any) => ({ time: sample.time, bpm: sample.beatsPerMinute })),
+      );
+      const avgHeartRate = heartRateSamples.length
+        ? Math.round(heartRateSamples.reduce((sum, s) => sum + s.bpm, 0) / heartRateSamples.length)
+        : null;
 
-      const [oxygenResult, tempResult, weightResult, fatResult, leanResult, exerciseResult] = await Promise.all([
-        safeReadRecords('OxygenSaturation', todayFilter),
-        safeReadRecords('BodyTemperature', todayFilter),
-        // Weight, body fat, and lean mass are like height — people don't
-        // necessarily log them "today," so use the same wide window +
-        // latest-record approach rather than a today-only average.
-        safeReadRecords('Weight', tenyearFilter),
-        safeReadRecords('BodyFat', tenyearFilter),
-        safeReadRecords('LeanBodyMass', tenyearFilter),
-        safeReadRecords('ExerciseSession', todayFilter),
-      ]);
+      let sleepStages: SleepStages | null = null;
+      for (const record of sleepRecords) {
+        for (const stage of record.stages ?? []) {
+          sleepStages ??= emptyStages();
+          const minutes = minutesBetween(stage.startTime, stage.endTime);
+          switch (stage.stage) {
+            case HC_STAGE.AWAKE:
+            case HC_STAGE.OUT_OF_BED:
+            case HC_STAGE.AWAKE_IN_BED: sleepStages.awakeMinutes += minutes; break;
+            case HC_STAGE.LIGHT: sleepStages.lightMinutes += minutes; break;
+            case HC_STAGE.DEEP: sleepStages.deepMinutes += minutes; break;
+            case HC_STAGE.REM: sleepStages.remMinutes += minutes; break;
+            default: sleepStages.unspecifiedMinutes += minutes; // SLEEPING / UNKNOWN
+          }
+        }
+      }
 
-      const oxygenSaturation = oxygenResult?.records?.length
-        ? Math.round(oxygenResult.records[oxygenResult.records.length - 1].percentage) : null;
-      const bodyTemperatureFahrenheit = tempResult?.records?.length
-        ? Number(tempResult.records[tempResult.records.length - 1].temperature.inFahrenheit.toFixed(1)) : null;
-      const weightLbs = weightResult?.records?.length
-        ? Number(weightResult.records[weightResult.records.length - 1].weight.inPounds.toFixed(1)) : null;
-      const bodyFatPercentage = fatResult?.records?.length
-        ? Math.round(fatResult.records[fatResult.records.length - 1].percentage) : null;
-      const leanBodyMassLbs = leanResult?.records?.length
-        ? Number(leanResult.records[leanResult.records.length - 1].mass.inPounds.toFixed(1)) : null;
-      const exerciseSessionCount = exerciseResult?.records?.length ?? 0;
+      let activityMinutes: number | null = null;
+      let activityMinutesEstimated = false;
+      const exerciseMinutes = exerciseAgg?.dataOrigins?.length ? Math.round(exerciseAgg.EXERCISE_DURATION_TOTAL.inSeconds / 60) : 0;
+      if (exerciseMinutes > 0) {
+        activityMinutes = exerciseMinutes;
+      } else {
+        const stepRecords = await readAll('Steps', todayFilter);
+        if (stepRecords.length) {
+          activityMinutes = estimateActiveMinutes(stepRecords);
+          activityMinutesEstimated = true;
+        }
+      }
 
       return {
         date: startOfDay.toISOString().split('T')[0],
-        steps, avgHeartRate, sleepHours,
-        distanceMiles, floorsClimbed, activeCalories, totalCalories,
-        exerciseSessionCount, restingHeartRate, systolic, diastolic,
-        oxygenSaturation, bodyTemperatureFahrenheit, weightLbs, heightInches,
-        bodyFatPercentage, leanBodyMassLbs, waterFlOz,
+        steps, distanceMiles, activeCalories, activeCaloriesEstimated, totalCalories,
+        activityMinutes, activityMinutesEstimated,
+        exerciseSessionCount: exerciseRecords.length,
+        avgHeartRate, heartRateSamples, restingHeartRate,
+        sleepHours, sleepStages,
+        weightLbs, heightInches,
       };
     } catch (error) {
       console.error('Error fetching Health Connect snapshot:', error);

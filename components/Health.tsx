@@ -39,7 +39,7 @@ const topics: TopicCard[] = [
        id: '3', 
        title: 'Health & Wellness', 
        color: '#85DDA2', 
-       imageSource: require('@/assets/images/drugs.png'), 
+       imageSource: require('@/assets/images/heartbeat.png'), 
        description: 'Reasources for your health and wellness based on wearable data',
      },
    ];
