@@ -31,6 +31,7 @@ export default function LoginPage() {
     
     try {
       await login(email, password);
+      router.replace('/health-data');
     } catch (err: any) {
       setError(err.message || 'Login failed');
     } finally {
