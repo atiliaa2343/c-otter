@@ -34,11 +34,11 @@ create policy "content_blocks_write_admin" on public.content_blocks
 -- hand in the Supabase dashboard first: Storage → New bucket → mark it
 -- Public. Then run these two policies:
 --
--- create policy "content_images_public_read" on storage.objects
---   for select using (bucket_id = 'content-images');
---
--- create policy "content_images_admin_write" on storage.objects
---   for all using (
---     bucket_id = 'content-images'
---     and exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
---   );
+create policy "content_images_public_read" on storage.objects
+  for select using (bucket_id = 'content-images');
+
+create policy "content_images_admin_write" on storage.objects
+  for all using (
+    bucket_id = 'content-images'
+    and exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  );

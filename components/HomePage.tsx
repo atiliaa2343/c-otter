@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, ImageBackground, TextInput } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, ImageBackground, TextInput, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useContentBlocks } from "@/hooks/useContentBlocks";
+import { useHomeEvents } from "@/hooks/useHomeEvents";
 
 const LOCAL_LOGO = require("../assets/images/Ce Otter.png");
 const BACKGROUND_IMAGE = require("../assets/images/Ce Otter.png");
 
-const eventCards = [
+const FALLBACK_EVENTS = [
   {
     title: "Upcoming Blood Drive",
     desc: "Hunter McDaniel, March 18th 2pm-4pm",
@@ -37,10 +39,12 @@ const eventCards = [
 
 export function HomePage() {
   const router = useRouter();
-  
+  const { blocks } = useContentBlocks('home');
+  const { events: dbEvents, loading: eventsLoading, error: eventsError } = useHomeEvents();
+
    // Use local logo
    const logoSource = LOCAL_LOGO;
-   
+
    // Theme colors
    const backgroundColor = useThemeColor({}, 'background');
    const backgroundPrimary = useThemeColor({}, 'backgroundPrimary');
@@ -49,6 +53,15 @@ export function HomePage() {
    const primaryColor = useThemeColor({}, 'primary');
    const cardBg = useThemeColor({}, 'card');
    const cardBorder = useThemeColor({}, 'cardBorder');
+
+  const eventCards = dbEvents.length > 0
+    ? dbEvents.map((e) => ({
+        title: e.title,
+        desc: e.description ?? '',
+        icon: e.icon ?? 'ellipse',
+        color: e.color,
+      }))
+    : FALLBACK_EVENTS;
 
    return (
      <ImageBackground 
@@ -84,10 +97,10 @@ export function HomePage() {
              resizeMode="cover"
            />
            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-             <Text style={[styles.title, { color: primaryColor }]}>Ce. OTTER</Text>
-             <Text style={{ fontSize: 12, color: textSecondary, marginTop: 2 }}>
-               Center for Outreach and Treatment Through Education and Research
-             </Text>
+              <Text style={[styles.title, { color: primaryColor }]}>{blocks.hero_title ?? 'Ce. OTTER'}</Text>
+              <Text style={{ fontSize: 12, color: textSecondary, marginTop: 2 }}>
+                {blocks.hero_tagline ?? 'Center for Outreach and Treatment Through Education and Research'}
+              </Text>
            </View>
          </View>
 
@@ -97,9 +110,9 @@ export function HomePage() {
              <Ionicons name="heart" size={24} color={primaryColor} />
              <Text style={[styles.missionTitle, { color: textColor }]}>Our Mission</Text>
            </View>
-           <Text style={[styles.missionDesc, { color: textSecondary }]}>
-             The Center for Outreach & Treatment Through Education & Research is committed to provide community engagement, health education, medical services, and biomedical research training in the fields of Addiction, Public Health, Psychology, and other related fields to faculty, staff, students, and community stakeholders. Through the integration of education and research, the Ce. OTTER will help establish VSU as a health hub for surrounding communities.
-           </Text>
+            <Text style={[styles.missionDesc, { color: textSecondary }]}>
+              {blocks.mission_text ?? 'The Center for Outreach & Treatment Through Education & Research is committed to provide community engagement, health education, medical services, and biomedical research training in the fields of Addiction, Public Health, Psychology, and other related fields to faculty, staff, students, and community stakeholders. Through the integration of education and research, the Ce. OTTER will help establish VSU as a health hub for surrounding communities.'}
+            </Text>
          </View>
 
          {/* Quick Actions */}
@@ -141,19 +154,28 @@ export function HomePage() {
         {/* Event/Alert Cards */}
         <View style={styles.eventsSection}>
           <Text style={[styles.sectionTitle, { color: textColor }]}>Upcoming Events</Text>
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false} 
-            contentContainerStyle={styles.eventsScrollContent}
-          >
-            {eventCards.map((card, idx) => (
-              <View key={idx} style={[styles.eventCard, { backgroundColor: card.color }]}> 
-                <Ionicons name={card.icon as any} size={32} color="#fff" style={{ marginBottom: 8 }} />
-                <Text style={styles.eventTitle}>{card.title}</Text>
-                <Text style={styles.eventDesc}>{card.desc}</Text>
-              </View>
-            ))}
-          </ScrollView>
+          {eventsError && (
+            <Text style={[styles.errorText, { color: '#ef4444' }]}>
+              Could not load events from the database — showing the built-in list.
+            </Text>
+          )}
+          {eventsLoading && dbEvents.length === 0 ? (
+            <ActivityIndicator size="large" color={primaryColor} style={styles.loader} />
+          ) : (
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.eventsScrollContent}
+            >
+              {eventCards.map((card, idx) => (
+                <View key={idx} style={[styles.eventCard, { backgroundColor: card.color }]}>
+                  <Ionicons name={card.icon as any} size={32} color="#fff" style={{ marginBottom: 8 }} />
+                  <Text style={styles.eventTitle}>{card.title}</Text>
+                  <Text style={styles.eventDesc}>{card.desc}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          )}
         </View>
 
         {/* Crisis Hotline Banner */}
@@ -297,6 +319,14 @@ const styles = StyleSheet.create({
   },
   eventsSection: {
     marginBottom: 24,
+  },
+  loader: {
+    marginVertical: 24,
+  },
+  errorText: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 8,
   },
   eventsScrollContent: {
     gap: 12,

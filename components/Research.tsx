@@ -1,8 +1,28 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useContentBlocks } from "@/hooks/useContentBlocks";
+import { useResearchPublications } from "@/hooks/useResearchPublications";
+
+const FALLBACK_PUBLICATIONS = [
+  'Ma, L., Keen II, L. D., Steinberg, J. L., Eddie, D., Tan, A., Keyser-Marcus, L., ... & Moeller, F. G. (2024). Relationship between central autonomic effective connectivity and heart rate variability: a resting-state fMRI dynamic causal modeling study. NeuroImage, 300, 120869.',
+  'Ma, L., Braun, S. E., Steinberg, J. L., Bjork, J. M., Martin, C. E., Keen II, L. D., & Moeller, F. G. (2024). Effect of scanning duration and sample size on reliability in resting state fMRI dynamic causal modeling analysis. NeuroImage, 292, 120604.',
+  'Kuno, C. B., Frankel, L., Ofosuhene, P., & Keen II, L. (2024). Validation of the Adult Eating Behavior Questionnaire (AEBQ) in a young adult Black sample in the US: Evaluating the psychometric properties and associations with BMI. Current Psychology, 43(35), 28590-28603.',
+  'Quarles, E., West, S. J., & Keen, L. (2024). Determining associations between Big Five personality traits and executive function in an undergraduate student sample. Journal of the International Neuropsychological Society, 1-8.',
+  'Ma L, Keen LD II and Del Buono MG (2022) Editorial: Investigating substance use disorders using neuroimaging-based brain connectivity. Front. Psychiatry 13:992669. doi: 10.3389/fpsyt.2022.992669',
+  'Bell, K. A., Coleman, E., Cooke, B. G., & Keen, L. D. (2022). Recreational cannabis use is associated with poorer sleep outcomes in young adult African Americans. Addictive Behaviors, 134, 107399.',
+  'Keen II, L., Turner, A. D., George, L., & Lawrence, K. (2022). Cannabis use disorder severity and sleep quality among undergraduates attending a Historically Black University. Addictive Behaviors, 134, 107414.',
+  'Keen, L., Turner, A. D., Harris, T., George, L., & Crump, J. (2021). Differences in internalizing symptoms between those with and without Cannabis Use Disorder among HBCU undergraduate students. JOURNAL OF AMERICAN COLLEGE HEALTH.',
+  'Keen, L., Abbate, A., Clark, V., Moeller, F. G., & Tan, A. Y. (2020). Differences in heart rate among recent marijuana use groups. Minerva cardioangiologica.',
+  'Keen II, L., Turner, A. D. (2015). Differential effects of self-reported lifetime marijuana use on interleukin-1 alpha and tumor necrosis factor in African American adults. Journal of behavioral medicine, 1-8.',
+];
+
+const FALLBACK_FEATURED_CITATION =
+  'Ma, L., Keen II, L. D., Steinberg, J. L., Eddie, D., Tan, A., Keyser-Marcus, L., ... & Moeller, F. G. (2024). Relationship between central autonomic effective connectivity and heart rate variability: a resting-state fMRI dynamic causal modeling study.';
 
 export default function Research() {
+  const { blocks } = useContentBlocks('research');
+  const { publications, loading, error } = useResearchPublications();
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const textSecondary = useThemeColor({}, 'textSecondary');
@@ -10,14 +30,25 @@ export default function Research() {
   const cardBg = useThemeColor({}, 'card');
   const cardBorder = useThemeColor({}, 'cardBorder');
 
+  // Prefer the database; fall back to the original hardcoded list so the
+  // page never renders empty if the fetch fails or the table is unseeded.
+  const hasDbPublications = publications.length > 0;
+  const featured = hasDbPublications
+    ? publications.find((p) => p.is_featured) ?? publications[0]
+    : null;
+  const featuredCitation = featured?.citation ?? blocks.highlighted_text ?? FALLBACK_FEATURED_CITATION;
+  const listCitations = hasDbPublications
+    ? publications.map((p) => p.citation)
+    : FALLBACK_PUBLICATIONS;
+
   return (
     <ScrollView style={[styles.container, { backgroundColor }]}>
       <View style={styles.content}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={[styles.title, { color: textColor }]}>Research</Text>
+          <Text style={[styles.title, { color: textColor }]}>{blocks.page_title ?? 'Research'}</Text>
           <Text style={[styles.subtitle, { color: textSecondary }]}>
-            Exploring the frontiers of psychological science
+            {blocks.page_subtitle ?? 'Exploring the frontiers of psychological science'}
           </Text>
         </View>
         
@@ -26,80 +57,50 @@ export default function Research() {
           <View style={[styles.featuredBadge, { backgroundColor: primaryColor }]}>
             <Text style={styles.featuredBadgeText}>Featured</Text>
           </View>
-          <Text style={[styles.highlightedTitle, { color: textColor }]}>Latest Publication</Text>
+          <Text style={[styles.highlightedTitle, { color: textColor }]}>
+            {blocks.highlighted_title ?? 'Latest Publication'}
+          </Text>
           <Text style={[styles.highlightedText, { color: textSecondary }]}>
-            Ma, L., Keen II, L. D., Steinberg, J. L., Eddie, D., Tan, A., Keyser-Marcus, L., ... & Moeller, F. G. (2024). 
-            Relationship between central autonomic effective connectivity and heart rate variability: a resting-state fMRI dynamic causal modeling study.{'\n'}
-            <Text style={[styles.highlightedJournal, { color: primaryColor }]}> NeuroImage</Text>, 300, 120869.
+            {featuredCitation}
+            {featured?.journal ? (
+              <>
+                {'\n'}
+                <Text style={[styles.highlightedJournal, { color: primaryColor }]}>
+                  {' '}
+                  {featured.journal}
+                </Text>
+                {featured.year ? `, ${featured.year}.` : '.'}
+              </>
+            ) : null}
           </Text>
         </View>
 
         {/* Published Manuscripts & Presentations */}
-        <Text style={[styles.sectionTitle, { color: textColor }]}>Publications</Text>
-        
+        <Text style={[styles.sectionTitle, { color: textColor }]}>
+          {blocks.section_title ?? 'Publications'}
+        </Text>
+
+        {error && (
+          <Text style={[styles.errorText, { color: '#dc2626' }]}>
+            Could not load publications from the database — showing the built-in list.
+          </Text>
+        )}
+
         <View style={styles.publicationsList}>
-          <PublicationItem
-            text="Ma, L., Keen II, L. D., Steinberg, J. L., Eddie, D., Tan, A., Keyser-Marcus, L., ... & Moeller, F. G. (2024). Relationship between central autonomic effective connectivity and heart rate variability: a resting-state fMRI dynamic causal modeling study. NeuroImage, 300, 120869."
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
-          <PublicationItem
-            text="Ma, L., Braun, S. E., Steinberg, J. L., Bjork, J. M., Martin, C. E., Keen II, L. D., & Moeller, F. G. (2024). Effect of scanning duration and sample size on reliability in resting state fMRI dynamic causal modeling analysis. NeuroImage, 292, 120604."
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
-          <PublicationItem
-            text="Kuno, C. B., Frankel, L., Ofosuhene, P., & Keen II, L. (2024). Validation of the Adult Eating Behavior Questionnaire (AEBQ) in a young adult Black sample in the US: Evaluating the psychometric properties and associations with BMI. Current Psychology, 43(35), 28590-28603."
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
-          <PublicationItem
-            text="Quarles, E., West, S. J., & Keen, L. (2024). Determining associations between Big Five personality traits and executive function in an undergraduate student sample. Journal of the International Neuropsychological Society, 1-8."
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
-          <PublicationItem
-            text="Ma L, Keen LD II and Del Buono MG (2022) Editorial: Investigating substance use disorders using neuroimaging-based brain connectivity. Front. Psychiatry 13:992669. doi: 10.3389/fpsyt.2022.992669"
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
-          <PublicationItem
-            text="Bell, K. A., Coleman, E., Cooke, B. G., & Keen, L. D. (2022). Recreational cannabis use is associated with poorer sleep outcomes in young adult African Americans. Addictive Behaviors, 134, 107399."
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
-          <PublicationItem
-            text="Keen II, L., Turner, A. D., George, L., & Lawrence, K. (2022). Cannabis use disorder severity and sleep quality among undergraduates attending a Historically Black University. Addictive Behaviors, 134, 107414."
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
-          <PublicationItem
-            text="Keen, L., Turner, A. D., Harris, T., George, L., & Crump, J. (2021). Differences in internalizing symptoms between those with and without Cannabis Use Disorder among HBCU undergraduate students. JOURNAL OF AMERICAN COLLEGE HEALTH."
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
-          <PublicationItem
-            text="Keen, L., Abbate, A., Clark, V., Moeller, F. G., & Tan, A. Y. (2020). Differences in heart rate among recent marijuana use groups. Minerva cardioangiologica."
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
-          <PublicationItem
-            text="Keen II, L., Turner, A. D. (2015). Differential effects of self-reported lifetime marijuana use on interleukin-1 alpha and tumor necrosis factor in African American adults. Journal of behavioral medicine, 1-8."
-            primaryColor={primaryColor}
-            textSecondary={textSecondary}
-          />
-          
+          {loading && !hasDbPublications ? (
+            <ActivityIndicator size="large" color={primaryColor} style={styles.loader} />
+          ) : (
+            listCitations.map((citation, index) => (
+              <PublicationItem
+                key={`${index}-${citation.slice(0, 24)}`}
+                text={citation}
+                primaryColor={primaryColor}
+                textSecondary={textSecondary}
+              />
+            ))
+          )}
           <Text style={[styles.footnote, { color: textSecondary }]}>
-            *Student Authors; Bolded names represent PNIRD Lab members
+            {blocks.footnote ?? '*Student Authors; Bolded names represent PNIRD Lab members'}
           </Text>
         </View>
       </View>
@@ -183,6 +184,14 @@ const styles = StyleSheet.create({
   },
   publicationsList: {
     gap: 12,
+  },
+  loader: {
+    marginVertical: 20,
+  },
+  errorText: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 10,
   },
   publicationItem: {
     flexDirection: 'row',

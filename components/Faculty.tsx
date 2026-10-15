@@ -1,7 +1,10 @@
 import React from "react";
-import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, Linking } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, Linking, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useContentBlocks } from "@/hooks/useContentBlocks";
+import { useFacultyMembers } from "@/hooks/useFacultyMembers";
+import type { FacultyMember as DbFacultyMember } from "@/hooks/useFacultyMembers";
 
 interface FacultyMember {
   name: string;
@@ -12,7 +15,59 @@ interface FacultyMember {
   isDirector?: boolean;
 }
 
+const FALLBACK_FACULTY: FacultyMember[] = [
+  {
+    name: 'Larry Keen II, Ph.D',
+    title: 'Associate Professor in Psychology;\nPNIRD Lab Director',
+    email: 'LKeen@vsu.edu',
+    phone: '(804) 524-5523',
+    imageSource: require('@/assets/images/Larry.jpeg'),
+    isDirector: true,
+  },
+  {
+    name: 'Kimberly Lawrence, Ph.D.',
+    title: 'Associate Professor in Psychology',
+    email: 'KLawrence@vsu.edu',
+    phone: '(804) 524-5447',
+    imageSource: require('@/assets/images/Kimberly.jpeg'),
+  },
+  {
+    name: 'Arlener D. Turner, Ph.D',
+    title: 'Associate Professor\nDepartment of Psychiatry and Behavioral Sciences\nUniversity of Miami',
+    email: 'adanielleturner@gmail.com',
+    phone: '(773) 339-1797',
+    imageSource: require('@/assets/images/Arlener.png'),
+  },
+  {
+    name: 'Alexis Morris, M.S.',
+    title: 'Graduate Research Assistant',
+    email: '',
+    phone: '',
+    imageSource: require('@/assets/images/Alexis.jpeg'),
+  },
+  {
+    name: 'Diamond Adams',
+    title: 'Graduate Research Assistant',
+    email: '',
+    phone: '',
+    imageSource: require('@/assets/images/Diamond.jpeg'),
+  },
+];
+
+function mapDbMember(db: DbFacultyMember, fallback: FacultyMember): FacultyMember {
+  return {
+    name: db.name,
+    title: db.title,
+    email: db.email ?? fallback.email,
+    phone: db.phone ?? fallback.phone,
+    imageSource: db.image_url ? { uri: db.image_url } : fallback.imageSource,
+    isDirector: db.is_director ?? fallback.isDirector,
+  };
+}
+
 export function FacultyForm() {
+  const { blocks } = useContentBlocks('faculty');
+  const { members: dbMembers, loading, error } = useFacultyMembers();
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const textSecondary = useThemeColor({}, 'textSecondary');
@@ -20,44 +75,12 @@ export function FacultyForm() {
   const cardBg = useThemeColor({}, 'card');
   const cardBorder = useThemeColor({}, 'cardBorder');
 
-  const facultyMembers: FacultyMember[] = [
-    {
-      name: 'Larry Keen II, Ph.D',
-      title: 'Associate Professor in Psychology;\nPNIRD Lab Director',
-      email: 'LKeen@vsu.edu',
-      phone: '(804) 524-5523',
-      imageSource: require('@/assets/images/Larry.jpeg'),
-      isDirector: true,
-    },
-    {
-      name: 'Kimberly Lawrence, Ph.D.',
-      title: 'Associate Professor in Psychology',
-      email: 'KLawrence@vsu.edu',
-      phone: '(804) 524-5447',
-      imageSource: require('@/assets/images/Kimberly.jpeg'),
-    },
-    {
-      name: 'Arlener D. Turner, Ph.D',
-      title: 'Associate Professor\nDepartment of Psychiatry and Behavioral Sciences\nUniversity of Miami',
-      email: 'adanielleturner@gmail.com',
-      phone: '(773) 339-1797',
-      imageSource: require('@/assets/images/Arlener.png'),
-    },
-    {
-      name: 'Alexis Morris, M.S.',
-      title: 'Graduate Research Assistant',
-      email: '',
-      phone: '',
-      imageSource: require('@/assets/images/Alexis.jpeg'),
-    },
-    {
-      name: 'Diamond Adams',
-      title: 'Graduate Research Assistant',
-      email: '',
-      phone: '',
-      imageSource: require('@/assets/images/Diamond.jpeg'),
-    },
-  ];
+  const facultyMembers: FacultyMember[] = dbMembers.length > 0
+    ? dbMembers.map((db) => {
+        const fb = FALLBACK_FACULTY.find((f) => f.name === db.name) ?? FALLBACK_FACULTY[0];
+        return mapDbMember(db, fb);
+      })
+    : FALLBACK_FACULTY;
 
   const handleEmailPress = (email: string) => {
     if (email) {
@@ -127,26 +150,35 @@ export function FacultyForm() {
     <ScrollView style={[styles.container, { backgroundColor }]} contentContainerStyle={styles.contentContainer}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.title, { color: textColor }]}>Team</Text>
-        <Text style={[styles.subtitle, { color: textSecondary }]}>
-          Meet our dedicated research team
-        </Text>
+         <Text style={[styles.title, { color: textColor }]}>{blocks.page_title ?? 'Team'}</Text>
+         <Text style={[styles.subtitle, { color: textSecondary }]}>
+           {blocks.page_subtitle ?? 'Meet our dedicated research team'}
+         </Text>
       </View>
 
       {/* Faculty Cards */}
       <View style={styles.facultyList}>
-        {facultyMembers.map((member, index) => renderFacultyCard(member, index))}
+        {loading && dbMembers.length === 0 ? (
+          <ActivityIndicator size="large" color={primaryColor} />
+        ) : (
+          facultyMembers.map((member, index) => renderFacultyCard(member, index))
+        )}
       </View>
+      {error && (
+        <Text style={[styles.errorText, { color: '#ef4444' }]}>
+          Could not load faculty from the database — showing the built-in list.
+        </Text>
+      )}
 
       {/* Lab Info */}
       <View style={[styles.labInfoCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
         <Ionicons name="flask" size={32} color={primaryColor} />
-        <Text style={[styles.labInfoTitle, { color: textColor }]}>PNIRD Lab</Text>
+        <Text style={[styles.labInfoTitle, { color: textColor }]}>{blocks.lab_title ?? 'PNIRD Lab'}</Text>
         <Text style={[styles.labInfoText, { color: textSecondary }]}>
-          Psychological Neuroscience & Interdisciplinary Research Division
+          {blocks.lab_description ?? 'Psychological Neuroscience & Interdisciplinary Research Division'}
         </Text>
         <Text style={[styles.labInfoSubtext, { color: textSecondary }]}>
-          Virginia State University
+          {blocks.lab_institution ?? 'Virginia State University'}
         </Text>
       </View>
     </ScrollView>
@@ -175,6 +207,11 @@ const styles = StyleSheet.create({
   },
   facultyList: {
     gap: 16,
+  },
+  errorText: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 8,
   },
   facultyCard: {
     borderRadius: 16,

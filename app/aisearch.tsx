@@ -23,7 +23,9 @@ interface AiResponse {
 
 export default function AiSearch() {
   const router = useRouter();
-  const { query: urlQuery } = useLocalSearchParams();
+  // A repeated query param arrives as string[], so take the first value.
+  const params = useLocalSearchParams();
+  const urlQuery = Array.isArray(params.query) ? params.query[0] : params.query;
   const [query, setQuery] = useState(urlQuery || '');
   const [isLoading, setIsLoading] = useState(false);
   const [searchResult, setSearchResult] = useState<AiResponse | null>(null);

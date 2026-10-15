@@ -79,6 +79,268 @@ export type Database = {
           }
         ]
       }
+      faculty_members: {
+        Row: {
+          id: string
+          name: string
+          title: string
+          email: string | null
+          phone: string | null
+          image_url: string | null
+          is_director: boolean
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          title: string
+          email?: string | null
+          phone?: string | null
+          image_url?: string | null
+          is_director?: boolean
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          title?: string
+          email?: string | null
+          phone?: string | null
+          image_url?: string | null
+          is_director?: boolean
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      health_topics: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          color: string
+          image_url: string | null
+          icon: string | null
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          color?: string
+          image_url?: string | null
+          icon?: string | null
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          color?: string
+          image_url?: string | null
+          icon?: string | null
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      home_events: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          icon: string | null
+          color: string
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          icon?: string | null
+          color?: string
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          icon?: string | null
+          color?: string
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_publications: {
+        Row: {
+          id: string
+          citation: string
+          journal: string | null
+          year: number | null
+          is_featured: boolean
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          citation: string
+          journal?: string | null
+          year?: number | null
+          is_featured?: boolean
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          citation?: string
+          journal?: string | null
+          year?: number | null
+          is_featured?: boolean
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      community_categories: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          icon: string | null
+          color: string
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          icon?: string | null
+          color?: string
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          icon?: string | null
+          color?: string
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      community_items: {
+        Row: {
+          id: string
+          category_id: string
+          title: string
+          description: string | null
+          icon: string | null
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          category_id: string
+          title: string
+          description?: string | null
+          icon?: string | null
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          category_id?: string
+          title?: string
+          description?: string | null
+          icon?: string | null
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_items_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "community_categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      community_listings: {
+        Row: {
+          id: string
+          item_id: string
+          title: string
+          description: string | null
+          contact: string | null
+          date_time: string | null
+          link: string | null
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          item_id: string
+          title: string
+          description?: string | null
+          contact?: string | null
+          date_time?: string | null
+          link?: string | null
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          item_id?: string
+          title?: string
+          description?: string | null
+          contact?: string | null
+          date_time?: string | null
+          link?: string | null
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_listings_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "community_items"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       questionnaire_responses: {
         Row: {
           id: string

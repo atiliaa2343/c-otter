@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, Linking, StyleSheet } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useContentBlocks } from "@/hooks/useContentBlocks";
 
 interface ContactCardProps {
   icon: string;
@@ -64,6 +65,7 @@ function QuickLink({ icon, title, url }: QuickLinkProps) {
 }
 
 export function ContactSection() {
+  const { blocks } = useContentBlocks('contact');
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const textSecondary = useThemeColor({}, 'textSecondary');
@@ -92,9 +94,9 @@ export function ContactSection() {
     >
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.title, { color: textColor }]}>Contact Us</Text>
+        <Text style={[styles.title, { color: textColor }]}>{blocks.page_title ?? 'Contact Us'}</Text>
         <Text style={[styles.subtitle, { color: textSecondary }]}>
-          Get in touch with the C-OTTER Psychology Center
+          {blocks.page_subtitle ?? 'Get in touch with the C-OTTER Psychology Center'}
         </Text>
       </View>
 
@@ -104,7 +106,7 @@ export function ContactSection() {
           <View style={styles.emergencyTextContainer}>
             <Text style={[styles.emergencyTitle, { color: '#dc2626' }]}>In case of emergency</Text>
             <Text style={[styles.emergencyText, { color: '#991b1b' }]}>
-              This application provides general public health information and community resources and is not a substitute for emergency medical care, diagnosis, or crisis intervention. If you are experiencing a medical emergency or believe someone is in immediate danger, call 911 immediately or go to the nearest emergency room; for mental health emergencies or emotional distress, call or text 988 for the Suicide & Crisis Lifeline. If you need additional support connecting with healthcare or community services, please contact your local health department or healthcare provider directly.
+              {blocks.emergency_notice ?? blocks.emergency_text ?? 'This application provides general public health information and community resources and is not a substitute for emergency medical care, diagnosis, or crisis intervention. If you are experiencing a medical emergency or believe someone is in immediate danger, call 911 immediately or go to the nearest emergency room; for mental health emergencies or emotional distress, call or text 988 for the Suicide & Crisis Lifeline. If you need additional support connecting with healthcare or community services, please contact your local health department or healthcare provider directly.'}
             </Text>
           </View>
         </View>
@@ -197,11 +199,11 @@ export function ContactSection() {
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Text style={[styles.footerText, { color: textSecondary }]}>
-          C-OTTER © 2024
+         <Text style={[styles.footerText, { color: textSecondary }]}>
+          {blocks.footer_text ?? 'C-OTTER © 2024'}
         </Text>
         <Text style={[styles.footerSubtext, { color: textTertiary }]}>
-          Connection, Outreach, Transformation, Teaching, Empowerment & Resources
+          {blocks.footer_subtext ?? 'Connection, Outreach, Transformation, Teaching, Empowerment & Resources'}
         </Text>
       </View>
     </ScrollView>
