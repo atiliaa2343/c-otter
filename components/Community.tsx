@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useContentBlocks } from "@/hooks/useContentBlocks";
+import { useCommunityContent } from "@/hooks/useCommunityContent";
 
 interface CategorySection {
   id: string;
@@ -27,25 +29,19 @@ interface ExampleItem {
   link: string;
 }
 
-export default function CommunityForm() {
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
-  
-  const backgroundColor = useThemeColor({}, 'background');
-  const textColor = useThemeColor({}, 'text');
-  const textSecondary = useThemeColor({}, 'textSecondary');
-  const primaryColor = useThemeColor({}, 'primary');
-  const cardBackground = useThemeColor({}, 'card');
-  const borderColor = useThemeColor({}, 'cardBorder');
-
-  const volunteerOpportunities: CategorySection = {
+// The original hardcoded community tree, kept verbatim as the fallback when
+// the database fetch fails or the community tables are unseeded. Titles are
+// overridden from content_blocks at render time.
+const FALLBACK_CATEGORIES: CategorySection[] = [
+  {
     id: 'volunteer',
     title: 'Volunteer Opportunities',
     icon: 'hand-right',
     color: '#10B981',
     items: [
-      { 
+      {
         id: 'events',
-        title: 'Events', 
+        title: 'Events',
         description: 'Find volunteer events and opportunities',
         icon: 'calendar',
         examples: [
@@ -56,9 +52,9 @@ export default function CommunityForm() {
           { title: 'Community Garden Planting', description: 'Plant vegetables and maintain community garden beds', contact: 'Parks & Rec Department - (555) 567-8901', dateTime: 'Saturday, March 29 - 8:00 AM to 11:00 AM', link: 'https://parksrecrec.org/garden' },
         ]
       },
-      { 
+      {
         id: 'community',
-        title: 'Community', 
+        title: 'Community',
         description: 'Connect with local organizations and partners',
         icon: 'people',
         examples: [
@@ -70,17 +66,16 @@ export default function CommunityForm() {
         ]
       },
     ],
-  };
-
-  const foodPantryInfo: CategorySection = {
+  },
+  {
     id: 'food-pantry',
     title: 'Food Pantry & Basic Needs',
     icon: 'fast-food',
     color: '#F59E0B',
     items: [
-      { 
+      {
         id: 'financial-assistance',
-        title: 'Financial Assistance', 
+        title: 'Financial Assistance',
         description: 'Emergency funds, grants, and financial support',
         icon: 'card',
         examples: [
@@ -90,9 +85,9 @@ export default function CommunityForm() {
           { title: 'Financial Counseling', description: 'Budget planning and financial wellness support', contact: 'counseling@campus.edu - (555) 444-5555', dateTime: 'Mon-Fri - 9:00 AM to 4:00 PM', link: 'https://campus.edu/financialcounseling' },
         ]
       },
-      { 
+      {
         id: 'tutoring-study',
-        title: 'Tutoring & Study Help', 
+        title: 'Tutoring & Study Help',
         description: 'Academic support and tutoring services',
         icon: 'book',
         examples: [
@@ -102,9 +97,9 @@ export default function CommunityForm() {
           { title: 'Online Resources', description: 'Access to Khan Academy, Quizlet Plus, and more', contact: 'library@campus.edu - (555) 444-5555', dateTime: '24/7 Online', link: 'https://campus.edu/onlineresources' },
         ]
       },
-      { 
+      {
         id: 'campus-services',
-        title: 'Campus Services', 
+        title: 'Campus Services',
         description: 'Campus offices and support services',
         icon: 'business',
         examples: [
@@ -116,8 +111,50 @@ export default function CommunityForm() {
         ]
       },
     ],
-  };
+  },
+];
 
+export default function CommunityForm() {
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const { blocks } = useContentBlocks('community');
+  const { categories: dbCategories, error } = useCommunityContent();
+
+  const backgroundColor = useThemeColor({}, 'background');
+  const textColor = useThemeColor({}, 'text');
+  const textSecondary = useThemeColor({}, 'textSecondary');
+  const primaryColor = useThemeColor({}, 'primary');
+  const cardBackground = useThemeColor({}, 'card');
+  const borderColor = useThemeColor({}, 'cardBorder');
+
+  // Prefer the database tree; fall back to the original hardcoded categories
+  // so the page still renders if the fetch fails or the tables are unseeded.
+  const sections: CategorySection[] = dbCategories.length > 0
+    ? dbCategories.map((c) => ({
+        id: c.id,
+        title: c.title,
+        icon: c.icon ?? 'ellipse',
+        color: c.color,
+        items: c.items.map((i) => ({
+          id: i.id,
+          title: i.title,
+          description: i.description ?? '',
+          icon: i.icon ?? 'ellipse',
+          examples: i.listings.map((l) => ({
+            title: l.title,
+            description: l.description ?? '',
+            contact: l.contact ?? '',
+            dateTime: l.date_time ?? '',
+            link: l.link ?? '',
+          })),
+        })),
+      }))
+    : FALLBACK_CATEGORIES.map((c) => ({
+        ...c,
+        title:
+          c.id === 'volunteer'
+            ? blocks.volunteer_title ?? c.title
+            : blocks.food_pantry_title ?? c.title,
+      }));
   const handleItemPress = (itemId: string) => {
     setSelectedItem(itemId);
   };
@@ -131,7 +168,7 @@ export default function CommunityForm() {
   };
 
   const findItemById = (id: string): CategoryItem | undefined => {
-    const allItems = [...volunteerOpportunities.items, ...foodPantryInfo.items];
+    const allItems = sections.flatMap((section) => section.items);
     return allItems.find(item => item.id === id);
   };
 
@@ -231,17 +268,22 @@ export default function CommunityForm() {
         <View style={[styles.headerIcon, { backgroundColor: `${primaryColor}15` }]}>
           <Ionicons name="people" size={32} color={primaryColor} />
         </View>
-        <Text style={[styles.headerTitle, { color: textColor }]}>Community Resources</Text>
+        <Text style={[styles.headerTitle, { color: textColor }]}>
+          {blocks.page_title ?? 'Community Resources'}
+        </Text>
         <Text style={[styles.headerSubtitle, { color: textSecondary }]}>
-          Connect with campus and local community support services
+          {blocks.page_subtitle ?? 'Connect with campus and local community support services'}
         </Text>
       </View>
 
-      {/* Volunteer Opportunities Section */}
-      {renderCategory(volunteerOpportunities)}
+      {error && (
+        <Text style={[styles.errorText, { color: '#dc2626' }]}>
+          Could not load community content from the database — showing the built-in list.
+        </Text>
+      )}
 
-      {/* Food Pantry & Basic Needs Section */}
-      {renderCategory(foodPantryInfo)}
+      {/* Community sections, ordered by sort_order */}
+      {sections.map((section) => renderCategory(section))}
     </ScrollView>
   );
 }
@@ -282,6 +324,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     overflow: 'hidden',
     borderWidth: 1,
+  },
+  errorText: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 12,
   },
   categoryHeader: {
     flexDirection: 'row',

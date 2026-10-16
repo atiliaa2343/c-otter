@@ -1,8 +1,10 @@
 import React from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { useRouter } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useContentBlocks } from "@/hooks/useContentBlocks";
+import { useHealthTopics } from "@/hooks/useHealthTopics";
 
 interface TopicCard {
   id: string;
@@ -13,36 +15,48 @@ interface TopicCard {
   description: string;
 }
 
+const FALLBACK_TOPICS: TopicCard[] = [
+  {
+    id: '1',
+    title: 'Cannabis',
+    color: '#8B7FE8',
+    imageSource: require('@/assets/images/cannabis.png'),
+    description: 'Resources and support for cannabis use',
+  },
+  {
+    id: '2',
+    title: 'Opioids',
+    color: '#FFB088',
+    imageSource: require('@/assets/images/drugs.png'),
+    description: 'Resources and support for opioid use',
+  },
+];
+
+const FALLBACK_IMAGE_BY_TITLE: Record<string, any> = {
+  Cannabis: require('@/assets/images/cannabis.png'),
+  Opioids: require('@/assets/images/drugs.png'),
+};
+
 export function HealthForm() {
   const router = useRouter();
-  
+  const { blocks } = useContentBlocks('health');
+  const { topics: dbTopics, loading, error } = useHealthTopics();
+
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const textSecondary = useThemeColor({}, 'textSecondary');
 
-const topics: TopicCard[] = [
-      { 
-        id: '1', 
-        title: 'Cannabis', 
-        color: '#8B7FE8', 
-        imageSource: require('@/assets/images/cannabis.png'), 
-        description: 'Resources and support for cannabis use',
-      },
-     { 
-       id: '2', 
-       title: 'Opioids', 
-       color: '#FFB088', 
-       imageSource: require('@/assets/images/drugs.png'), 
-       description: 'Resources and support for opioid use',
-     },
-     { 
-       id: '3', 
-       title: 'Health & Wellness', 
-       color: '#85DDA2', 
-       imageSource: require('@/assets/images/heartbeat.png'), 
-       description: 'Reasources for your health and wellness based on wearable data',
-     },
-   ];
+  const topics: TopicCard[] = dbTopics.length > 0
+    ? dbTopics.map((db) => ({
+        id: db.id,
+        title: db.title,
+        color: db.color,
+        imageSource: db.image_url
+          ? { uri: db.image_url }
+          : FALLBACK_IMAGE_BY_TITLE[db.title] ?? FALLBACK_TOPICS[0].imageSource,
+        description: db.description ?? '',
+      }))
+    : FALLBACK_TOPICS;
 
   const slugify = (s: string) =>
     s
@@ -109,14 +123,24 @@ const topics: TopicCard[] = [
     <ScrollView style={[styles.container, { backgroundColor }]} contentContainerStyle={styles.contentContainer}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.title, { color: textColor }]}>Health Resources</Text>
+        <Text style={[styles.title, { color: textColor }]}>{blocks.page_title ?? 'Health Education'}</Text>
         <Text style={[styles.subtitle, { color: textSecondary }]}>
-          Explore topics to learn about resources, support, and your health.
+          {blocks.page_subtitle ?? 'Explore topics to learn about resources and support'}
         </Text>
       </View>
 
+      {error && (
+        <Text style={[styles.errorText, { color: '#ef4444' }]}>
+          Could not load health topics from the database — showing the built-in list.
+        </Text>
+      )}
+
       {/* Topic Cards Grid */}
-      {renderStaggeredGrid()}
+      {loading && dbTopics.length === 0 ? (
+        <ActivityIndicator size="large" color={textColor} style={styles.loader} />
+      ) : (
+        renderStaggeredGrid()
+      )}
     </ScrollView>
   );
 }
@@ -144,6 +168,14 @@ const styles = StyleSheet.create({
   gridContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  loader: {
+    marginTop: 40,
+  },
+  errorText: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 12,
   },
   column: {
     width: '48%',

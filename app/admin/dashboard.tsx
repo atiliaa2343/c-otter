@@ -4,6 +4,7 @@ import { useAdminAuth } from '@/app/admin/context/AdminAuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { supabase } from '@/db/supabase';
+import { ContentEditorScreen } from '@/components/admin/ContentEditorScreen';
 
 interface Stats {
   contentItems?: number;
@@ -16,6 +17,7 @@ export default function Dashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [tab, setTab] = useState<'stats' | 'content'>('stats');
 
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
@@ -83,9 +85,33 @@ export default function Dashboard() {
         <Text style={{ color: '#fff', fontSize: 16, marginTop: 4 }}>
           Welcome, {user.username}
         </Text>
+
+        <View style={styles.tabBar}>
+          {(['stats', 'content'] as const).map((t) => {
+            const active = t === tab;
+            return (
+              <TouchableOpacity
+                key={t}
+                onPress={() => setTab(t)}
+                style={[styles.tab, active && styles.tabActive]}
+              >
+                <Text
+                  style={[
+                    styles.tabText,
+                    { color: active ? '#fff' : 'rgba(255,255,255,0.75)' },
+                  ]}
+                >
+                  {t === 'stats' ? 'Statistics' : 'Manage Content'}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
 
-      {isLoading ? (
+      {tab === 'content' ? (
+        <ContentEditorScreen adminId={user.id} />
+      ) : isLoading ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color={primaryColor} />
         </View>
@@ -149,3 +175,26 @@ export default function Dashboard() {
     </View>
   );
 }
+
+const styles = {
+  tabBar: {
+    flexDirection: 'row' as const,
+    gap: 8,
+    marginTop: 16,
+  },
+  tab: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
+  },
+  tabActive: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderColor: '#fff',
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600' as const,
+  },
+};
