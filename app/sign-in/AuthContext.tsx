@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import * as Linking from 'expo-linking';
 import { supabase } from '@/db/supabase';
 
 interface AuthUser {
@@ -77,7 +78,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { username } },
+        options: {
+          data: { username },
+          // Without this, the confirm link goes to the Supabase "Site URL" (localhost by default)
+          emailRedirectTo: Linking.createURL('/auth/callback'),
+        },
       });
       if (error) throw new Error(error.message);
     } finally {

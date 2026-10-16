@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
-import { useLocalSearchParams, Stack } from 'expo-router';
+import { useLocalSearchParams, Stack, Redirect } from 'expo-router';
 import { BACKEND_URL } from '@/constants/BackendConfig';
+
 
 const BACKEND_CONTENT_API = process.env.EXPO_PUBLIC_CONTENT_API || BACKEND_URL;
 
@@ -156,6 +157,10 @@ export default function DomainPage() {
   const domain = params.domain ?? 'general';
   const showOpioidApps = domain === 'opioids';
   const showCannabisApps = domain === 'cannabis';
+  
+  if (domain === 'health-and-wellness') {
+      return <Redirect href="/health-data" />;
+  }
 
   const appsToShow = showOpioidApps ? opioidApps : showCannabisApps ? cannabisApps : [];
   const resourcesToShow = showOpioidApps ? opioidResources : showCannabisApps ? cannabisResources : [];

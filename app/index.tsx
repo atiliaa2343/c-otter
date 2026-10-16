@@ -18,31 +18,22 @@ import { FacultyForm } from "@/components/Faculty";
 import Research from "@/components/Research";
 import { ContactSection } from "@/components/Contact";
 import Community from "@/components/Community";
-import { getImageUrl } from "@/constants/BackendConfig";
+import { supabase } from "@/db/supabase";
 
-  // Local logo as fallback
   const LOCAL_LOGO = require("@/assets/images/Ce Otter.png");
 
-// MongoDB API endpoint
-const API_BASE_URL = 'http://10.0.0.92:4000';
-
-// Types for MongoDB data
 interface HourOfOperation {
-  _id?: any;
+  id: number;
   location_id: number;
-  day: string;
-  open_time: string;
-  close_time: string;
-  is_open: boolean;
-}
-
-interface LocationData {
-  _id?: any;
-  name: string;
-  address: string;
-  phone: string;
-  domain: string;
-  description?: string;
+  open_time: string | null;
+  close_time: string | null;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
 }
 
 type NavigationItem = "home" | "research" | "community" | "health" | "faculty" | "contact";
@@ -55,10 +46,6 @@ export default function Index() {
   const [locations, setlocations] = useState<HourOfOperation[]>();
   const [loading, setLoading] = useState(true);
   
-  // Try MongoDB first, fallback to local asset for header logo
-  const [headerLogoError, setHeaderLogoError] = useState(false);
-  const headerLogoSource = headerLogoError ? LOCAL_LOGO : { uri: getImageUrl('Ce Otter.png') };
-
   // Theme colors
   const backgroundColor = useThemeColor({}, 'background');
   const primaryColor = useThemeColor({}, 'primary');
@@ -71,10 +58,10 @@ export default function Index() {
 
   async function getlocations() {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/hours`);
-      const result = await response.json();
-      if (result.data) {
-        setlocations(result.data); 
+      const { data, error } = await supabase.from('hours_of_operation').select('*');
+      if (error) throw error;
+      if (data) {
+        setlocations(data);
       }
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -168,9 +155,8 @@ export default function Index() {
         <View style={[styles.header, { backgroundColor: tabBarBg, borderBottomColor: tabBarBorder }]}>
           <View style={styles.headerLeft}>
             <Image
-              source={headerLogoSource}
+              source={LOCAL_LOGO}
               style={{ width: 36, height: 36, borderRadius: 18 }}
-              onError={() => setHeaderLogoError(true)}
             />
             <Text style={[styles.headerTitle, { color: textColor }]}>CE - OTTER</Text>
           </View>
