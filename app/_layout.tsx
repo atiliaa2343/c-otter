@@ -11,6 +11,7 @@ export default function RootLayout() {
            <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} ></Stack.Screen>
             <Stack.Screen name="aisearch" options={{ headerShown: false }} ></Stack.Screen>
+            <Stack.Screen name="auth/callback" options={{ headerShown: false }} />
             <Stack.Screen
               name="coloring"
               options={{
