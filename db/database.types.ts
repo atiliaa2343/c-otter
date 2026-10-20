@@ -674,6 +674,201 @@ export type Database = {
         }
         Relationships: []
       }
+      screening_questionnaires: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          is_active: boolean
+          created_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      screening_questions: {
+        Row: {
+          id: string
+          questionnaire_id: string
+          prompt: string
+          help_text: string | null
+          type: string
+          is_required: boolean
+          sort_order: number
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          questionnaire_id: string
+          prompt: string
+          help_text?: string | null
+          type: string
+          is_required?: boolean
+          sort_order?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          questionnaire_id?: string
+          prompt?: string
+          help_text?: string | null
+          type?: string
+          is_required?: boolean
+          sort_order?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      screening_question_options: {
+        Row: {
+          id: string
+          question_id: string
+          label: string
+          sort_order: number
+          is_active: boolean
+          disqualifies: boolean
+        }
+        Insert: {
+          id?: string
+          question_id: string
+          label: string
+          sort_order?: number
+          is_active?: boolean
+          disqualifies?: boolean
+        }
+        Update: {
+          id?: string
+          question_id?: string
+          label?: string
+          sort_order?: number
+          is_active?: boolean
+          disqualifies?: boolean
+        }
+        Relationships: []
+      }
+      screening_submissions: {
+        Row: {
+          id: string
+          questionnaire_id: string
+          user_id: string
+          submitted_at: string
+        }
+        Insert: {
+          id?: string
+          questionnaire_id: string
+          user_id: string
+          submitted_at?: string
+        }
+        Update: {
+          id?: string
+          questionnaire_id?: string
+          user_id?: string
+          submitted_at?: string
+        }
+        Relationships: []
+      }
+      screening_answers: {
+        Row: {
+          id: string
+          submission_id: string
+          question_id: string
+          option_id: string | null
+          text_value: string | null
+          number_value: number | null
+        }
+        Insert: {
+          id?: string
+          submission_id: string
+          question_id: string
+          option_id?: string | null
+          text_value?: string | null
+          number_value?: number | null
+        }
+        Update: {
+          id?: string
+          submission_id?: string
+          question_id?: string
+          option_id?: string | null
+          text_value?: string | null
+          number_value?: number | null
+        }
+        Relationships: []
+      }
+      screening_cohorts: {
+        Row: {
+          id: string
+          questionnaire_id: string
+          name: string
+          notes: string | null
+          criteria: Json
+          created_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          questionnaire_id: string
+          name: string
+          notes?: string | null
+          criteria?: Json
+          created_by?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          questionnaire_id?: string
+          name?: string
+          notes?: string | null
+          criteria?: Json
+          created_by?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      screening_cohort_members: {
+        Row: {
+          cohort_id: string
+          user_id: string
+          status: string
+          added_by: string | null
+          added_at: string
+        }
+        Insert: {
+          cohort_id: string
+          user_id: string
+          status?: string
+          added_by?: string | null
+          added_at?: string
+        }
+        Update: {
+          cohort_id?: string
+          user_id?: string
+          status?: string
+          added_by?: string | null
+          added_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

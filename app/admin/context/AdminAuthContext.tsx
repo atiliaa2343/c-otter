@@ -67,12 +67,18 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
     };
     checkSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    // Must not await a Supabase call inside this callback: supabase-js holds
+    // its auth lock while the callback runs, so the profiles query would wait
+    // on the lock forever — and so would every later getSession() anywhere in
+    // the app. Deferring with setTimeout lets the callback return first.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) {
         setUser(null);
         return;
       }
-      setUser(await loadAdminProfile(session.user.id, session.access_token));
+      setTimeout(async () => {
+        setUser(await loadAdminProfile(session.user.id, session.access_token));
+      }, 0);
     });
 
     return () => subscription.unsubscribe();
