@@ -129,3 +129,5 @@ expo-env.d.ts
 
 # Examples / Templates
 app-example
+
+.idea/
