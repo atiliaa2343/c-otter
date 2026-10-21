@@ -25,7 +25,10 @@ insert into public.health_topics (title, description, color, image_url, icon, so
 select v.title, v.description, v.color, v.image_url, v.icon, v.sort_order
 from (values
   ('Cannabis', 'Resources and support for cannabis use', '#8B7FE8', null::text, null::text, 0),
-  ('Opioids', 'Resources and support for opioid use', '#FFB088', null::text, null::text, 1)
+  ('Opioids', 'Resources and support for opioid use', '#FFB088', null::text, null::text, 1),
+  -- Title must slugify to "health-and-wellness": app/health/[domain].tsx
+  -- redirects that slug to the smartwatch / Health Connect screen.
+  ('Health & Wellness', 'Resources for your health and wellness based on wearable data', '#85DDA2', null::text, null::text, 2)
 ) as v(title, description, color, image_url, icon, sort_order)
 where not exists (
   select 1 from public.health_topics t where t.title = v.title

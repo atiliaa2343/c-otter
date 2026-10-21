@@ -30,11 +30,21 @@ const FALLBACK_TOPICS: TopicCard[] = [
     imageSource: require('@/assets/images/drugs.png'),
     description: 'Resources and support for opioid use',
   },
+  {
+    // Slugifies to "health-and-wellness", which app/health/[domain].tsx
+    // redirects to the smartwatch / Health Connect screen.
+    id: '3',
+    title: 'Health & Wellness',
+    color: '#85DDA2',
+    imageSource: require('@/assets/images/drugs.png'),
+    description: 'Resources for your health and wellness based on wearable data',
+  },
 ];
 
 const FALLBACK_IMAGE_BY_TITLE: Record<string, any> = {
   Cannabis: require('@/assets/images/cannabis.png'),
   Opioids: require('@/assets/images/drugs.png'),
+  'Health & Wellness': require('@/assets/images/drugs.png'),
 };
 
 export function HealthForm() {
