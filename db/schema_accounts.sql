@@ -21,11 +21,19 @@ alter table public.profiles enable row level security;
 create policy "profiles_select_own" on public.profiles
   for select using (auth.uid() = id);
 
+-- Security definer, so it reads profiles without going back through RLS —
+-- checking admin status with a plain subquery on profiles inside a profiles
+-- policy causes "infinite recursion detected in policy".
+create or replace function public.is_admin()
+returns boolean
+language sql stable security definer set search_path = public
+as $$
+  select exists (select 1 from public.profiles where id = auth.uid() and role = 'admin');
+$$;
+
 -- Admins can read every profile (needed for the admin dashboard's user count)
 create policy "profiles_select_admin" on public.profiles
-  for select using (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
-  );
+  for select using (public.is_admin());
 
 -- People can update their own profile fields (username, etc.) — not their role
 create policy "profiles_update_own" on public.profiles
