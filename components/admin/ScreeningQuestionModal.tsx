@@ -30,6 +30,8 @@ export interface ScreeningQuestionModalProps {
   question: AdminQuestion | null;
   /** New questions are appended at the end. */
   nextSortOrder: number;
+  /** Whether answer choices can screen someone out — only on the screening questionnaire. */
+  canScreenOut: boolean;
   onClose: () => void;
   onSaved: () => void;
 }
@@ -41,6 +43,7 @@ function draftFrom(question: AdminQuestion | null): QuestionDraft {
     return {
       prompt: '',
       help_text: '',
+      placeholder: '',
       type: 'single_choice',
       is_required: true,
       options: [
@@ -53,6 +56,7 @@ function draftFrom(question: AdminQuestion | null): QuestionDraft {
   return {
     prompt: question.prompt,
     help_text: question.help_text ?? '',
+    placeholder: question.placeholder ?? '',
     type: question.type,
     is_required: question.is_required,
     options: question.options.map((o) => ({
@@ -70,6 +74,7 @@ export function ScreeningQuestionModal({
   questionnaireId,
   question,
   nextSortOrder,
+  canScreenOut,
   onClose,
   onSaved,
 }: ScreeningQuestionModalProps) {
@@ -198,6 +203,19 @@ export function ScreeningQuestionModal({
             />
           </View>
 
+          {!isChoiceType(draft.type) ? (
+            <View style={styles.field}>
+              <Text style={[styles.fieldLabel, { color: textColor }]}>Answer box hint</Text>
+              <TextInput
+                style={inputStyle}
+                value={draft.placeholder}
+                onChangeText={(placeholder) => update({ placeholder })}
+                placeholder="Optional grey text inside the answer box"
+                placeholderTextColor={textSecondary}
+              />
+            </View>
+          ) : null}
+
           <View style={styles.field}>
             <Text style={[styles.fieldLabel, { color: textColor }]}>Answer type</Text>
             <View style={styles.chipRow}>
@@ -270,14 +288,18 @@ export function ScreeningQuestionModal({
                     </TouchableOpacity>
                   </View>
                   <View style={styles.optionBottom}>
-                    <View style={styles.inlineSwitch}>
-                      <Switch
-                        value={option.disqualifies}
-                        onValueChange={(disqualifies) => updateOption(index, { disqualifies })}
-                        trackColor={{ true: '#ef4444', false: cardBorder }}
-                      />
-                      <Text style={[styles.hint, { color: textSecondary, marginTop: 0 }]}>Screens out</Text>
-                    </View>
+                    {canScreenOut ? (
+                      <View style={styles.inlineSwitch}>
+                        <Switch
+                          value={option.disqualifies}
+                          onValueChange={(disqualifies) => updateOption(index, { disqualifies })}
+                          trackColor={{ true: '#ef4444', false: cardBorder }}
+                        />
+                        <Text style={[styles.hint, { color: textSecondary, marginTop: 0 }]}>Screens out</Text>
+                      </View>
+                    ) : (
+                      <View />
+                    )}
                     {option.id && (
                       <TouchableOpacity onPress={() => updateOption(index, { is_active: !option.is_active })}>
                         <Text style={[styles.linkText, { color: primaryColor }]}>

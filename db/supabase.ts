@@ -7,7 +7,7 @@ import { Database } from './database.types'
 // session in React Native (there's no window.localStorage) — it falls back
 // to an in-memory session that's lost the moment the app process restarts.
 // That silently logs everyone out on every relaunch, which also means every
-// recordConnection/syncDailySummary/submitQuestionnaire call quietly no-ops
+// recordConnection/syncDailySummary/submitAnswers call quietly no-ops
 // instead of saving anything, since none of them have a session to attach to.
 //
 // Expo's static web output also evaluates this module in Node during

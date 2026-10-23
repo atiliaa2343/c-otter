@@ -16,10 +16,12 @@ import { confirmAction, errorMessage, notify } from './adminDialogs';
 export interface ScreeningQuestionListProps {
   questionnaireId: string;
   questions: AdminQuestion[];
+  /** Whether answer choices can screen someone out — only on the screening questionnaire. */
+  canScreenOut: boolean;
   onChanged: () => void;
 }
 
-export function ScreeningQuestionList({ questionnaireId, questions, onChanged }: ScreeningQuestionListProps) {
+export function ScreeningQuestionList({ questionnaireId, questions, canScreenOut, onChanged }: ScreeningQuestionListProps) {
   const [editing, setEditing] = useState<AdminQuestion | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
@@ -202,6 +204,7 @@ export function ScreeningQuestionList({ questionnaireId, questions, onChanged }:
         questionnaireId={questionnaireId}
         question={editing}
         nextSortOrder={nextSortOrder}
+        canScreenOut={canScreenOut}
         onClose={() => setModalVisible(false)}
         onSaved={onChanged}
       />

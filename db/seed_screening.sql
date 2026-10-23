@@ -1,6 +1,7 @@
 -- Optional: loads the two placeholder screening questions that used to be
 -- hardcoded in components/HealthQuestionnaire.tsx, so there's something to
--- test with. Run migration_screening_disqualifies.sql first. Does nothing if
+-- test with. Run migration_screening_disqualifies.sql and
+-- migration_questionnaire_kind.sql first. Does nothing if
 -- a screening questionnaire is already active.
 --
 -- If this fails on screening_questions.type, a check constraint expects a
@@ -13,7 +14,7 @@ declare
   age_id uuid;
   device_id uuid;
 begin
-  if exists (select 1 from public.screening_questionnaires where is_active) then
+  if exists (select 1 from public.screening_questionnaires where kind = 'screening' and is_active) then
     return;
   end if;
 

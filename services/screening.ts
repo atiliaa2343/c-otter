@@ -1,9 +1,10 @@
 import { supabase } from '@/db/supabase';
 import type { Json, Tables } from '@/db/database.types';
+import type { QuestionnaireKind } from '@/services/questionnaire';
 
-// Admin-side calls for the screening questionnaire: editing questions,
-// filtering people by their answers, and saving the people an admin picks
-// as cohorts. The user-side reads/writes (loading the questions on the
+// Admin-side calls for the screening and daily questionnaires: editing
+// questions, filtering people by their screening answers, and saving the
+// people an admin picks as cohorts. The user-side reads/writes (loading the questions on the
 // health tab, submitting answers) live in services/questionnaire.ts.
 //
 // Everything here relies on the RLS in db/schema_screening.sql — a
@@ -35,6 +36,7 @@ export interface AdminQuestion {
   id: string;
   prompt: string;
   help_text: string | null;
+  placeholder: string | null;
   type: QuestionType;
   is_required: boolean;
   sort_order: number;
@@ -93,10 +95,11 @@ const FK_VIOLATION = '23503';
 // Questionnaire
 // ---------------------------------------------------------------------------
 
-export async function getActiveQuestionnaire(): Promise<Questionnaire | null> {
+export async function getActiveQuestionnaire(kind: QuestionnaireKind): Promise<Questionnaire | null> {
   const { data, error } = await supabase
     .from('screening_questionnaires')
     .select('id, title, description, is_active')
+    .eq('kind', kind)
     .eq('is_active', true)
     .order('created_at', { ascending: false })
     .limit(1)
@@ -105,12 +108,23 @@ export async function getActiveQuestionnaire(): Promise<Questionnaire | null> {
   return data;
 }
 
-export async function createQuestionnaire(adminId: string): Promise<Questionnaire> {
+const NEW_QUESTIONNAIRE: Record<QuestionnaireKind, { title: string; description: string }> = {
+  screening: {
+    title: 'Health data screening',
+    description: 'A few quick questions to check whether this study applies to you.',
+  },
+  daily: {
+    title: 'Daily health check-in',
+    description: 'A few questions to help us interpret your wearable data accurately.',
+  },
+};
+
+export async function createQuestionnaire(adminId: string, kind: QuestionnaireKind): Promise<Questionnaire> {
   const { data, error } = await supabase
     .from('screening_questionnaires')
     .insert({
-      title: 'Health data screening',
-      description: 'A few quick questions to check whether this study applies to you.',
+      ...NEW_QUESTIONNAIRE[kind],
+      kind,
       is_active: true,
       created_by: adminId,
     })
@@ -128,7 +142,7 @@ export async function createQuestionnaire(adminId: string): Promise<Questionnair
 export async function listQuestions(questionnaireId: string): Promise<AdminQuestion[]> {
   const { data: questions, error } = await supabase
     .from('screening_questions')
-    .select('id, prompt, help_text, type, is_required, sort_order, is_active')
+    .select('id, prompt, help_text, placeholder, type, is_required, sort_order, is_active')
     .eq('questionnaire_id', questionnaireId)
     .order('sort_order')
     .order('created_at');
@@ -163,6 +177,8 @@ export async function questionHasAnswers(questionId: string): Promise<boolean> {
 export interface QuestionDraft {
   prompt: string;
   help_text: string;
+  /** Hint inside the answer box — only used by text and number questions. */
+  placeholder: string;
   type: QuestionType;
   is_required: boolean;
   /** Options as they should end up, in display order. `id` is set for ones that already exist. */
@@ -185,6 +201,7 @@ export async function saveQuestion(
   const fields = {
     prompt: draft.prompt.trim(),
     help_text: draft.help_text.trim() || null,
+    placeholder: isChoiceType(draft.type) ? null : draft.placeholder.trim() || null,
     type: draft.type,
     is_required: draft.is_required,
   };
@@ -471,11 +488,15 @@ export async function removeCohortMember(cohortId: string, userId: string): Prom
   if (error) throw error;
 }
 
-/** Active questions — the number shown on the dashboard's stats tab. */
+/** Active questions in the active screening questionnaire — the number shown on the dashboard's stats tab. */
 export async function countActiveQuestions(): Promise<number> {
+  const questionnaire = await getActiveQuestionnaire('screening');
+  if (!questionnaire) return 0;
+
   const { count, error } = await supabase
     .from('screening_questions')
     .select('id', { count: 'exact', head: true })
+    .eq('questionnaire_id', questionnaire.id)
     .eq('is_active', true);
   if (error) throw error;
   return count ?? 0;
