@@ -1,5 +1,4 @@
 import { supabase } from '@/db/supabase';
-import { Json } from '@/db/database.types';
 
 export interface ScreeningOption {
   id: string;
@@ -12,6 +11,7 @@ export interface ScreeningQuestion {
   id: string;
   prompt: string;
   helpText: string | null;
+  placeholder: string | null;
   // 'choice' whenever the question has options, whatever its stored type says;
   // otherwise 'number' or 'text'.
   kind: 'choice' | 'number' | 'text';
@@ -29,20 +29,39 @@ export interface Screening {
 // Keyed by question id. For a choice question the value is the option id.
 export type ScreeningAnswers = Record<string, string>;
 
-// Service class for the intake questionnaire someone fills out from the
-// health data page. Split out of HealthService since it's plain Supabase
+// 'screening' is answered once to see whether someone qualifies; 'daily' is
+// answered once a day after they pass it.
+export type QuestionnaireKind = 'screening' | 'daily';
+
+// Today's date on the phone as YYYY-MM-DD, so "once a day" resets at the
+// person's own midnight rather than the server's.
+export function localDate(): string {
+  const now = new Date();
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+// Service class for the questionnaires someone fills out from the health
+// data page. Split out of HealthService since it's plain Supabase
 // reads/writes with nothing platform-specific about it.
 //
-// Screening comes first and lives in the screening_* tables, so admins can
-// edit the questions without an app release. The intake survey after it is
-// still saved to questionnaire_responses.
+// Both questionnaires live in the screening_* tables, so admins can edit the
+// questions without an app release: screening comes first, then the daily
+// questionnaire once a day for anyone who passed it.
 export class QuestionnaireService {
-  // The active screening questionnaire with its active questions and options,
-  // or null when there's no session or no questionnaire is active (in which
-  // case screening is skipped). The screening tables are only readable when
+  async isSignedIn(): Promise<boolean> {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    return session !== null;
+  }
+
+  // The active questionnaire of the given kind with its active questions and
+  // options, or null when there's no session or none is active (in which
+  // case that step is skipped). The screening tables are only readable when
   // signed in. Throws on a network/database error so the caller can retry
-  // rather than skip screening.
-  async loadScreening(): Promise<Screening | null> {
+  // rather than skip a step.
+  async loadQuestionnaire(kind: QuestionnaireKind): Promise<Screening | null> {
     const {
       data: { session },
     } = await supabase.auth.getSession();
@@ -51,6 +70,7 @@ export class QuestionnaireService {
     const { data: questionnaire, error: questionnaireError } = await supabase
       .from('screening_questionnaires')
       .select('id, title, description')
+      .eq('kind', kind)
       .eq('is_active', true)
       .order('created_at', { ascending: false })
       .limit(1)
@@ -60,7 +80,7 @@ export class QuestionnaireService {
 
     const { data: questions, error: questionsError } = await supabase
       .from('screening_questions')
-      .select('id, prompt, help_text, type, is_required')
+      .select('id, prompt, help_text, placeholder, type, is_required')
       .eq('questionnaire_id', questionnaire.id)
       .eq('is_active', true)
       .order('sort_order');
@@ -87,6 +107,7 @@ export class QuestionnaireService {
           id: q.id,
           prompt: q.prompt,
           helpText: q.help_text,
+          placeholder: q.placeholder,
           kind: questionOptions.length ? 'choice' : q.type.includes('number') ? 'number' : 'text',
           isRequired: q.is_required,
           options: questionOptions,
@@ -136,9 +157,39 @@ export class QuestionnaireService {
     return this.isEligible(screening, answers) ? 'eligible' : 'ineligible';
   }
 
-  // Saves a screening submission and its answers. Returns false when there's
-  // no session or the write fails, so the caller can tell the person.
-  async submitScreening(screening: Screening, answers: ScreeningAnswers): Promise<boolean> {
+  // Whether the person has already filled out the daily questionnaire today.
+  // Like getScreeningResult, a submission with no saved answers doesn't count.
+  async hasSubmittedToday(daily: Screening): Promise<boolean> {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) return false;
+
+    const { data: submissions, error: submissionsError } = await supabase
+      .from('screening_submissions')
+      .select('id')
+      .eq('questionnaire_id', daily.questionnaireId)
+      .eq('user_id', session.user.id)
+      .eq('submitted_for', localDate());
+    if (submissionsError) throw submissionsError;
+    if (!submissions.length) return false;
+
+    const { count, error: answersError } = await supabase
+      .from('screening_answers')
+      .select('id', { count: 'exact', head: true })
+      .in('submission_id', submissions.map((s) => s.id));
+    if (answersError) throw answersError;
+    return (count ?? 0) > 0;
+  }
+
+  // Saves a submission and its answers — a daily one is dated today. Returns
+  // false when there's no session or the write fails, so the caller can tell
+  // the person.
+  async submitAnswers(
+    questionnaire: Screening,
+    answers: ScreeningAnswers,
+    kind: QuestionnaireKind,
+  ): Promise<boolean> {
     const {
       data: { session },
     } = await supabase.auth.getSession();
@@ -146,15 +197,19 @@ export class QuestionnaireService {
 
     const { data: submission, error: submissionError } = await supabase
       .from('screening_submissions')
-      .insert({ questionnaire_id: screening.questionnaireId, user_id: session.user.id })
+      .insert({
+        questionnaire_id: questionnaire.questionnaireId,
+        user_id: session.user.id,
+        submitted_for: kind === 'daily' ? localDate() : null,
+      })
       .select('id')
       .single();
     if (submissionError) {
-      console.error('Error saving screening submission:', submissionError);
+      console.error('Error saving submission:', submissionError);
       return false;
     }
 
-    const rows = screening.questions
+    const rows = questionnaire.questions
       .filter((q) => answers[q.id]?.trim())
       .map((q) => {
         const value = answers[q.id].trim();
@@ -169,62 +224,30 @@ export class QuestionnaireService {
 
     const { error: answersError } = await supabase.from('screening_answers').insert(rows);
     if (answersError) {
-      console.error('Error saving screening answers:', answersError);
+      console.error('Error saving answers:', answersError);
       return false;
     }
     return true;
   }
 
-  // Saves the intake survey. Unlike most of HealthService's writes this is a
-  // direct user action, so instead of a silent no-op it returns false when
-  // there's no session (general user sign-in doesn't exist in the app yet)
-  // so the caller can tell the person their answers weren't saved.
-  async submitQuestionnaire(responses: Json): Promise<boolean> {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    if (!session) return false;
-
-    const { error } = await supabase.from('questionnaire_responses').insert({
-      user_id: session.user.id,
-      responses,
-    });
-
-    if (error) {
-      console.error('Error saving questionnaire response:', error);
-      return false;
-    }
-    return true;
-  }
-
-  // Whether the signed-in person still has a questionnaire waiting — no survey
-  // on file and not screened out. Returns false (nothing to flag) when nobody's
-  // signed in or a lookup fails, the same silent-no-op pattern as HealthService.
+  // Whether the signed-in person has something to fill out right now: the
+  // screening, or (once they've passed it) today's daily questionnaire.
+  // Returns false (nothing to flag) when nobody's signed in or a lookup
+  // fails, the same silent-no-op pattern as HealthService.
   async hasPendingQuestionnaire(): Promise<boolean> {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    if (!session) return false;
-
-    const { data, error } = await supabase
-      .from('questionnaire_responses')
-      .select('id')
-      .eq('user_id', session.user.id)
-      .limit(1)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Error checking questionnaire status:', error);
-      return false;
-    }
-    if (data) return false;
-
     try {
-      const screening = await this.loadScreening();
-      if (!screening) return true;
-      return (await this.getScreeningResult(screening)) !== 'ineligible';
-    } catch (screeningError) {
-      console.error('Error checking screening status:', screeningError);
+      const screening = await this.loadQuestionnaire('screening');
+      if (screening) {
+        const result = await this.getScreeningResult(screening);
+        if (result === 'ineligible') return false;
+        if (result === null) return true;
+      }
+
+      const daily = await this.loadQuestionnaire('daily');
+      if (!daily) return false;
+      return !(await this.hasSubmittedToday(daily));
+    } catch (error) {
+      console.error('Error checking questionnaire status:', error);
       return false;
     }
   }

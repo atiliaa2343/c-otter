@@ -655,6 +655,7 @@ export type Database = {
           id: string
           title: string
           description: string | null
+          kind: string
           is_active: boolean
           created_by: string | null
           created_at: string
@@ -663,6 +664,7 @@ export type Database = {
           id?: string
           title: string
           description?: string | null
+          kind?: string
           is_active?: boolean
           created_by?: string | null
           created_at?: string
@@ -671,6 +673,7 @@ export type Database = {
           id?: string
           title?: string
           description?: string | null
+          kind?: string
           is_active?: boolean
           created_by?: string | null
           created_at?: string
@@ -683,6 +686,7 @@ export type Database = {
           questionnaire_id: string
           prompt: string
           help_text: string | null
+          placeholder: string | null
           type: string
           is_required: boolean
           sort_order: number
@@ -695,6 +699,7 @@ export type Database = {
           questionnaire_id: string
           prompt: string
           help_text?: string | null
+          placeholder?: string | null
           type: string
           is_required?: boolean
           sort_order?: number
@@ -707,6 +712,7 @@ export type Database = {
           questionnaire_id?: string
           prompt?: string
           help_text?: string | null
+          placeholder?: string | null
           type?: string
           is_required?: boolean
           sort_order?: number
@@ -749,18 +755,21 @@ export type Database = {
           questionnaire_id: string
           user_id: string
           submitted_at: string
+          submitted_for: string | null
         }
         Insert: {
           id?: string
           questionnaire_id: string
           user_id: string
           submitted_at?: string
+          submitted_for?: string | null
         }
         Update: {
           id?: string
           questionnaire_id?: string
           user_id?: string
           submitted_at?: string
+          submitted_for?: string | null
         }
         Relationships: []
       }

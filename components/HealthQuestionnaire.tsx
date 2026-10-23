@@ -1,62 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
-import { QuestionnaireService, Screening, ScreeningAnswers } from '@/services/questionnaire';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator, AppState } from 'react-native';
+import { QuestionnaireService, Screening, ScreeningAnswers, localDate } from '@/services/questionnaire';
 
 const questionnaireService = new QuestionnaireService();
 
-interface ChoiceQuestion {
-  key: string;
-  type: 'choice';
-  prompt: string;
-  options: string[];
+// screening: checking whether this applies to the person. daily: today's
+// questionnaire. done: today's is already in. unavailable: passed screening
+// but no daily questionnaire is active. signedOut: the session is gone
+// (health-data.tsx normally keeps signed-out people off this screen).
+type Stage = 'loading' | 'error' | 'signedOut' | 'screening' | 'daily' | 'ineligible' | 'done' | 'unavailable';
+
+function msUntilMidnight(): number {
+  const midnight = new Date();
+  midnight.setHours(24, 0, 0, 0);
+  return midnight.getTime() - Date.now();
 }
 
-interface TextQuestion {
-  key: string;
-  type: 'text';
-  prompt: string;
-  placeholder?: string;
-}
-
-type Question = ChoiceQuestion | TextQuestion;
-
-const QUESTIONS: Question[] = [
-  {
-    key: 'sleep_hours',
-    type: 'choice',
-    prompt: 'On average, how many hours of sleep do you get per night?',
-    options: ['Less than 5', '5–6', '7–8', 'More than 8'],
-  },
-  {
-    key: 'activity_level',
-    type: 'choice',
-    prompt: 'How would you describe your typical activity level?',
-    options: ['Sedentary', 'Lightly active', 'Moderately active', 'Very active'],
-  },
-  {
-    key: 'heart_conditions',
-    type: 'text',
-    prompt: 'Do you have any diagnosed conditions that affect your heart rate (e.g. arrhythmia, thyroid condition)? If so, please describe.',
-    placeholder: 'e.g. None, or describe here',
-  },
-  {
-    key: 'medications',
-    type: 'text',
-    prompt: 'Are you currently taking any medications that could affect your heart rate or sleep?',
-    placeholder: 'e.g. None, or list medications',
-  },
-  {
-    key: 'additional_notes',
-    type: 'text',
-    prompt: 'Anything else you would like us to know about your health that would help us interpret your data accurately?',
-    placeholder: 'Optional',
-  },
-];
-
-type Stage = 'loading' | 'error' | 'screening' | 'survey' | 'ineligible' | 'submitted';
-
-// What QuestionCard renders — both the intake survey above and the screening
-// questions loaded from the database are converted to this.
+// What QuestionCard renders — the questions loaded from the database are
+// converted to this.
 interface CardQuestion {
   key: string;
   type: 'choice' | 'number' | 'text';
@@ -66,24 +27,36 @@ interface CardQuestion {
   options: { value: string; label: string }[];
 }
 
-function surveyCard(question: Question): CardQuestion {
-  return question.type === 'choice'
-    ? { ...question, options: question.options.map((o) => ({ value: o, label: o })) }
-    : { ...question, options: [] };
-}
-
-function screeningCards(screening: Screening): CardQuestion[] {
-  return screening.questions.map((q) => ({
+function questionCards(questionnaire: Screening): CardQuestion[] {
+  return questionnaire.questions.map((q) => ({
     key: q.id,
     type: q.kind,
     prompt: q.prompt,
     helpText: q.helpText,
+    placeholder: q.placeholder ?? undefined,
     options: q.options.map((o) => ({ value: o.id, label: o.label })),
   }));
 }
 
-const NOT_SAVED_MESSAGE =
-  "You'll need an account to save your answers — this app doesn't have general sign-in yet, so your responses weren't stored.";
+// Alerts and returns false when a required question is blank or a number
+// question doesn't hold a number.
+function checkAnswers(questionnaire: Screening, answers: ScreeningAnswers, action: string): boolean {
+  const missing = questionnaire.questions.some((q) => q.isRequired && !answers[q.id]?.trim());
+  if (missing) {
+    Alert.alert('Missing answers', `Please answer every required question before ${action}.`);
+    return false;
+  }
+  const badNumber = questionnaire.questions.some(
+    (q) => q.kind === 'number' && answers[q.id]?.trim() && isNaN(Number(answers[q.id])),
+  );
+  if (badNumber) {
+    Alert.alert('Check your answers', 'Please enter a number where one is asked for.');
+    return false;
+  }
+  return true;
+}
+
+const NOT_SAVED_MESSAGE = "Your answers couldn't be saved. Check your connection and try again.";
 
 interface QuestionCardProps {
   question: CardQuestion;
@@ -153,27 +126,46 @@ interface HealthQuestionnaireProps {
 export function HealthQuestionnaire({ onSubmitted }: HealthQuestionnaireProps) {
   const [stage, setStage] = useState<Stage>('loading');
   const [screening, setScreening] = useState<Screening | null>(null);
+  const [daily, setDaily] = useState<Screening | null>(null);
   const [screeningAnswers, setScreeningAnswers] = useState<ScreeningAnswers>({});
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<ScreeningAnswers>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Loads today's daily questionnaire, or shows that it's already done.
+  const loadDaily = async () => {
+    const loaded = await questionnaireService.loadQuestionnaire('daily');
+    setDaily(loaded);
+    if (!loaded) {
+      setStage('unavailable');
+      return;
+    }
+    setAnswers({});
+    setStage((await questionnaireService.hasSubmittedToday(loaded)) ? 'done' : 'daily');
+  };
 
   // Loads the admin-managed screening questions, and skips straight past them
   // for someone who's already been screened. No active screening (or no
-  // session to read it with) means there's nothing to screen, so the survey
-  // comes up directly.
+  // session to read it with) means there's nothing to screen, so the daily
+  // questionnaire comes up directly.
   const load = async () => {
     setStage('loading');
     try {
-      const loaded = await questionnaireService.loadScreening();
-      setScreening(loaded);
-      if (!loaded) {
-        setStage('survey');
+      if (!(await questionnaireService.isSignedIn())) {
+        setStage('signedOut');
         return;
       }
-      const result = await questionnaireService.getScreeningResult(loaded);
-      setStage(result === 'ineligible' ? 'ineligible' : result === 'eligible' ? 'survey' : 'screening');
+      const loaded = await questionnaireService.loadQuestionnaire('screening');
+      setScreening(loaded);
+      const result = loaded ? await questionnaireService.getScreeningResult(loaded) : 'eligible';
+      if (result === 'ineligible') {
+        setStage('ineligible');
+      } else if (result === null) {
+        setStage('screening');
+      } else {
+        await loadDaily();
+      }
     } catch (error) {
-      console.error('Error loading screening questions:', error);
+      console.error('Error loading questionnaire:', error);
       setStage('error');
     }
   };
@@ -181,6 +173,22 @@ export function HealthQuestionnaire({ onSubmitted }: HealthQuestionnaireProps) {
   useEffect(() => {
     load();
   }, []);
+
+  // Once today's is in, bring the questionnaire back at midnight. Timers
+  // don't run while the app is in the background, so coming back to the app
+  // on a later day also reloads it.
+  useEffect(() => {
+    if (stage !== 'done') return;
+    const doneOn = localDate();
+    const timer = setTimeout(load, msUntilMidnight());
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active' && localDate() !== doneOn) load();
+    });
+    return () => {
+      clearTimeout(timer);
+      subscription.remove();
+    };
+  }, [stage]);
 
   const setScreeningAnswer = (key: string, value: string) => {
     setScreeningAnswers((prev) => ({ ...prev, [key]: value }));
@@ -191,51 +199,37 @@ export function HealthQuestionnaire({ onSubmitted }: HealthQuestionnaireProps) {
   };
 
   const handleContinue = async () => {
-    if (!screening) return;
-
-    const missing = screening.questions.some((q) => q.isRequired && !screeningAnswers[q.id]?.trim());
-    if (missing) {
-      Alert.alert('Missing answers', 'Please answer every required question before continuing.');
-      return;
-    }
-    const badNumber = screening.questions.some(
-      (q) => q.kind === 'number' && screeningAnswers[q.id]?.trim() && isNaN(Number(screeningAnswers[q.id])),
-    );
-    if (badNumber) {
-      Alert.alert('Check your answers', 'Please enter a number where one is asked for.');
-      return;
-    }
+    if (!screening || !checkAnswers(screening, screeningAnswers, 'continuing')) return;
 
     // Saved whichever way it goes, so nobody is asked to screen twice — a
-    // screened-out person never reaches Submit, and someone who passes but
-    // leaves before finishing the survey comes back straight to it.
+    // screened-out person never reaches the daily questionnaire, and someone
+    // who passes goes straight to it from then on.
     const eligible = questionnaireService.isEligible(screening, screeningAnswers);
     setIsSubmitting(true);
     try {
-      const saved = await questionnaireService.submitScreening(screening, screeningAnswers);
+      const saved = await questionnaireService.submitAnswers(screening, screeningAnswers, 'screening');
       if (eligible) {
-        setStage('survey');
+        await loadDaily();
       } else {
         if (saved) onSubmitted?.();
         setStage('ineligible');
       }
+    } catch (error) {
+      console.error('Error loading daily questionnaire:', error);
+      setStage('error');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleSubmit = async () => {
-    const unanswered = QUESTIONS.filter((q) => q.type === 'choice' && !answers[q.key]);
-    if (unanswered.length > 0) {
-      Alert.alert('Missing answers', 'Please answer every multiple-choice question before submitting.');
-      return;
-    }
+    if (!daily || !checkAnswers(daily, answers, 'submitting')) return;
 
     setIsSubmitting(true);
     try {
-      const saved = await questionnaireService.submitQuestionnaire(answers);
+      const saved = await questionnaireService.submitAnswers(daily, answers, 'daily');
       if (saved) {
-        setStage('submitted');
+        setStage('done');
         onSubmitted?.();
       } else {
         Alert.alert('Not saved', NOT_SAVED_MESSAGE);
@@ -270,6 +264,23 @@ export function HealthQuestionnaire({ onSubmitted }: HealthQuestionnaireProps) {
     );
   }
 
+  if (stage === 'signedOut') {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>Sign in to fill this out</Text>
+        <Text style={{ marginTop: 8, textAlign: 'center', color: '#6b7280' }}>
+          You need to be signed in so your answers can be saved.
+        </Text>
+        <TouchableOpacity
+          onPress={load}
+          style={{ marginTop: 20, backgroundColor: '#2563eb', padding: 14, borderRadius: 8 }}
+        >
+          <Text style={{ color: '#fff', fontWeight: '600' }}>Try again</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   if (stage === 'ineligible') {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
@@ -281,43 +292,42 @@ export function HealthQuestionnaire({ onSubmitted }: HealthQuestionnaireProps) {
     );
   }
 
-  if (stage === 'submitted') {
+  if (stage === 'done' || stage === 'unavailable') {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>Thanks!</Text>
-        <Text style={{ marginTop: 8, textAlign: 'center', color: '#6b7280' }}>
-          Your answers have been saved.
+        <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
+          {stage === 'done' ? "You're done for today" : 'Nothing to fill out right now'}
         </Text>
-        <TouchableOpacity
-          onPress={() => {
-            setAnswers({});
-            setStage('survey');
-          }}
-          style={{ marginTop: 20, backgroundColor: '#2563eb', padding: 14, borderRadius: 8 }}
-        >
-          <Text style={{ color: '#fff', fontWeight: '600' }}>Edit answers</Text>
-        </TouchableOpacity>
+        <Text style={{ marginTop: 8, textAlign: 'center', color: '#6b7280' }}>
+          {stage === 'done'
+            ? 'Thanks — your answers have been saved. Come back tomorrow for your next check-in.'
+            : "There's no questionnaire for you at the moment. Check back later."}
+        </Text>
       </View>
     );
   }
 
-  const isScreening = stage === 'screening' && screening !== null;
-  const questions = isScreening ? screeningCards(screening) : QUESTIONS.map(surveyCard);
+  const isScreening = stage === 'screening';
+  const questionnaire = isScreening ? screening : daily;
+  if (!questionnaire) return null;
+
   const values = isScreening ? screeningAnswers : answers;
   const onChange = isScreening ? setScreeningAnswer : setAnswer;
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f9fafb' }}>
       <View style={{ padding: 16 }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 4 }}>Health Questionnaire</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 4 }}>
+          {isScreening ? 'Health Questionnaire' : questionnaire.title}
+        </Text>
         <Text style={{ color: '#6b7280', marginBottom: 16 }}>
-          {isScreening
-            ? screening.description ||
-              'First, a couple of quick questions to check whether this questionnaire applies to you.'
-            : 'A few questions to help us interpret your wearable data accurately.'}
+          {questionnaire.description ||
+            (isScreening
+              ? 'First, a couple of quick questions to check whether this questionnaire applies to you.'
+              : 'A few questions to help us interpret your wearable data accurately.')}
         </Text>
 
-        {questions.map((question) => (
+        {questionCards(questionnaire).map((question) => (
           <QuestionCard
             key={question.key}
             question={question}
