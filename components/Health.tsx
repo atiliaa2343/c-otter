@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useContentBlocks } from "@/hooks/useContentBlocks";
 import { useHealthTopics } from "@/hooks/useHealthTopics";
+import { slugifyTopic } from "@/hooks/useHealthTopicContent";
 
 interface TopicCard {
   id: string;
@@ -68,15 +69,8 @@ export function HealthForm() {
       }))
     : FALLBACK_TOPICS;
 
-  const slugify = (s: string) =>
-    s
-      .toLowerCase()
-      .replace(/&/g, 'and')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-
   const handleTopicPress = (topicId: string, topicTitle: string) => {
-    const slug = slugify(topicTitle);
+    const slug = slugifyTopic(topicTitle);
     router.push(`/health/${slug}`);
   };
 

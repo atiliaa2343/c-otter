@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, Stack, Redirect } from 'expo-router';
+import { useHealthTopicContent } from '@/hooks/useHealthTopicContent';
 import { BACKEND_URL } from '@/constants/BackendConfig';
 
 
@@ -152,27 +153,70 @@ const cannabisApps: AppItem[] = [
   },
 ];
 
+// The lists above are what the page shows when the database can't be
+// reached or db/seed_health_resources.sql hasn't been run yet. Admins edit
+// the live content from the admin panel (health_resources / health_apps).
+const FALLBACK_CONTENT: Record<string, { resources: ResourceItem[]; apps: AppItem[] }> = {
+  cannabis: { resources: cannabisResources, apps: cannabisApps },
+  opioids: { resources: opioidResources, apps: opioidApps },
+};
+
+// Logos bundled with the app, used for an app row with no uploaded image.
+const BUNDLED_APP_IMAGES: Record<string, any> = Object.fromEntries(
+  [...opioidApps, ...cannabisApps].map((app) => [app.title, app.image])
+);
+
+const HEADINGS: Record<string, string> = {
+  cannabis: 'Cannabis Recovery',
+  opioids: 'Opioid Recovery',
+};
+
 export default function DomainPage() {
   const params = useLocalSearchParams() as { domain?: string };
   const domain = params.domain ?? 'general';
-  const showOpioidApps = domain === 'opioids';
-  const showCannabisApps = domain === 'cannabis';
-  
+  const { topic, resources: dbResources, apps: dbApps, loading, error } = useHealthTopicContent(domain);
+
   if (domain === 'health-and-wellness') {
       return <Redirect href="/health-data" />;
   }
 
-  const appsToShow = showOpioidApps ? opioidApps : showCannabisApps ? cannabisApps : [];
-  const resourcesToShow = showOpioidApps ? opioidResources : showCannabisApps ? cannabisResources : [];
+  const fallback = FALLBACK_CONTENT[domain];
+  const useDatabase = !error && (dbResources.length > 0 || dbApps.length > 0);
+
+  const resourcesToShow: ResourceItem[] = useDatabase
+    ? dbResources.map((r) => ({
+        name: r.name,
+        address: r.address ?? '',
+        phone: r.phone ?? '',
+        description: r.description ?? '',
+      }))
+    : fallback?.resources ?? [];
+  const appsToShow: AppItem[] = useDatabase
+    ? dbApps.map((a) => ({
+        title: a.title,
+        image: a.image_url ? { uri: a.image_url } : BUNDLED_APP_IMAGES[a.title] ?? null,
+        description: a.description ?? undefined,
+        features: a.features,
+      }))
+    : fallback?.apps ?? [];
 
   return (
     <>
       <Stack.Screen options={{ title: '', headerBackTitle: 'Categories', headerShown: true }} />
       <View style={{ flex: 1, backgroundColor: '#fff', padding: 16 }}>
         <Text style={{ fontSize: 18, fontWeight: '600', marginTop: 8, marginBottom: 8, textAlign: 'center' }}>
-          {showOpioidApps ? 'Opioid Recovery' : showCannabisApps ? 'Cannabis Recovery' : 'Apps'}
+          {HEADINGS[domain] ?? topic?.title ?? 'Resources'}
         </Text>
-        
+
+        {error && fallback && (
+          <Text style={{ fontSize: 12, color: '#dc2626', textAlign: 'center', marginBottom: 8 }}>
+            Could not load resources from the database — showing the built-in list.
+          </Text>
+        )}
+
+        {loading && !error ? (
+          <ActivityIndicator size="large" style={{ marginTop: 40 }} />
+        ) : (
         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
           {resourcesToShow.length > 0 && (
             <>
@@ -200,7 +244,14 @@ export default function DomainPage() {
             </>
           )}
           
-          <Text style={{ fontSize: 18, fontWeight: '600', marginTop: 8, marginBottom: 8 }}>Apps</Text>
+          {appsToShow.length > 0 && (
+            <Text style={{ fontSize: 18, fontWeight: '600', marginTop: 8, marginBottom: 8 }}>Apps</Text>
+          )}
+          {resourcesToShow.length === 0 && appsToShow.length === 0 && (
+            <Text style={{ fontSize: 14, color: '#6b7280', textAlign: 'center', marginTop: 24 }}>
+              Nothing has been added for this topic yet.
+            </Text>
+          )}
           {appsToShow.map((item, index) => (
             <View
               key={index}
@@ -216,11 +267,13 @@ export default function DomainPage() {
               }}
             >
                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-                  <Image
-                    source={item.image}
-                    style={{ width: 56, height: 56, marginRight: 16, borderRadius: 8, backgroundColor: '#fff' }}
-                    resizeMode="contain"
-                  />
+                  {item.image ? (
+                    <Image
+                      source={item.image}
+                      style={{ width: 56, height: 56, marginRight: 16, borderRadius: 8, backgroundColor: '#fff' }}
+                      resizeMode="contain"
+                    />
+                  ) : null}
                   <Text style={{ fontWeight: 'bold', fontSize: 18, flex: 1, flexShrink: 1 }} numberOfLines={2}>{item.title}</Text>
                 </View>
 
@@ -246,6 +299,7 @@ export default function DomainPage() {
             </View>
           ))}
         </ScrollView>
+        )}
       </View>
     </>
   );

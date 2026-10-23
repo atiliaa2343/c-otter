@@ -578,99 +578,75 @@ export type Database = {
         }
         Relationships: []
       }
-      faculty_members: {
+      health_resources: {
         Row: {
           id: string
+          topic_id: string
           name: string
-          title: string | null
-          email: string | null
+          address: string | null
           phone: string | null
-          image_key: string | null
-          is_director: boolean
+          description: string | null
           sort_order: number
           created_at: string
+          updated_at: string
         }
         Insert: {
           id?: string
+          topic_id: string
           name: string
-          title?: string | null
-          email?: string | null
+          address?: string | null
           phone?: string | null
-          image_key?: string | null
-          is_director?: boolean
+          description?: string | null
           sort_order?: number
           created_at?: string
+          updated_at?: string
         }
         Update: {
           id?: string
+          topic_id?: string
           name?: string
-          title?: string | null
-          email?: string | null
+          address?: string | null
           phone?: string | null
-          image_key?: string | null
-          is_director?: boolean
+          description?: string | null
           sort_order?: number
           created_at?: string
+          updated_at?: string
         }
         Relationships: []
       }
-      health_topics: {
+      health_apps: {
         Row: {
           id: string
+          topic_id: string
           title: string
           description: string | null
-          color: string | null
-          image_key: string | null
+          features: string[]
+          image_url: string | null
           sort_order: number
           created_at: string
+          updated_at: string
         }
         Insert: {
           id?: string
+          topic_id: string
           title: string
           description?: string | null
-          color?: string | null
-          image_key?: string | null
+          features?: string[]
+          image_url?: string | null
           sort_order?: number
           created_at?: string
+          updated_at?: string
         }
         Update: {
           id?: string
+          topic_id?: string
           title?: string
           description?: string | null
-          color?: string | null
-          image_key?: string | null
+          features?: string[]
+          image_url?: string | null
           sort_order?: number
           created_at?: string
-        }
-        Relationships: []
-      }
-      home_events: {
-        Row: {
-          id: string
-          title: string
-          description: string | null
-          icon: string | null
-          color: string | null
-          sort_order: number
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          title: string
-          description?: string | null
-          icon?: string | null
-          color?: string | null
-          sort_order?: number
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          title?: string
-          description?: string | null
-          icon?: string | null
-          color?: string | null
-          sort_order?: number
-          created_at?: string
+          updated_at?: string
         }
         Relationships: []
       }

@@ -15,7 +15,7 @@ import { supabase } from '@/db/supabase';
 import type { Tables } from '@/db/database.types';
 import { ContentBlockRow } from './ContentBlockRow';
 import { ListItemCard } from './ListItemCard';
-import { ListItemFormModal, type ListTable } from './ListItemFormModal';
+import { ListItemFormModal, type ListTable, type SelectOption } from './ListItemFormModal';
 
 type ContentBlockRowData = Tables<'content_blocks'>;
 
@@ -30,7 +30,16 @@ const CONTENT_TABS = [
   { id: 'coloring_book', label: 'Coloring' },
 ] as const;
 
-const LIST_TABS: { id: ListTable; label: string; singular: string; empty: string }[] = [
+interface ListTabMeta {
+  id: ListTable;
+  label: string;
+  singular: string;
+  empty: string;
+  /** For rows that belong to a parent row: the column holding the parent's id. */
+  parentKey?: 'topic_id' | 'category_id' | 'item_id';
+}
+
+const LIST_TABS: ListTabMeta[] = [
   {
     id: 'faculty_members',
     label: 'Faculty',
@@ -49,7 +58,54 @@ const LIST_TABS: { id: ListTable; label: string; singular: string; empty: string
     singular: 'home event',
     empty: 'No home events yet — add one',
   },
+  {
+    id: 'health_resources',
+    label: 'Topic Resources',
+    singular: 'local resource',
+    empty: 'No local resources yet — add one',
+    parentKey: 'topic_id',
+  },
+  {
+    id: 'health_apps',
+    label: 'Topic Apps',
+    singular: 'recovery app',
+    empty: 'No recovery apps yet — add one',
+    parentKey: 'topic_id',
+  },
+  {
+    id: 'research_publications',
+    label: 'Publications',
+    singular: 'publication',
+    empty: 'No publications yet — add one',
+  },
+  {
+    id: 'community_categories',
+    label: 'Community Categories',
+    singular: 'community category',
+    empty: 'No community categories yet — add one',
+  },
+  {
+    id: 'community_items',
+    label: 'Community Buttons',
+    singular: 'community button',
+    empty: 'No buttons in this category yet — add one',
+    parentKey: 'category_id',
+  },
+  {
+    id: 'community_listings',
+    label: 'Community Listings',
+    singular: 'community listing',
+    empty: 'No listings under this button yet — add one',
+    parentKey: 'item_id',
+  },
 ];
+
+/** The table each parentKey points at. */
+const PARENT_TABLE: Record<NonNullable<ListTabMeta['parentKey']>, ListTable> = {
+  topic_id: 'health_topics',
+  category_id: 'community_categories',
+  item_id: 'community_items',
+};
 
 type Group = 'pages' | 'lists';
 
@@ -61,6 +117,8 @@ export function ContentEditorScreen({ adminId }: ContentEditorScreenProps) {
   const [group, setGroup] = useState<Group>('pages');
   const [contentTab, setContentTab] = useState<string>(CONTENT_TABS[0].id);
   const [listTab, setListTab] = useState<ListTable>(LIST_TABS[0].id);
+  // For nested lists: only show rows under this parent (null = all of them).
+  const [parentFilter, setParentFilter] = useState<string | null>(null);
 
   const [blocks, setBlocks] = useState<ContentBlockRowData[]>([]);
   const [rows, setRows] = useState<Record<string, any[]>>({});
@@ -137,10 +195,11 @@ export function ContentEditorScreen({ adminId }: ContentEditorScreenProps) {
   };
 
   // Swapping two adjacent rows means writing both sort_order values, so
-  // normalize the whole column to 0..n-1 first. That keeps ordering stable
-  // even after several moves.
-  const handleMove = async (table: ListTable, index: number, direction: -1 | 1) => {
-    const list = rows[table] ?? [];
+  // normalize the shown list to 0..n-1 first. That keeps ordering stable
+  // even after several moves. For a nested list filtered to one parent,
+  // only that parent's rows are renumbered — the pages order rows within
+  // their parent, so other parents' numbers don't matter.
+  const handleMove = async (table: ListTable, list: any[], index: number, direction: -1 | 1) => {
     const target = index + direction;
     if (target < 0 || target >= list.length) return;
 
@@ -176,11 +235,69 @@ export function ContentEditorScreen({ adminId }: ContentEditorScreenProps) {
   };
 
   const activeListMeta = LIST_TABS.find((t) => t.id === listTab)!;
-  const activeRows = rows[listTab] ?? [];
+  const parentKey = activeListMeta.parentKey;
+  const allActiveRows = rows[listTab] ?? [];
+  const activeRows =
+    parentKey && parentFilter
+      ? allActiveRows.filter((r) => r[parentKey] === parentFilter)
+      : allActiveRows;
   const nextSortOrder =
     activeRows.length > 0
       ? Math.max(...activeRows.map((r) => r.sort_order ?? 0)) + 1
       : 0;
+
+  // Choices for the form's "belongs to" pickers, and the filter chips above
+  // a nested list. A listing's label includes its category, since button
+  // names like "Community" can repeat across categories.
+  const titleOf = (table: ListTable, id: string) =>
+    (rows[table] ?? []).find((r) => r.id === id)?.title ?? 'Unknown';
+  const selectOptions: Record<string, SelectOption[]> = {
+    topic_id: (rows.health_topics ?? []).map((t) => ({ value: t.id, label: t.title })),
+    category_id: (rows.community_categories ?? []).map((c) => ({ value: c.id, label: c.title })),
+    item_id: (rows.community_items ?? []).map((i) => ({
+      value: i.id,
+      label: `${titleOf('community_categories', i.category_id)} › ${i.title}`,
+    })),
+  };
+  const parentLabel = (row: Record<string, any>) => {
+    if (!parentKey) return null;
+    if (parentKey === 'item_id') {
+      return selectOptions.item_id.find((o) => o.value === row.item_id)?.label ?? 'Unknown';
+    }
+    return titleOf(PARENT_TABLE[parentKey], row[parentKey]);
+  };
+
+  const cardSubtitle = (row: Record<string, any>) => {
+    switch (listTab) {
+      case 'faculty_members':
+        return row.title;
+      case 'research_publications':
+        return [row.journal, row.year].filter(Boolean).join(', ') || null;
+      default:
+        return row.description;
+    }
+  };
+  const cardDetails = (row: Record<string, any>): string[] => {
+    const parent = !parentFilter ? parentLabel(row) : null;
+    switch (listTab) {
+      case 'faculty_members':
+        return [row.email, row.phone].filter(Boolean);
+      case 'health_topics':
+        return [row.icon].filter(Boolean);
+      case 'health_resources':
+        return [parent && `Topic: ${parent}`, row.address, row.phone].filter(Boolean);
+      case 'health_apps':
+        return [parent && `Topic: ${parent}`, ...(row.features ?? [])].filter(Boolean);
+      case 'research_publications':
+        return row.is_featured ? ['★ Featured'] : [];
+      case 'community_items':
+        return [parent && `In: ${parent}`].filter(Boolean);
+      case 'community_listings':
+        return [parent && `Under: ${parent}`, row.contact, row.date_time].filter(Boolean);
+      default:
+        return [];
+    }
+  };
 
   const renderPagesGroup = () => (
     <View>
@@ -253,7 +370,10 @@ export function ContentEditorScreen({ adminId }: ContentEditorScreenProps) {
           return (
             <TouchableOpacity
               key={tab.id}
-              onPress={() => setListTab(tab.id)}
+              onPress={() => {
+                setListTab(tab.id);
+                setParentFilter(null);
+              }}
               style={[
                 styles.chip,
                 {
@@ -274,6 +394,38 @@ export function ContentEditorScreen({ adminId }: ContentEditorScreenProps) {
           );
         })}
       </ScrollView>
+
+      {parentKey && (
+        <>
+          <Text style={[styles.groupLabel, { color: textSecondary }]}>SHOW</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.chipRow}
+          >
+            {[{ value: null, label: 'All' }, ...selectOptions[parentKey]].map((option) => {
+              const active = option.value === parentFilter;
+              return (
+                <TouchableOpacity
+                  key={option.value ?? 'all'}
+                  onPress={() => setParentFilter(option.value)}
+                  style={[
+                    styles.chip,
+                    {
+                      backgroundColor: active ? primaryColor : cardBg,
+                      borderColor: active ? primaryColor : cardBorder,
+                    },
+                  ]}
+                >
+                  <Text style={[styles.chipText, { color: active ? '#fff' : textSecondary }]}>
+                    {option.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </>
+      )}
 
       <TouchableOpacity
         style={[styles.addButton, { backgroundColor: primaryColor }]}
@@ -296,17 +448,15 @@ export function ContentEditorScreen({ adminId }: ContentEditorScreenProps) {
         activeRows.map((row, index) => (
           <ListItemCard
             key={row.id}
-            title={row.name ?? row.title ?? 'Untitled'}
-            subtitle={listTab === 'faculty_members' ? row.title : row.description}
-            details={
-              listTab === 'faculty_members'
-                ? [row.email, row.phone].filter(Boolean)
-                : listTab === 'health_topics'
-                ? [row.icon].filter(Boolean)
-                : []
+            title={row.name ?? row.title ?? row.citation ?? 'Untitled'}
+            subtitle={cardSubtitle(row)}
+            details={cardDetails(row)}
+            imageUrl={
+              listTab === 'faculty_members' || listTab === 'health_apps' ? row.image_url : null
             }
-            imageUrl={listTab === 'faculty_members' ? row.image_url : null}
-            swatchColor={listTab === 'home_events' ? row.color : null}
+            swatchColor={
+              listTab === 'home_events' || listTab === 'community_categories' ? row.color : null
+            }
             isFirst={index === 0}
             isLast={index === activeRows.length - 1}
             busy={busyId === row.id}
@@ -314,8 +464,8 @@ export function ContentEditorScreen({ adminId }: ContentEditorScreenProps) {
             onDelete={() =>
               handleDelete(listTab, row.id, row.name ?? row.title ?? 'this item')
             }
-            onMoveUp={() => handleMove(listTab, index, -1)}
-            onMoveDown={() => handleMove(listTab, index, 1)}
+            onMoveUp={() => handleMove(listTab, activeRows, index, -1)}
+            onMoveDown={() => handleMove(listTab, activeRows, index, 1)}
           />
         ))
       )}
@@ -367,6 +517,8 @@ export function ContentEditorScreen({ adminId }: ContentEditorScreenProps) {
         table={listTab}
         item={editingItem}
         nextSortOrder={nextSortOrder}
+        selectOptions={selectOptions}
+        defaults={parentKey && parentFilter ? { [parentKey]: parentFilter } : undefined}
         onClose={() => setFormVisible(false)}
         onSaved={loadRows}
       />
