@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -7,18 +7,19 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  PanResponder,
   Alert,
   Animated,
   Linking,
   ActivityIndicator
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import ViewShot, { type ViewShotRef } from "react-native-view-shot";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { useThemeColor } from "../hooks/useThemeColor";
+import { ColoringCanvas } from "@/components/ColoringCanvas";
 const DoughnutBlurb1Image = require("../assets/images/Doughnut's Jam final pg 1 blurb1.jpg");
 const DoughnutPg1Image = require("../assets/images/Doughnut's Jam final pg 1.jpg");
 const DoughnutPg2Image = require("../assets/images/Doughnut's Jam final pg 2.jpg");
@@ -30,7 +31,8 @@ const CraterQR = require("../assets/images/Crater Webpage QR.png");
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const DonutPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripWidth?: number }) => {
+// Hundreds of small Views — memoized so picking a color or brush doesn't rebuild them.
+const DonutPattern = React.memo(function DonutPattern({ filled = false, stripWidth }: { filled?: boolean; stripWidth?: number }) {
   const cellSize = 44;
   const w = stripWidth ?? SCREEN_WIDTH;
   const h = SCREEN_HEIGHT;
@@ -80,9 +82,9 @@ const DonutPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripW
       ))}
     </View>
   );
-};
+});
 
-const JellyPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripWidth?: number }) => {
+const JellyPattern = React.memo(function JellyPattern({ filled = false, stripWidth }: { filled?: boolean; stripWidth?: number }) {
   const cellSize = 44;
   const w = stripWidth ?? SCREEN_WIDTH;
   const h = SCREEN_HEIGHT;
@@ -131,7 +133,7 @@ const JellyPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripW
       ))}
     </View>
   );
-};
+});
 
 const getColoringImage = (idx: number) => {
   if (idx === 2) return DoughnutBlurb1Image;
@@ -148,20 +150,20 @@ const COLOR_PALETTE = [
 const SLIDER_MIN_SIZE = 8;
 const SLIDER_MAX_SIZE = 35;
 const SCREEN_BACKGROUND = '#1c1c1e';
+/** Width of the donut border down the left of the cover. */
+const COVER_STRIP_WIDTH = 44;
 const CANVAS_BACKGROUND = '#DEB887';
 const CANVAS_BORDER = '#111111';
 const ACTIVE_TOOL_COLOR = '#7b5fe5';
 const SLIDER_TRACK_COLOR = 'transparent';
 const SLIDER_THUMB_COLOR = 'transparent';
 export default function ColoringPage() {
+  const router = useRouter();
   const [pageIndex, setPageIndex] = useState(0); // 0: title, 1: index, 2-6: coloring pages (5 total)
   const [selectedIndex, setSelectedIndex] = useState(1); // Tracks which coloring page is selected on index (1-5)
   const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0]);
   const [brushSize, setBrushSize] = useState(20);
   const [brushType, setBrushType] = useState<'marker' | 'pencil' | 'crayon' | 'eraser'>('marker'); // marker, pencil, crayon, eraser
-  const [points, setPoints] = useState<any[]>([]);
-  const [pointsHistory, setPointsHistory] = useState<any[]>([]);
-  const [futurePoints, setFuturePoints] = useState<any[]>([]);
   const [textValue, setTextValue] = useState('');
   const [isPaletteExpanded, setIsPaletteExpanded] = useState(true); // Track if color palette is expanded
   const [sliderWidth, setSliderWidth] = useState(0);
@@ -180,51 +182,6 @@ export default function ColoringPage() {
   const cardBorder = useThemeColor({}, 'text');
   const primaryColor = useThemeColor({}, 'tint');
   const textSecondary = useThemeColor({}, 'tabIconDefault');
-  // Reset points when navigating between coloring pages
-  useEffect(() => {
-    // Reset points when we're on a coloring page (2-6) and pageIndex changes
-    if (pageIndex >= 2 && pageIndex <= 6) {
-      setPoints([]);
-      setPointsHistory([]);
-      setFuturePoints([]);
-    }
-    // Also reset when leaving coloring interface (going to title or index)
-    else if (pageIndex === 0 || pageIndex === 1) {
-      setPoints([]);
-      setPointsHistory([]);
-      setFuturePoints([]);
-    }
-  }, [pageIndex]);
-  // Add current points to history for undo functionality
-  const addToHistory = useCallback(() => {
-    if (points.length > 0) {
-      setPointsHistory(prev => [...prev, points]);
-      setFuturePoints([]); // Clear future points when new action is performed
-    }
-  }, [points]);
-  // Undo function
-  const undo = useCallback(() => {
-    if (pointsHistory.length > 0) {
-      const lastPoints = pointsHistory[pointsHistory.length - 1];
-      setFuturePoints(prev => [points, ...prev]);
-      setPointsHistory(prev => prev.slice(0, -1));
-      setPoints(lastPoints);
-    }
-  }, [points, pointsHistory, futurePoints]);
-  // Redo function
-  const redo = useCallback(() => {
-    if (futurePoints.length > 0) {
-      const nextPoints = futurePoints[0];
-      setPointsHistory(prev => [...prev, points]);
-      setFuturePoints(prev => prev.slice(1));
-      setPoints(nextPoints);
-    }
-  }, [points, pointsHistory, futurePoints]);
-  // Clear canvas
-  const clearCanvas = useCallback(() => {
-    addToHistory();
-    setPoints([]);
-  }, [addToHistory]);
   // Save artwork
   const saveArtwork = async () => {
     try {
@@ -338,15 +295,6 @@ export default function ColoringPage() {
     }
   };
 
-  // Update refs when state changes
-  const selectedColorRef = useRef(selectedColor);
-  const brushSizeRef = useRef(brushSize);
-  const brushTypeRef = useRef(brushType);
-  useEffect(() => {
-    selectedColorRef.current = selectedColor;
-    brushSizeRef.current = brushSize;
-    brushTypeRef.current = brushType;
-  }, [selectedColor, brushSize, brushType]);
 
   const lastTapRef = useRef<number | null>(null);
   const handleDrawingPress = () => {
@@ -364,64 +312,6 @@ export default function ColoringPage() {
     setBrushSize(size);
   }, [sliderWidth]);
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: (evt, gestureState) => {
-        addToHistory(); // Add to history when starting a new stroke
-        if (brushTypeRef.current === 'eraser') {
-          // Eraser: remove points within radius
-          const eraserX = evt.nativeEvent.locationX;
-          const eraserY = evt.nativeEvent.locationY;
-          const eraserRadius = brushSizeRef.current;
-          setPoints(prev => prev.filter(point => {
-            const distance = Math.sqrt(
-              Math.pow(point.x - eraserX, 2) + Math.pow(point.y - eraserY, 2)
-            );
-            return distance > eraserRadius;
-          }));
-        } else {
-          // Regular drawing
-          const point = {
-            x: evt.nativeEvent.locationX,
-            y: evt.nativeEvent.locationY,
-            color: selectedColorRef.current,
-            size: brushSizeRef.current,
-            type: brushTypeRef.current
-          };
-          setPoints(prev => [...prev, point]);
-        }
-      },
-      onPanResponderMove: (evt, gestureState) => {
-        if (brushTypeRef.current === 'eraser') {
-          // Eraser: remove points within radius
-          const eraserX = evt.nativeEvent.locationX;
-          const eraserY = evt.nativeEvent.locationY;
-          const eraserRadius = brushSizeRef.current;
-          setPoints(prev => prev.filter(point => {
-            const distance = Math.sqrt(
-              Math.pow(point.x - eraserX, 2) + Math.pow(point.y - eraserY, 2)
-            );
-            return distance > eraserRadius;
-          }));
-        } else {
-          // Regular drawing
-          const point = {
-            x: evt.nativeEvent.locationX,
-            y: evt.nativeEvent.locationY,
-            color: selectedColorRef.current,
-            size: brushSizeRef.current,
-            type: brushTypeRef.current
-          };
-          setPoints(prev => [...prev, point]);
-        }
-      },
-      onPanResponderRelease: () => {
-        console.log('Drawing ended, total points:', points.length);
-      },
-    })
-  ).current;
   const renderPage = () => {
     if (pageIndex === 0) {
       // Title page - book cover design
@@ -438,12 +328,12 @@ export default function ColoringPage() {
         outputRange: ['0deg', '-180deg'],
       });
       return (
-        <View style={[styles.bookContainer, { backgroundColor: '#fff' }]}>
-          <DonutPattern filled={false} stripWidth={40} />
+        <View style={styles.coverPage}>
+          <DonutPattern filled={false} stripWidth={COVER_STRIP_WIDTH} />
           {!isExporting && (
-            <View style={[styles.topNav, { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }]}>
+            <View style={[styles.topNav, { position: 'absolute', top: 0, left: COVER_STRIP_WIDTH, right: 0, zIndex: 10 }]}>
               <View style={styles.navGroup}>
-                <TouchableOpacity style={styles.navButton} onPress={() => {}} activeOpacity={0.7}>
+                <TouchableOpacity style={styles.navButton} onPress={() => router.back()} activeOpacity={0.7}>
                   <Ionicons name="arrow-back" size={24} color="#000" />
                 </TouchableOpacity>
               </View>
@@ -453,6 +343,7 @@ export default function ColoringPage() {
           <Animated.View
             style={[
               styles.bookCover,
+              { left: COVER_STRIP_WIDTH },
               {
                 transform: [
                   { rotate: bookCoverRotate },
@@ -628,32 +519,14 @@ export default function ColoringPage() {
                    </View>
                  </>
                )}
-               <View style={styles.drawingContainer} {...panResponder.panHandlers} onStartShouldSetResponder={() => true}>
-                 {points.map((point, index) => {
-                   if (point.type === 'eraser') return null;
-                   const pointStyle = {
-                     position: 'absolute' as const,
-                     left: point.x - point.size / 2,
-                     top: point.y - point.size / 2,
-                     width: point.size,
-                     height: point.size,
-                     backgroundColor: point.color,
-                     borderRadius: point.size / 2,
-                     opacity: 0.9,
-                   };
-                   return (
-                     <View
-                       key={index.toString()}
-                       style={[styles.drawPoint, pointStyle]}
-                       pointerEvents="none"
-                     />
-                   );
-                 })}
-                 <TouchableOpacity
-                   style={StyleSheet.absoluteFill}
-                   onLongPress={handleCanvasLongPress}
-                 />
-               </View>
+               {/* Remounts per page, so each page starts blank. */}
+               <ColoringCanvas
+                 key={pageIndex}
+                 color={selectedColor}
+                 brushSize={brushSize}
+                 brushType={brushType}
+                 onLongPress={handleCanvasLongPress}
+               />
              </View>
              </View>
            </View>
@@ -849,14 +722,20 @@ const styles = StyleSheet.create({
      shadowOffset: { width: -2, height: 0 },
      shadowOpacity: 0.3,
    },
+   coverPage: {
+     flex: 1,
+     backgroundColor: '#fff',
+   },
+   // Fills everything right of the donut strip (`left` is set inline).
    bookCover: {
-     width: '85%',
-     aspectRatio: 0.75,
+     position: 'absolute',
+     top: 0,
+     right: 0,
+     bottom: 0,
      backgroundColor: '#8B4513',
-     borderRadius: 8,
-     shadowOffset: { width: 4, height: 8 },
-     shadowOpacity: 0.4,
-     shadowRadius: 12,
+     shadowOffset: { width: -4, height: 0 },
+     shadowOpacity: 0.3,
+     shadowRadius: 8,
      elevation: 10,
    },
    coverDesign: {
@@ -920,7 +799,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.1)',
   },
   coverTitle: {
-    fontSize: 24,
+    fontSize: 34,
     fontWeight: '800',
     textAlign: 'center',
     marginBottom: 8,
@@ -929,7 +808,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 2,
   },
   coverSubtitle: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: '600',
     color: '#A0522D',
     textAlign: 'center',
@@ -937,27 +816,27 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   coverIcon: {
-    width: 100,
-    height: 100,
-    marginBottom: 40,
+    width: 140,
+    height: 140,
+    marginBottom: 48,
     position: 'relative',
   },
   donutOuter: {
     position: 'absolute',
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
     backgroundColor: '#FF6B6B',
     borderWidth: 4,
     borderColor: 'rgba(0,0,0,0.1)',
   },
   donutInner: {
     position: 'absolute',
-    top: 25,
-    left: 25,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    top: 35,
+    left: 35,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     backgroundColor: '#F5DEB3',
     borderWidth: 2,
     borderColor: 'rgba(0,0,0,0.1)',
@@ -1087,9 +966,6 @@ headerTitle: {
      justifyContent: 'center',
      alignItems: 'center',
    },
-   drawingContainer: {
-     ...StyleSheet.absoluteFill,
-   },
    sliderContainer: {
      paddingHorizontal: 20,
      paddingVertical: 12,
@@ -1214,9 +1090,6 @@ bottomToolbar: {
      top: 50,
      left: 20,
      padding: 8,
-   },
-   drawPoint: {
-     position: 'absolute',
    },
    // Text Box styles
    textBoxContainer: {
