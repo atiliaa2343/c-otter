@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from "@expo/vector-icons";
-import ViewShot from "react-native-view-shot";
+import ViewShot, { type ViewShotRef } from "react-native-view-shot";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { useThemeColor } from "../hooks/useThemeColor";
@@ -43,7 +43,7 @@ const DonutPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripW
   const innerBg = filled ? '#8B4513' : '#fff';
 
   return (
-    <View style={[StyleSheet.absoluteFillObject, { overflow: 'hidden', width: stripWidth }]} pointerEvents="none">
+    <View style={[StyleSheet.absoluteFill, { overflow: 'hidden', width: stripWidth }]} pointerEvents="none">
       {Array.from({ length: rows }).map((_, row) => (
         <View key={row} style={{ flexDirection: 'row' }}>
           {Array.from({ length: cols }).map((_, col) => (
@@ -93,7 +93,7 @@ const JellyPattern = ({ filled = false, stripWidth }: { filled?: boolean; stripW
   const lidBg = filled ? '#7a4a8a' : '#fff';
 
   return (
-    <View style={[StyleSheet.absoluteFillObject, { overflow: 'hidden', width: stripWidth }]} pointerEvents="none">
+    <View style={[StyleSheet.absoluteFill, { overflow: 'hidden', width: stripWidth }]} pointerEvents="none">
       {Array.from({ length: rows }).map((_, row) => (
         <View key={row} style={{ flexDirection: 'row' }}>
           {Array.from({ length: cols }).map((_, col) => (
@@ -169,7 +169,7 @@ export default function ColoringPage() {
   const [showSaveOptions, setShowSaveOptions] = useState(false);
   const [isBookOpen, setIsBookOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
-  const viewShotRef = useRef<ViewShot>(null);
+  const viewShotRef = useRef<ViewShotRef>(null);
   // Animation values for book opening
   const bookOpenAnim = useRef(new Animated.Value(0)).current;
   const pageFlipAnim = useRef(new Animated.Value(0)).current;
@@ -650,7 +650,7 @@ export default function ColoringPage() {
                    );
                  })}
                  <TouchableOpacity
-                   style={StyleSheet.absoluteFillObject}
+                   style={StyleSheet.absoluteFill}
                    onLongPress={handleCanvasLongPress}
                  />
                </View>
@@ -1088,7 +1088,7 @@ headerTitle: {
      alignItems: 'center',
    },
    drawingContainer: {
-     ...StyleSheet.absoluteFillObject,
+     ...StyleSheet.absoluteFill,
    },
    sliderContainer: {
      paddingHorizontal: 20,
@@ -1271,7 +1271,7 @@ bottomToolbar: {
     backgroundColor: '#fff',
   },
   exportOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
