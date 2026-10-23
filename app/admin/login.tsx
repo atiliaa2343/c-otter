@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import { useAdminAuth } from '@/app/admin/context/AdminAuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeColor } from '@/hooks/useThemeColor';
@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { login, isLoading: authIsLoading } = useAdminAuth();
+  const { user, login, isLoading: authIsLoading } = useAdminAuth();
   const router = useRouter();
 
   const backgroundColor = useThemeColor({}, 'background');
@@ -37,6 +37,12 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
+  // `user` is only set once the admin role check passes, so this covers both
+  // a successful login and arriving here while already signed in as an admin.
+  if (user) {
+    return <Redirect href="/admin/dashboard" />;
+  }
 
   if (isLoading || authIsLoading) {
     return (

@@ -888,6 +888,16 @@ export type Database = {
           similarity: number
         }[]
       }
+      screening_match_users: {
+        Args: { p_questionnaire_id: string; p_criteria: Json }
+        Returns: {
+          user_id: string
+          email: string
+          username: string | null
+          submission_id: string
+          submitted_at: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

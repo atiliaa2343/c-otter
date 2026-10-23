@@ -1,41 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, RefreshControl, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { Redirect } from 'expo-router';
 import { useAdminAuth } from '@/app/admin/context/AdminAuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { supabase } from '@/db/supabase';
 import { ContentEditorScreen } from '@/components/admin/ContentEditorScreen';
+import { ScreeningScreen } from '@/components/admin/ScreeningScreen';
+import { countActiveQuestions } from '@/services/screening';
 
 interface Stats {
   contentItems?: number;
   users?: number;
   admins?: number;
+  screeningQuestions?: number;
 }
 
+type DashboardTab = 'stats' | 'content' | 'screening';
+
+const TAB_LABELS: Record<DashboardTab, string> = {
+  stats: 'Statistics',
+  content: 'Manage Content',
+  screening: 'Screening',
+};
+
 export default function Dashboard() {
-  const { user, logout } = useAdminAuth();
+  const { user, isLoading: authIsLoading, logout } = useAdminAuth();
   const [stats, setStats] = useState<Stats | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [tab, setTab] = useState<'stats' | 'content'>('stats');
+  const [tab, setTab] = useState<DashboardTab>('stats');
 
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const textSecondary = useThemeColor({}, 'textSecondary');
   const primaryColor = useThemeColor({}, 'primary');
 
+  // Re-run once the admin session finishes loading — on a fresh page load
+  // `user` is still null on the first render, so a mount-only effect would
+  // bail out and leave "Loading statistics..." up forever.
   useEffect(() => {
     fetchStats();
-  }, []);
+  }, [user?.id]);
 
   const fetchStats = async () => {
     if (!user) return;
     setIsLoading(true);
     try {
-      const [contentResult, usersResult, adminsResult] = await Promise.all([
+      const [contentResult, usersResult, adminsResult, screeningQuestions] = await Promise.all([
         supabase.from('content_blocks').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'user'),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'admin'),
+        countActiveQuestions(),
       ]);
 
       if (contentResult.error) throw contentResult.error;
@@ -46,6 +62,7 @@ export default function Dashboard() {
         contentItems: contentResult.count ?? 0,
         users: usersResult.count ?? 0,
         admins: adminsResult.count ?? 0,
+        screeningQuestions,
       });
     } catch (err) {
       console.error('Error fetching stats:', err);
@@ -61,14 +78,18 @@ export default function Dashboard() {
     fetchStats();
   };
 
-  if (!user) {
-    // Redirect to login if not authenticated
-    // In a real app, we'd use router.replace, but for simplicity we'll render a message
+  if (authIsLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor }}>
-        <Text>Please log in to access the admin dashboard</Text>
+        <ActivityIndicator size="large" color={primaryColor} />
       </View>
     );
+  }
+
+  // Covers signing out from here too: logout clears `user`, which lands
+  // back on the login screen.
+  if (!user) {
+    return <Redirect href="/admin/login" />;
   }
 
   return (
@@ -87,7 +108,7 @@ export default function Dashboard() {
         </Text>
 
         <View style={styles.tabBar}>
-          {(['stats', 'content'] as const).map((t) => {
+          {(Object.keys(TAB_LABELS) as DashboardTab[]).map((t) => {
             const active = t === tab;
             return (
               <TouchableOpacity
@@ -101,7 +122,7 @@ export default function Dashboard() {
                     { color: active ? '#fff' : 'rgba(255,255,255,0.75)' },
                   ]}
                 >
-                  {t === 'stats' ? 'Statistics' : 'Manage Content'}
+                  {TAB_LABELS[t]}
                 </Text>
               </TouchableOpacity>
             );
@@ -111,6 +132,8 @@ export default function Dashboard() {
 
       {tab === 'content' ? (
         <ContentEditorScreen adminId={user.id} />
+      ) : tab === 'screening' ? (
+        <ScreeningScreen adminId={user.id} />
       ) : isLoading ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color={primaryColor} />
@@ -159,6 +182,16 @@ export default function Dashboard() {
                       </Text>
                       <Text style={{ color: textSecondary, fontSize: 14 }}>
                         Admin Accounts
+                      </Text>
+                    </View>
+                  )}
+                  {stats.screeningQuestions !== undefined && (
+                    <View style={{ backgroundColor: '#f8fafc', padding: 16, borderRadius: 12, flex: 1, minWidth: 120 }}>
+                      <Text style={{ fontSize: 32, fontWeight: 'bold', color: primaryColor }}>
+                        {stats.screeningQuestions}
+                      </Text>
+                      <Text style={{ color: textSecondary, fontSize: 14 }}>
+                        Screening Questions
                       </Text>
                     </View>
                   )}
