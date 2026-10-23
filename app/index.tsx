@@ -6,9 +6,9 @@ import {
   TouchableOpacity, 
   ScrollView, 
   StatusBar,
-  SafeAreaView,
   StyleSheet
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useAppTheme } from "@/hooks/ThemeContext";
@@ -18,23 +18,8 @@ import { FacultyForm } from "@/components/Faculty";
 import Research from "@/components/Research";
 import { ContactSection } from "@/components/Contact";
 import Community from "@/components/Community";
-import { supabase } from "@/db/supabase";
 
   const LOCAL_LOGO = require("@/assets/images/Ce Otter.png");
-
-interface HourOfOperation {
-  id: number;
-  location_id: number;
-  open_time: string | null;
-  close_time: string | null;
-  monday: boolean;
-  tuesday: boolean;
-  wednesday: boolean;
-  thursday: boolean;
-  friday: boolean;
-  saturday: boolean;
-  sunday: boolean;
-}
 
 type NavigationItem = "home" | "research" | "community" | "health" | "faculty" | "contact";
 
@@ -43,8 +28,6 @@ export default function Index() {
   const isDarkMode = theme === 'dark';
   const [showSplash, setShowSplash] = useState(true);
   const [currentPage, setCurrentPage] = useState<NavigationItem>("home");
-  const [locations, setlocations] = useState<HourOfOperation[]>();
-  const [loading, setLoading] = useState(true);
   
   // Theme colors
   const backgroundColor = useThemeColor({}, 'background');
@@ -56,20 +39,6 @@ export default function Index() {
   const tabBarActive = useThemeColor({}, 'tabBarActive');
   const tabBarInactive = useThemeColor({}, 'tabBarInactive');
 
-  async function getlocations() {
-    try {
-      const { data, error } = await supabase.from('hours_of_operation').select('*');
-      if (error) throw error;
-      if (data) {
-        setlocations(data);
-      }
-    } catch (err) {
-      console.error("Error fetching data:", err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
     // Hide splash screen after 3 seconds
     const timer = setTimeout(() => {
@@ -77,10 +46,6 @@ export default function Index() {
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    getlocations();
   }, []);
 
   // Navigation items configuration - replacing Resources with Contact
